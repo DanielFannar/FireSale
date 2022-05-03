@@ -80,7 +80,7 @@ DATABASES = {
   'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
         'NAME': 'firesale-db',
-        'USER': 'firesale-db-user',
+        'USER': 'adh-firesale-user',
         'PASSWORD': 'verklegt2',
         'HOST': '35.246.89.129',
         'PORT': '5432'
