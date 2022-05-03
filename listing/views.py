@@ -11,7 +11,12 @@ def get_listing_by_id(request, id):
 
 def get_all_listings(request):
     return render(request, 'listing/listings.html', {
-    'listings': Listing.objects.all()
+        'listings': Listing.objects.all()
     })
 
+
+def get_user_listings(request, user_id):
+    return render(request, 'listing/listings.html', {
+        'listings': Listing.objects.all().filter(seller_id=user_id)
+    })
 
