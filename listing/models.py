@@ -10,3 +10,8 @@ class Listing(models.Model):
     condition = models.IntegerField()
     listed = models.DateTimeField()
     available = models.BooleanField()
+
+
+class ListingImage(models.Model):
+    image = models.CharField(max_length=9999)
+    listing = models.ForeignKey(Listing, on_delete=models.CASCADE)

@@ -14,7 +14,7 @@ class UserSettings(models.Model):
 
 
 class UserProfile(models.Model):
-    bio = models.CharField(max_length=6969) # ;)
+    bio = models.CharField(max_length=6969)
     settings = models.ForeignKey(UserSettings, on_delete=models.SET_NULL)
 
 
