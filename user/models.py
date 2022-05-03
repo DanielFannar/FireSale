@@ -14,26 +14,27 @@ class UserSettings(models.Model):
 
 
 class UserProfile(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
     bio = models.CharField(max_length=6969)
-    settings = models.ForeignKey(UserSettings, on_delete=models.SET_NULL)
+    settings = models.ForeignKey(UserSettings, on_delete=models.SET_NULL, null=True)
 
 
 class ProfileImage(models.Model):
     image = models.CharField(max_length=9999)
-    user = models.OneToOneRel(UserProfile, on_delete=models.CASCADE)
+    user = models.OneToOneField(UserProfile, on_delete=models.CASCADE)
 
 
 class Message(models.Model):
-    sender = models.ForeignKey(User, on_delete=models.SET_NULL)
-    receiver = models.ForeignKey(User, on_delete=models.SET_NULL)
+    sender = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, related_name="sender")
+    receiver = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, related_name="receiver")
     content = models.CharField(max_length=9999)
     seen = models.BinaryField()
     sent = models.DateTimeField()
 
 
 class Rating(models.Model):
-    rater = models.ForeignKey(User, on_delete=models.SET_NULL)
-    ratee = models.ForeignKey(User, on_delete=models.CASCADE)
-    rating = models.IntegerField([MinValueValidator(1)], [MaxValueValidator(5)])
+    rater = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, related_name="rater")
+    ratee = models.ForeignKey(User, on_delete=models.CASCADE, related_name="ratee")
+    rating = models.IntegerField([MinValueValidator(1), MaxValueValidator(5)])
     comment = models.CharField(max_length=999)
     purchase = models.ForeignKey(Purchase, on_delete=models.CASCADE)
