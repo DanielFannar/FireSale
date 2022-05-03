@@ -75,9 +75,9 @@ WSGI_APPLICATION = 'FireSale.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/4.0/ref/settings/#databases
-
+'''
 DATABASES = {
-    'default': {
+  'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
         'NAME': 'firesale-db',
         'USER': 'firesale-db-user',
@@ -85,7 +85,7 @@ DATABASES = {
         'HOST': '35.246.89.129',
         'PORT': '5432'
     }
-}
+}'''
 
 
 # Password validation

@@ -1,5 +1,8 @@
 from django.shortcuts import render
 
+from django.http import HttpResponse
 # Create your views here.
-addListing
-ListingDetails
+
+
+def index(request):
+    return HttpResponse('THIS TEST SUCCEEDED')
