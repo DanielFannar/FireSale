@@ -1,0 +1,7 @@
+<div class="singlelisting">
+    <a href="/listing/{{ listing.id }}/details">
+        <img class="listing-img" src="{{ listing.listingimage_set.first.image }}" height="200px" width="200px"/>
+        <h4>{{  listing.name }}</h4>
+        <p>{{ listing.description }}</p>
+    </a>
+</div>
