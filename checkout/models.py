@@ -11,7 +11,7 @@ class Country(models.Model):
 
 class ContactInfo(models.Model):
     full_name = models.CharField(max_length=255)
-    country = models.ForeignKey(Country, on_delete=models.CASCADE)
+    country = models.ForeignKey(Country, on_delete=models.CASCADE, default=1)
     city = models.CharField(max_length=255)
     street_name = models.CharField(max_length=255)
     house_number = models.IntegerField([MinValueValidator(0)])
@@ -22,7 +22,7 @@ class PaymentInfo(models.Model):
     name = models.CharField(max_length=255)
     card_number = models.CharField(max_length=16)
     expiration_date = models.CharField(max_length=5)
-    cvc = models.CharField(max_length=3)
+    cvc = models.IntegerField([MaxValueValidator(999)])
 
 
 class Purchase(models.Model):
