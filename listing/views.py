@@ -30,12 +30,13 @@ def add_listing(request):
         form = ListingCreateForm(data=request.POST)
         if form.is_valid():
             listing = form.save(commit=False)
-            listing.seller = get_object_or_404(User, pk=1)
+            listing.seller = get_object_or_404(User, pk=request.user.id)
             listing.listed = datetime.datetime.now()
             listing.available = True
             listing.save()
             listing_image = ListingImage(image=request.POST['image'], listing=listing)
             listing_image.save()
+            return redirect('listing-details', id=listing.id)
     else:
         form = ListingCreateForm()
     return render(request, 'listing/add_listing.html', {
@@ -55,7 +56,7 @@ def update_listing(request, id):
         form = ListingUpdateForm(data=request.POST, instance=instance)
         if form.is_valid():
             listing = form.save(commit=False)
-            listing.seller = get_object_or_404(User, pk=1)
+            listing.seller = get_object_or_404(User, pk=request.user.id)
             listing.listed = datetime.datetime.now()
             listing.available = True
             listing.save()

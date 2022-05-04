@@ -3,7 +3,7 @@
 <h1>{{  listing.name }}</h1>
 <p>{{ listing.description }}</p>
 <p>Seller: {{ listing.seller }}</p>
-<p>Condition: {{ listing.condition }}</p>
+<p>Condition: {{ listing.condition }}</p> #TODO: Show text instead of INT. Maybe add model for condition?
 <p>Listed: {{ listing.listed }}</p>
 {% for listing_image in listing.listingimage_set.all %}
     <img src="{{ listing_image.image }}" class="listing-img" height="200px" width="200px"/>
