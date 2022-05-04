@@ -1,33 +1,41 @@
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from django.contrib.auth.forms import UserCreationForm
-from user.forms.profile_form import ProfileForm
+from user.forms.profile_form import CreateProfileForm
 from user.models import UserProfile
+from user.models import UserSettings
 from django.contrib.auth.models import User
 # Create your views here.
 
 def index(request):
     return render(request, 'user/index.html')
 
+
 def register(request):
     if request.method == 'POST':
-        form = UserCreationForm(data=request.POST)
-        if form.is_valid():
-            form.save()
+        user_form = UserCreationForm(request.POST)
+        profile_form = CreateProfileForm(request.POST)
+        if user_form.is_valid() and profile_form.is_valid():
+            user = user_form.save()
+            profile = profile_form.save(commit=False)
+            profile.user = user
+            profile.save()
             return redirect('login')
-    return render(request, 'user/register.html', {
-        'form': UserCreationForm()
+    else:
+        return render(request, 'user/register.html', {
+            'user_form': UserCreationForm(),
+            'profile_form': CreateProfileForm()
     })
 
 def profile(request):
     profile = UserProfile.objects.filter(user=request.user).first()
     if request == 'POST':
-        form = ProfileForm(instance=profile, data=request.POST)
+        form = CreateProfileForm(instance=profile, data=request.POST)
         if form.is_valid():
             profile = form.save(commit=False)
             profile.user = request.user
             profile.save()
             return redirect('')
     return render(request, 'user/profile.html',{
-        'form': ProfileForm(instance=profile)
+        'form': CreateProfileForm(instance=profile)
     })

@@ -3,7 +3,7 @@ from django.forms import ModelForm, widgets
 from user.models import UserProfile
 
 
-class ProfileForm(ModelForm):
+class CreateProfileForm(ModelForm):
     class Meta:
         model = UserProfile
         exclude = ['id', 'user', 'settings']
