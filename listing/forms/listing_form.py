@@ -20,3 +20,14 @@ class ListingCreateForm(ModelForm):
             'description': widgets.TextInput(attrs={'class': 'form-control'}),
             'condition': widgets.Select(attrs={'class': 'form-control'}, choices=CONDITION_CHOICES),
         }
+
+
+class ListingUpdateForm(ModelForm):
+    class Meta:
+        model = Listing
+        exclude = ['id', 'seller', 'listed', 'available']
+        widgets = {
+            'name': widgets.TextInput(attrs={'class': 'form-control'}),
+            'description': widgets.TextInput(attrs={'class': 'form-control'}),
+            'condition': widgets.Select(attrs={'class': 'form-control'}, choices=CONDITION_CHOICES)
+        }

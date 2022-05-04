@@ -8,4 +8,7 @@
 {% for listing_image in listing.listingimage_set.all %}
     <img src="{{ listing_image.image }}" class="listing-img" height="200px" width="200px"/>
     {% endfor %}
+
+    <a href="{% url 'remove-listing' listing.id %}" class="block btn btn-primary">Remove listing</a>
+    <a href="{% url 'update-listing' listing.id %}" class="block btn btn-primary">Update listing</a>
 {% endblock %}
