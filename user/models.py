@@ -17,12 +17,7 @@ class UserProfile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     bio = models.CharField(max_length=6969)
     settings = models.ForeignKey(UserSettings, on_delete=models.SET_NULL, null=True)
-
-
-class ProfileImage(models.Model):
-    image = models.CharField(max_length=9999)
-    user = models.OneToOneField(UserProfile, on_delete=models.CASCADE)
-
+    image = models.CharField(max_length=9999, null=True)
 
 class Message(models.Model):
     sender = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, related_name="sender")

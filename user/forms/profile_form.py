@@ -6,8 +6,8 @@ from user.models import UserProfile
 class ProfileForm(ModelForm):
     class Meta:
         model = UserProfile
-        exclude = ['id', 'user']
+        exclude = ['id', 'user', 'settings']
         widgets = {
-            'bio': widgets.TextInput(attrs={'class': 'form-control'}),
+            'bio': widgets.TimeInput(attrs={'class': 'form-control'}),
             'profile-image': widgets.TextInput(attrs={'class': 'form-control'})
         }
