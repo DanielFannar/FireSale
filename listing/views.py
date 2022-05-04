@@ -1,5 +1,6 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.models import User
+from offer.models import Offer
 from listing.models import Listing, ListingImage
 from listing.forms.listing_form import ListingCreateForm, ListingUpdateForm
 import datetime
@@ -9,7 +10,8 @@ import datetime
 
 def get_listing_by_id(request, id):
     return render(request, 'listing/listingdetails.html', {
-        'listing': get_object_or_404(Listing, pk=id)
+        'listing': get_object_or_404(Listing, pk=id),
+        'offers': Offer.objects.all().filter(listing_id=id)
     })
 
 

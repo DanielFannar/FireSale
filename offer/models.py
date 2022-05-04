@@ -9,4 +9,4 @@ class Offer(models.Model):
     buyer = models.ForeignKey(User, on_delete=models.CASCADE)
     amount = models.IntegerField()
     placed = models.DateTimeField()
-    accepted = models.BinaryField()
+    accepted = models.BooleanField(default=False)
