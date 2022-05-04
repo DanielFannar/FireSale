@@ -40,7 +40,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'fire_sale.apps.FireSaleConfig',
     'offer',
-    'user',
+    'user.apps.UsersConfig',
     'listing',
     'checkout'
 ]
@@ -135,3 +135,6 @@ STATICFILES_DIRS = [
 # https://docs.djangoproject.com/en/4.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+LOGIN_URL = '/user/login'
+LOGIN_REDIRECT_URL = '/user/profile'
