@@ -5,3 +5,6 @@ from django.http import HttpResponse
 
 def index(request):
     return render(request, 'user/index.html')
+
+def index(request):
+    return render(request, 'user/editprofile.html')
