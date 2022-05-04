@@ -24,7 +24,6 @@ class PaymentInfo(models.Model):
     expiration_date = models.CharField(max_length=5)
     cvc = models.IntegerField([MaxValueValidator(999)])
 
-
 class Purchase(models.Model):
     # offer = models.ForeignKey()
     contact_info = models.ForeignKey(ContactInfo, on_delete=models.CASCADE)

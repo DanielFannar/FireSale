@@ -38,3 +38,4 @@ class Rating(models.Model):
     rating = models.IntegerField([MinValueValidator(1), MaxValueValidator(5)])
     comment = models.CharField(max_length=999)
     purchase = models.ForeignKey(Purchase, on_delete=models.CASCADE)
+
