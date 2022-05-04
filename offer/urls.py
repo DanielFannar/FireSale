@@ -3,5 +3,6 @@ from . import views
 
 urlpatterns = [
     # http://localhost:8000/candies
-    path('', views.index, name="offer-index")
+    path('<id:int>/details', views.get_offer_by_id, name="offer-details")
+
 ]

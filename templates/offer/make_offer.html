@@ -1,0 +1,9 @@
+{% extends "base.html" %}
+{% block content %}
+{%  include 'listing/single_listing.html' with listing=listing%}
+    <form class="form form-horizontal" action="{% url 'make-offer' listing.id %}" method="post">
+        {% csrf_token %}
+        {{ form }}
+    <input type="submit" value="Make offer" class="btn btn-primary pull-right" style="clear:both; margin: 10px 0" />
+    </form>
+{% endblock %}
