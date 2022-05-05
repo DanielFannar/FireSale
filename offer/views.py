@@ -32,7 +32,7 @@ def make_offer(request, listing_id):
         'listing': get_object_or_404(Listing, pk=listing_id)
     })
 
-
+# TODO: get_offers_by_listing is not used atm, is it needed?
 def get_offers_by_listing(request, listing_id):
 
     """
@@ -45,7 +45,7 @@ def get_offers_by_listing(request, listing_id):
     page_obj = paginator.get_page(page_number)
     return render(request, 'offer/offer_list.html', {'page_obj': page_obj})
 
-
+# TODO: get_offers_by_buyer is not used atm, is it needed?
 def get_offers_by_buyer(request, buyer_id):
 
     """
