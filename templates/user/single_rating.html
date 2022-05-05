@@ -1,0 +1,6 @@
+<div class="single_rating">
+    <h4>Rating: {{ rating.rating }}/5</h4>
+    <p>Comment: {{ rating.comment }}</p>
+    <p>Rated by: {{ rating.rater }}</p>
+    <p>For listing: {% include 'listing/single_listing.html' with listing=rating.purchase.offer.listing %}</p>
+</div>

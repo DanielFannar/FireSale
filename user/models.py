@@ -30,7 +30,7 @@ class Message(models.Model):
 class Rating(models.Model):
     rater = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, related_name="rater")
     ratee = models.ForeignKey(User, on_delete=models.CASCADE, related_name="ratee")
-    rating = models.IntegerField([MinValueValidator(1), MaxValueValidator(5)])
+    rating = models.IntegerField(validators=[MinValueValidator(1), MaxValueValidator(5)])
     comment = models.CharField(max_length=999)
     purchase = models.ForeignKey(Purchase, on_delete=models.CASCADE)
 

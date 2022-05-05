@@ -3,6 +3,7 @@ from django.core.validators import MaxValueValidator, MinValueValidator
 
 
 # Create your models here.
+from offer.models import Offer
 
 
 class Country(models.Model):
@@ -24,7 +25,8 @@ class PaymentInfo(models.Model):
     expiration_date = models.CharField(max_length=5)
     cvc = models.IntegerField([MaxValueValidator(999)])
 
+
 class Purchase(models.Model):
-    # offer = models.ForeignKey()
+    offer = models.ForeignKey(Offer, on_delete=models.CASCADE)
     contact_info = models.ForeignKey(ContactInfo, on_delete=models.CASCADE)
     payment_info = models.ForeignKey(PaymentInfo, on_delete=models.CASCADE)
