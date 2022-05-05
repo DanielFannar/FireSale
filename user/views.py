@@ -27,6 +27,7 @@ def register(request):
             'profile_form': CreateProfileForm()
     })
 
+
 def profile(request):
     profile = UserProfile.objects.filter(user=request.user).first()
     if request == 'POST':
