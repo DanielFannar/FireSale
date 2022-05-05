@@ -1,10 +1,7 @@
-{% block content %}
+<h1 class="red">Offers</h1>
+<div class="offers">
 
-    <h1 class="red">Offers</h1>
-    <div class="offers">
-
-    {% for offer in offers %}
-        {%  include 'offer/single_offer.html' with offer=offer%}
-    {% endfor %}
-    </div>
-{% endblock %}
+{% for offer in offers %}
+    {%  include 'offer/single_offer.html' with offer=offer%}
+{% endfor %}
+</div>

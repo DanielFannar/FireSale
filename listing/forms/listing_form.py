@@ -2,7 +2,7 @@ from django.forms import ModelForm, widgets
 from django import forms
 from listing.models import Listing
 
-CONDITION_CHOICES= [
+CONDITION_CHOICES= [ # TODO: Remove after condition model class has been added
     ('1', 'Heavily used'),
     ('2', 'Used'),
     ('3', 'New')
