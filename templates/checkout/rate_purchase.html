@@ -1,0 +1,6 @@
+<div class="rate-purchase">
+    <form class="form form-horizontal" action="{% url 'rate-purchase' purchase_id %}" method="post">
+        {% csrf_token %}
+        {{ form }}
+    </form>
+</div>

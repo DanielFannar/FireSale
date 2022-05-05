@@ -1,0 +1,12 @@
+{%  extends 'base.html' %}
+
+{% block content %}
+    <h1 class="red">{{ user.username }}'s ratings</h1>
+    <div class="ratings">
+
+    {% for rating in page_obj %}
+        {%  include 'user/single_rating.html' with rating=rating %}
+    {% endfor %}
+    </div>
+{%  include 'pagination.html' %}
+{% endblock %}

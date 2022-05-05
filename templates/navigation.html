@@ -10,9 +10,8 @@
           <a class="nav-link active" aria-current="page" href="{% url 'browse-index' %}">Browse</a>
         </li>
         <li class="nav-item"><a class="nav-link" href="{% url 'listings' %}">Listings</a></li>
-          <li class="nav-item"><a class="nav-link" href="{% url 'checkout-index' %}">Checkouts</a></li>
             {% if user.is_authenticated %}
-                <li class="nav-item"><a class="nav-link" href="{% url 'profile' %}">Profile</a></li>
+                <li class="nav-item"><a class="nav-link" href="{% url 'my-profile' %}">Profile</a></li>
                 <li class="nav-item"><a class="nav-link" href="{% url 'logout' %}">Logout</a></li>
             {% else %}
                 <li class="nav-item"><a class="nav-link" href="{% url 'login' %}">Login</a></li>

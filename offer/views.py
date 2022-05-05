@@ -6,6 +6,7 @@ from listing.models import Listing
 from offer.forms.offer_form import OfferCreateForm, OfferUpdateForm
 import datetime
 
+# TODO: Add function to calculate relatedness, and/or find most related listings to specific listing.
 
 def make_offer(request, listing_id):
 
