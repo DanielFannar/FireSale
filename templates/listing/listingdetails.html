@@ -1,16 +1,22 @@
 {% extends 'base.html' %}
 {%  block content %}
-<h1>{{  listing.name }}</h1>
-<p>{{ listing.description }}</p>
-<p>Seller: {{ listing.seller }}</p>
-<p>Condition: {{ listing.condition }}</p> {# TODO: Show text instead of INT. Maybe add model for condition? #}
-<p>Listed: {{ listing.listed }}</p>
-{% for listing_image in listing.listingimage_set.all %}
-    <img src="{{ listing_image.image }}" class="listing-img" height="200px" width="200px"/>
-    {% endfor %}
-    <p></p>
-    <a href="{% url 'remove-listing' listing.id %}" class="block btn btn-primary">Remove listing</a>
-    <a href="{% url 'update-listing' listing.id %}" class="block btn btn-primary">Update listing</a>
-    <a href="{% url 'make-offer' listing.id %}" class="block btn btn-primary">Make Offer</a>
-    {%  include 'offer/offer_list.html' with page_obj=page_obj %}
+    <div class="offers">
+        <h1>{{  listing.name }}</h1>
+        <div class="listings">
+        <div class="singlelisting">
+        {% for listing_image in listing.listingimage_set.all %}
+            <img src="{{ listing_image.image }}" class="listing-img" height="200px" width="200px"/>
+        {% endfor %}
+            <p>{{ listing.description }}</p>
+            <p>Seller: {{ listing.seller }}</p>
+            <p>Condition: {{ listing.condition }}</p> {# TODO: Show text instead of INT. Maybe add model for condition? #}
+            <p>Listed: {{ listing.listed }}</p>
+            <p></p>
+            <a href="{% url 'remove-listing' listing.id %}" class="block btn btn-primary">Remove listing</a>
+            <a href="{% url 'update-listing' listing.id %}" class="block btn btn-primary">Update listing</a>
+            <a href="{% url 'make-offer' listing.id %}" class="block btn btn-primary">Make Offer</a>
+        </div>
+        </div>
+            {%  include 'offer/offer_list.html' with page_obj=page_obj %}
+    </div>
 {% endblock %}

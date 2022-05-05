@@ -48,9 +48,10 @@ body {
     background: #ffe0c3;
     padding: 1em;
     margin: 1em;
-    border: 2px solid #fff3e5;
+    /*border: 2px solid #fff3e5;*/
     border-radius: 10px;
     transition: 0.5s;
+    text-decoration-color: #1c1c1c;
 }
 
 .singlelisting:hover{
@@ -69,6 +70,30 @@ body {
     width: 250px;
     height:250%;
     box-shadow: 5px 5px 10px #8a8989;
+}
+
+.btn-primary{
+    background-color: darkorange;
+    border: white;
+}
+.btn-primary:hover{
+    background-color: white;
+    color: #1c1c1c;
+}
+
+/*#navbar{*/
+/*    background: linear-gradient(#ffffff, #ffe8de);*/
+/*}*/
+
+.navbar-light .navbar-nav .nav-link{
+    color: #1c1c1c;
+}
+
+.nav-item:hover{
+    background-color: #d2d2d2;
+    transition: 0.5s;
+    color: white;
+    border-radius: 10px;
 }
 
 img{
@@ -93,13 +118,12 @@ a:hover {
     color: black;
 }
 
-.nav-item{
-    color: #f55600;
-}
 
 label{
     color: black;
 }
+
 h1{
     font-weight: bold;
 }
+

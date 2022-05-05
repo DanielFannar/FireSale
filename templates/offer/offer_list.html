@@ -1,10 +1,11 @@
 <h1 class="red">Offers</h1>
-<div class="offers">
 
-{% for offer in page_obj %}
-    {%  include 'offer/single_offer.html' with offer=offer%}
-{% endfor %}
+<div class="listings">
+    {% for offer in page_obj %}
+        {%  include 'offer/single_offer.html' with offer=offer%}
+    {% endfor %}
 </div>
+
 <div class="pagination">
     <span class="step-links">
         {% if page_obj.has_previous %}
