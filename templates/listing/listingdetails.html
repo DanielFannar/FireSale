@@ -12,5 +12,5 @@
     <a href="{% url 'remove-listing' listing.id %}" class="block btn btn-primary">Remove listing</a>
     <a href="{% url 'update-listing' listing.id %}" class="block btn btn-primary">Update listing</a>
     <a href="{% url 'make-offer' listing.id %}" class="block btn btn-primary">Make Offer</a>
-    {%  include 'offer/offer_list.html' with offers=offers%}
+    {%  include 'offer/offer_list.html' with page_obj=page_obj %}
 {% endblock %}

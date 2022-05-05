@@ -1,3 +1,4 @@
+from django.core.paginator import Paginator
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.models import User
 from offer.models import Offer
@@ -38,10 +39,11 @@ def get_offers_by_listing(request, listing_id):
     This function takes as it's input a listing_id.
     It returns a page with a list of offers made on that listing.
     """
-
-    return render(request, 'offer/offer_list.html', {
-        'offers': Offer.objects.all().filter(listing_id=listing_id)
-    })
+    offers = Offer.objects.all().filter(listing_id=listing_id).order_by('-amount')
+    paginator = Paginator(offers, 10)
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+    return render(request, 'offer/offer_list.html', {'page_obj': page_obj})
 
 
 def get_offers_by_buyer(request, buyer_id):
@@ -50,10 +52,11 @@ def get_offers_by_buyer(request, buyer_id):
     This function takes as it's input a user_id.
     It returns a page with a list of offers made by the user.
     """
-
-    return render(request, 'offer/user_offers.html', {
-        'offers': Offer.objects.all().filter(buyer_id=buyer_id)
-    })
+    offers = Offer.objects.all().filter(buyer_id=buyer_id).order_by('-amount')
+    paginator = Paginator(offers, 10)
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+    return render(request, 'offer/offer_list.html', {'page_obj': page_obj})
 
 
 def cancel_offer(request, offer_id):

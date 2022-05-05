@@ -5,8 +5,8 @@ import offer.views
 from . import views
 
 urlpatterns = [
-    # http://localhost:8000/candies
-    path('', views.index, name="/"),
+    # http://localhost:8000/user
+
     path('<int:user_id>/listings', listing.views.get_user_listings, name="user-listings"),
     path('register', views.register, name='register'),
     path('login', LoginView.as_view(template_name='user/login.html'), name='login'),

@@ -1,15 +1,8 @@
 from django.shortcuts import render, redirect
-from django.http import HttpResponse
 from django.contrib.auth.forms import UserCreationForm
 from user.forms.profile_form import CreateProfileForm
 from user.models import UserProfile
-from user.models import UserSettings
-from django.contrib.auth.models import User
 # Create your views here.
-
-def index(request):
-    return render(request, 'user/index.html')
-
 
 def register(request):
     if request.method == 'POST':
