@@ -1,6 +1,9 @@
 <div class="single-offer">
-    <a href="/offer/{{ offer.id }}/details">
-        <p>Offer: {{ offer.amount }} kr.</p>
-        <p>Made by: {{ offer.buyer }}</p>
-    </a>
+    <a href="{% url 'listing-details' offer.listing.id %}">
+        <p>Offer: {{ offer.amount }} kr.</p></a>
+    <a href="{% url 'user-profile' offer.buyer.id %}">
+        <p>Made by: {{ offer.buyer }}</p></a>
+    <a href="{% url 'accept-offer' offer.id %}" class="block btn btn-primary">Accept Offer</a>
+    <a href="{% url 'update-offer' offer.id %}" class="block btn btn-primary">Update Offer</a>
+    <a href="{% url 'cancel-offer' offer.id %}" class="block btn btn-primary">Cancel Offer</a>
 </div>

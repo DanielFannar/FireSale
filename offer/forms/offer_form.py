@@ -11,14 +11,11 @@ class OfferCreateForm(ModelForm):
             'amount': widgets.NumberInput(attrs={'class': 'form-control'})
         }
 
-'''
-class ListingUpdateForm(ModelForm):
+
+class OfferUpdateForm(ModelForm):
     class Meta:
-        model = Listing
-        exclude = ['id', 'seller', 'listed', 'available']
+        model = Offer
+        exclude = ['id', 'listing', 'buyer', 'placed', 'accepted']
         widgets = {
-            'name': widgets.TextInput(attrs={'class': 'form-control'}),
-            'description': widgets.TextInput(attrs={'class': 'form-control'}),
-            'condition': widgets.Select(attrs={'class': 'form-control'}, choices=CONDITION_CHOICES)
+            'amount': widgets.NumberInput(attrs={'class': 'form-control'})
         }
-'''
