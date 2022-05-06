@@ -91,6 +91,11 @@ def send_message(request, to_user_id=''):
     })
 
 
+def get_message_by_id(request, message_id):
+    return render(request, 'user/single_message.html', {
+        'message': get_object_or_404(Message, pk=message_id)})
+
+
 def get_message_chain(request, user_id):
     messages = Message.objects.all().filter(
         Q(sender_id=request.user.id, recipient_id=user_id) |

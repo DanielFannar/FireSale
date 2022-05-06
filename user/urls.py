@@ -19,5 +19,6 @@ urlpatterns = [
     path('<int:to_user_id>/send_message', views.send_message, name='send-message'),
     path('send_message', views.send_message, name='send-message'),
     path('<int:user_id>/messages', views.get_message_chain, name='message-chain'),
-    path('messages',views.get_user_message_chains,name='messages')
+    # TODO: Is this needed? path('messages',views.get_user_message_chains, name='messages'),
+    path('<int:message_id>/message', views.get_message_by_id, name='single-message')
 ]
