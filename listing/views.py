@@ -24,7 +24,13 @@ def get_listing_by_id(request, id):
 
 def get_all_listings(request):
     listings = Listing.objects.all()
-    paginator = Paginator(listings, 10)
+    listings_and_highest_offer = []
+    for listing in listings:
+        offer = Offer.objects.all().filter(listing_id=listing.id).order_by('-amount').first()
+        if offer is None:
+            offer = {'amount': 'No offers yet!'}
+        listings_and_highest_offer.append([listing, offer])
+    paginator = Paginator(listings_and_highest_offer, 10)
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
     return render(request, 'listing/listings.html', {'page_obj': page_obj})
@@ -32,7 +38,11 @@ def get_all_listings(request):
 
 def get_user_listings(request, user_id):
     listings = Listing.objects.all().filter(seller_id=user_id)
-    paginator = Paginator(listings, 10)
+    listings_and_highest_offer = []
+    for listing in listings:
+        offer = Offer.objects.all().filter(listing_id=listing.id).order_by('-amount').first()
+        listings_and_highest_offer.append([listing,offer])
+    paginator = Paginator(listings_and_highest_offer, 10)
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
     return render(request, 'listing/listings.html', {'page_obj': page_obj})

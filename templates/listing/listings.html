@@ -6,8 +6,8 @@
     <div class="listings">
 
 
-    {% for listing in page_obj %}
-        {%  include 'listing/single_listing.html' with listing=listing%}
+    {% for listing_and_offer in page_obj %}
+        {%  include 'listing/single_listing.html' with listing=listing_and_offer.0 offer=listing_and_offer.1%}
     {% endfor %}
 
     </div>
