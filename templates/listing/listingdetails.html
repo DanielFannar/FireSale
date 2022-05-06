@@ -2,7 +2,7 @@
 {%  block content %}
     <div class="offers">
         <h1>{{  listing.name }}</h1>
-        <div class="listings">
+        <div class="main-container">
         <div class="singlelisting">
         {% for listing_image in listing.listingimage_set.all %}
             <img src="{{ listing_image.image }}" class="listing-img" height="200px" width="200px"/>
