@@ -29,7 +29,6 @@ def get_all_listings(request):
 
 
 def get_user_listings(request, user_id):
-
     listings = Listing.objects.all().filter(seller_id=user_id)
     paginator = Paginator(listings, 10)  # Show 25 contacts per page.
     page_number = request.GET.get('page')
