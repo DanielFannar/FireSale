@@ -2,13 +2,14 @@ import datetime
 
 from django.contrib.auth.models import User
 from django.core.paginator import Paginator
+from django.db.models import Q
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.forms import UserCreationForm
 
 from user.forms.message_form import CreateMessageForm
 from user.forms.profile_form import CreateProfileForm, UpdateProfileForm
 from user.forms.rating_form import CreateRatingForm
-from user.models import UserProfile, Rating
+from user.models import UserProfile, Rating, Message
 from user import helper_functions
 
 
@@ -80,9 +81,56 @@ def send_message(request, to_user_id=''):
             message.seen = False
             message.sent = datetime.datetime.now()
             message.save()
-            return redirect('my-profile')
+            return get_message_chain(request, message.recipient.id)
     else:
         form = CreateMessageForm(initial={'recipient': get_object_or_404(User, pk=to_user_id)})
     return render(request, 'user/send_message.html', {
         'form': form
     })
+
+
+def get_message_chain(request, user_id):
+    messages = Message.objects.all().filter(
+        Q(sender_id=request.user.id, recipient_id=user_id) |
+        Q(recipient_id=request.user.id,sender_id=user_id)
+    ).order_by('-sent')
+    paginator = Paginator(messages, 10)
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+    return render(request, 'user/message_chain.html', {
+        'page_obj': page_obj,
+        'user': get_object_or_404(User, pk=user_id)})
+
+
+def get_user_message_chains(request):
+
+    messages = Message.objects.all().filter(sender_id=request.user.id)
+    messages.union(Message.objects.all().filter(recipient_id=request.user.id))
+    message_chain_partners = []
+
+    for message in messages:
+        if message.sender == request.user:
+            message_chain_partners.append(message.recipient)
+        else:
+            message_chain_partners.append(message.sender)
+
+    message_chain_partners = list(set(message_chain_partners))
+    message_chains = []
+
+    for chain in message_chain_partners:
+        chain_message = Message.objects.all().filter(
+            Q(sender_id=request.user.id, recipient_id=chain.id) |
+            Q(recipient_id=request.user.id,sender_id=chain.id)
+            ).order_by('-sent').first()
+        message_chains.append([chain, chain_message])
+
+    message_chains = sorted(message_chains, key=lambda x: x[1].sent, reverse=True)
+    paginator = Paginator(message_chains, 10)
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+
+    return render(request, 'user/messages.html', {
+        'page_obj': page_obj,
+        'user': request.user})
+
+

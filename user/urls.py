@@ -17,5 +17,7 @@ urlpatterns = [
     path('<int:buyer_id>/offers_made', offer.views.get_offers_by_buyer, name='offers-made'),
     path('<int:user_id>/ratings', views.get_user_ratings, name='user-ratings'),
     path('<int:to_user_id>/send_message', views.send_message, name='send-message'),
-    path('send_message', views.send_message, name='send-message')
+    path('send_message', views.send_message, name='send-message'),
+    path('<int:user_id>/messages', views.get_message_chain, name='message-chain'),
+    path('messages',views.get_user_message_chains,name='messages')
 ]

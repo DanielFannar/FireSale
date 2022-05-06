@@ -1,10 +1,18 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+{%  extends 'base.html' %}
 
-</body>
-</html>
+{% block content %}
+
+    <h1 class="red">Messages</h1>
+    <div class="Messages">
+
+
+    {% for message_chain in page_obj %}
+        <a href="{% url 'message-chain' message_chain.0.id%}">
+        <h3>{{ message_chain.0 }}</h3>
+        {%  include 'user/single_message.html' with message=message_chain.1 %}</a>
+    {% endfor %}
+
+    </div>
+    {% include 'pagination.html' %}
+</div>
+{% endblock %}

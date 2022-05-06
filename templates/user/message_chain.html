@@ -1,0 +1,17 @@
+{%  extends 'base.html' %}
+
+{% block content %}
+
+    <h1 class="red">Message history with {{ user.username }}</h1>
+    <div class="Messages">
+
+
+    {% for message in page_obj %}
+        {%  include 'user/single_message.html' with message=message%}
+    {% endfor %}
+
+    </div>
+    <a href="{% url 'send-message' user.id%}" class="block btn btn-primary float-end">New message</a>
+    {% include 'pagination.html' %}
+</div>
+{% endblock %}
