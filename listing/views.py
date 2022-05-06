@@ -21,14 +21,11 @@ def get_listing_by_id(request, id):
 
 
 def get_all_listings(request):
-    offers = Offer.objects.all()
     listings = Listing.objects.all()
     paginator = Paginator(listings, 10)
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
-    return render(request, 'listing/listings.html', {
-        'page_obj': page_obj,
-        'offers': offers})
+    return render(request, 'listing/listings.html', {'page_obj': page_obj})
 
 
 def get_user_listings(request, user_id):
