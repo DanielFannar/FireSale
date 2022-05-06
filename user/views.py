@@ -1,8 +1,13 @@
+import datetime
+
 from django.contrib.auth.models import User
 from django.core.paginator import Paginator
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.forms import UserCreationForm
-from user.forms.profile_form import CreateProfileForm, UpdateProfileForm, CreateRatingForm
+
+from user.forms.message_form import CreateMessageForm
+from user.forms.profile_form import CreateProfileForm, UpdateProfileForm
+from user.forms.rating_form import CreateRatingForm
 from user.models import UserProfile, Rating
 from user import helper_functions
 
@@ -65,3 +70,19 @@ def get_user_ratings(request, user_id):
         'page_obj': page_obj
     })
 
+
+def send_message(request, to_user_id=''):
+    if request.method == 'POST':
+        form = CreateMessageForm(data=request.POST)
+        if form.is_valid():
+            message = form.save(commit=False)
+            message.sender = get_object_or_404(User, pk=request.user.id)
+            message.seen = False
+            message.sent = datetime.datetime.now()
+            message.save()
+            return redirect('my-profile')
+    else:
+        form = CreateMessageForm(initial={'recipient': get_object_or_404(User, pk=to_user_id)})
+    return render(request, 'user/send_message.html', {
+        'form': form
+    })

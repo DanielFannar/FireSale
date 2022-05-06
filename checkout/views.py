@@ -1,11 +1,6 @@
-from django.contrib.auth.decorators import login_required
-from django.contrib.auth.models import User
 from django.shortcuts import render, get_object_or_404, redirect
-
-from django.http import HttpResponse
-# Create your views here.
 from checkout.models import Purchase
-from user.forms.profile_form import CreateRatingForm
+from user.forms.rating_form import CreateRatingForm
 
 
 # TODO: Hugsa það hvernig checkout process virkar, ekki viss um að við viljum hafa rate_purchase view.

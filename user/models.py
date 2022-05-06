@@ -19,11 +19,15 @@ class UserProfile(models.Model):
     settings = models.ForeignKey(UserSettings, on_delete=models.SET_NULL, null=True)
     image = models.CharField(max_length=9999, null=True)
 
+    def __str__(self):
+        return self.user.username
+
+
 class Message(models.Model):
     sender = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, related_name="sender")
-    receiver = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, related_name="receiver")
+    recipient = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, related_name="receiver")
     content = models.CharField(max_length=9999)
-    seen = models.BinaryField()
+    seen = models.BooleanField()
     sent = models.DateTimeField()
 
 
