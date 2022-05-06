@@ -132,3 +132,4 @@ LOGIN_URL = '/user/login'
 LOGIN_REDIRECT_URL = '/'
 
 from .settings_local import *
+
