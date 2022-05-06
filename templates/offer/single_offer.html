@@ -3,7 +3,11 @@
         <p>Offer: {{ offer.amount }} kr.</p></a>
     <a href="{% url 'user-profile' offer.buyer.id %}">
         <p>Made by: {{ offer.buyer }}</p></a>
-    <a href="{% url 'accept-offer' offer.id %}" class="block btn btn-primary">Accept Offer</a>
-    <a href="{% url 'update-offer' offer.id %}" class="block btn btn-primary">Update Offer</a>
-    <a href="{% url 'cancel-offer' offer.id %}" class="block btn btn-primary">Cancel Offer</a>
+    {% if user.id == offer.listing.seller.id%}
+        <a href="{% url 'accept-offer' offer.id %}" class="block btn btn-primary">Accept Offer</a>
+    {% endif %}
+    {% if user.id == offer.buyer.id%}
+        <a href="{% url 'update-offer' offer.id %}" class="block btn btn-primary">Update Offer</a>
+        <a href="{% url 'cancel-offer' offer.id %}" class="block btn btn-primary">Cancel Offer</a>
+    {% endif %}
 </div>

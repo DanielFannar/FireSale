@@ -12,11 +12,14 @@
             <p>Condition: {{ listing.condition }}</p> {# TODO: Show text instead of INT. Maybe add model for condition? #}
             <p>Listed: {{ listing.listed }}</p>
             <p></p>
-            <a href="{% url 'remove-listing' listing.id %}" class="block btn btn-primary">Remove listing</a>
-            <a href="{% url 'update-listing' listing.id %}" class="block btn btn-primary">Update listing</a>
-            <a href="{% url 'make-offer' listing.id %}" class="block btn btn-primary">Make Offer</a>
+            {% if user.id == listing.seller.id%}
+                <a href="{% url 'remove-listing' listing.id %}" class="block btn btn-primary">Remove listing</a>
+                <a href="{% url 'update-listing' listing.id %}" class="block btn btn-primary">Update listing</a>
+            {% else %}
+                <a href="{% url 'make-offer' listing.id %}" class="block btn btn-primary">Make Offer</a>
+            {% endif %}
         </div>
         </div>
-            {%  include 'offer/offer_list.html' with page_obj=page_obj %}
+            {%  include 'offer/offer_list.html' with page_obj=page_obj user=user%}
     </div>
 {% endblock %}

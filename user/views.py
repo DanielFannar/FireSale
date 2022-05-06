@@ -34,9 +34,11 @@ def register(request):
 
 
 def get_profile(request, user_id=None):
+    current_user = request.user
     if user_id is None:
         user_id = request.user.id
     return render(request, 'user/profile.html', {
+        'current_user': current_user,
         'user': get_object_or_404(User, pk=user_id),
         'user_profile': get_object_or_404(UserProfile.objects.select_related(), user_id=user_id),
         'rating': helper_functions.get_user_rating(user_id)

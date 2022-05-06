@@ -7,5 +7,9 @@
     <p>Rating: {{ rating }}</p>
 </a>
 <p></p>
-<a href="{% url 'edit-profile' %}" class="block btn btn-primary">Edit profile</a>
+{% if current_user.id == user.id%}
+    <a href="{% url 'edit-profile' %}" class="block btn btn-primary">Edit profile</a>
+{% else %}
+    <a href="{% url 'send-message' user.id %}" class="block btn btn-primary">Message user</a>
+{% endif %}
 {% endblock %}

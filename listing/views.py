@@ -10,13 +10,15 @@ import datetime
 
 
 def get_listing_by_id(request, id):
+    user = get_object_or_404(User, pk=request.user.id)
     offers = Offer.objects.all().filter(listing_id=id).order_by('-amount')
     paginator = Paginator(offers, 10)
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
     return render(request, 'listing/listingdetails.html', {
         'listing': get_object_or_404(Listing, pk=id),
-        'page_obj': page_obj
+        'page_obj': page_obj,
+        'user': user
     })
 
 
@@ -30,7 +32,7 @@ def get_all_listings(request):
 
 def get_user_listings(request, user_id):
     listings = Listing.objects.all().filter(seller_id=user_id)
-    paginator = Paginator(listings, 10)  # Show 25 contacts per page.
+    paginator = Paginator(listings, 10)
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
     return render(request, 'listing/listings.html', {'page_obj': page_obj})
