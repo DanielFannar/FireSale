@@ -1,8 +1,9 @@
 <div class="singlelisting">
     <a href="{% url 'listing-details' offer.listing.id %}">
+        <img class="img-float" src="{{ offer.listing.listingimage_set.first.image }}" height="200px" width="200px"/>
+            <h4>{{  offer.listing.name }}</h4>
+            <p>{{ offer.listing.description }}</p>
         <p>Offer: {{ offer.amount }} kr.</p></a>
-    <a href="{% url 'user-profile' offer.buyer.id %}">
-        <p>Made by: {{ offer.buyer }}</p></a>
     {% if user.id == offer.listing.seller.id%}
         <a href="{% url 'accept-offer' offer.id %}" class="block btn btn-primary">Accept Offer</a>
     {% endif %}
