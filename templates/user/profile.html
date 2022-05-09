@@ -1,15 +1,16 @@
 {% extends 'base.html' %}
 {%  block content %}
 <h1>{{ user.username }}</h1>
-<img src="{{ user_profile.image }}" class="profile-img" height="200px" width="200px"/>
-<p>BIO: {{ user_profile.bio }}</p>
-<a href="{% url 'user-ratings' user.id %}">
-    <p>Rating: {{ rating }}</p>
-</a>
-<p></p>
-{% if current_user.id == user.id%}
-    <a href="{% url 'edit-profile' %}" class="block btn btn-primary">Edit profile</a>
-{% else %}
-    <a href="{% url 'send-message' user.id %}" class="block btn btn-primary">Message user</a>
+    <div class="main-container">
+        <img src="{{ user_profile.image }}" height="200px" width="200px"/>
+        <h4>BIO:</h4> <p>{{ user_profile.bio }}</p>
+        <a href="{% url 'user-ratings' user.id %}">
+        <h4>Rating:</h4> <p>{{ rating }}</p>
+        </a>
+        {% if current_user.id == user.id%}
+            <a href="{% url 'edit-profile' %}" class="block btn btn-primary">Edit profile</a>
+        {% else %}
+            <a href="{% url 'send-message' user.id %}" class="block btn btn-primary">Message user</a>
+    </div>
 {% endif %}
 {% endblock %}

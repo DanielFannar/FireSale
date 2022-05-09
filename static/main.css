@@ -9,10 +9,11 @@
 .main-container{
     padding: 1em;
     border-radius: 15px;
-    background: linear-gradient(-45deg, #ff9f69, #f8c7ab);
+    /*background: linear-gradient(-45deg, #ff9f69, #f8c7ab);*/
+
 }
 #singlelisting{
-    background: #ffe0c3;
+    background: #dedede;
     padding: 1em;
     margin: 1em;
     /*border: 2px solid #fff3e5;*/
@@ -73,6 +74,7 @@
     color: white;
     border-radius: 10px;
 }
+
 
 img{
     border: 4px solid #ffbf9c;

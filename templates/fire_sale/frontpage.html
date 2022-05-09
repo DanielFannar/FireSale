@@ -1,4 +1,15 @@
 {% extends 'base.html' %}
 {% block content %}
+    <div class="front-page-items">
+    <div class="main-container">
     <h1>Welcome to Fire Sale</h1>
+    {% if user.is_authenticated %}
+        <a href="{% url 'listings'%}" class="block btn btn-primary">Browse Listings</a>
+{#        <a href="{% url 'myoffers'%}" class="block btn btn-primary">See your offers</a>#}
+    {% else %}
+        <a href="{% url 'login' %}" class="block btn btn-primary">Login</a>
+        <a href="{% url 'register' %}" class="block btn btn-primary">Register</a>
+    {% endif %}
+    </div>
+    </div>
 {% endblock %}

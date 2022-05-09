@@ -10,7 +10,7 @@
             <p>{{ listing.description }}</p>
             <p>Seller: {{ listing.seller }}</p>
             <p>Condition: {{ listing.condition }}</p> {# TODO: Show text instead of INT. Maybe add model for condition? #}
-            <p>Listed: {{ listing.listed }}</p>
+            <p>Listing: {{ listing.listed }}</p>
             <p></p>
             {% if user.id == listing.seller.id%}
                 <a href="{% url 'remove-listing' listing.id %}" class="block btn btn-primary">Remove listing</a>
