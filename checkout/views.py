@@ -60,3 +60,11 @@ def get_purchase_by_id(request, purchase_id):
     return render(request, 'checkout/purchase_details.html', {
         'purchase': get_object_or_404(Purchase, pk=purchase_id),
     })
+
+
+def get_user_purchases(request, user_id):
+    purchases = Purchase.objects.all().filter(offer__buyer_id=user_id)
+    paginator = Paginator(purchases, 10)
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+    return render(request, 'checkout/purchases.html', {'page_obj': page_obj})
