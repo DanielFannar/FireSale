@@ -1,5 +1,6 @@
 import datetime
 
+from django.contrib.auth import get_user
 from django.contrib.auth.models import User
 from django.core.paginator import Paginator
 from django.db.models import Q
@@ -81,20 +82,23 @@ def get_user_ratings(request, user_id):
 
 
 def send_message(request, to_user_id=''):
+
     if request.method == 'POST':
         form = MessageCreateForm(data=request.POST)
         if form.is_valid():
             message = form.save(commit=False)
             message.sender = get_object_or_404(User, pk=request.user.id)
             message.seen = False
+            message.recipient = get_object_or_404(User, username=request.POST['to'])
             message.sent = datetime.datetime.now()
             message.save()
             return get_message_chain(request, message.recipient.id)
     else:
-        form = MessageCreateForm(initial={'recipient': get_object_or_404(User, pk=to_user_id)})
-    return render(request, 'user/send_message.html', {
-        'form': form
-    })
+        to_user = get_object_or_404(User, pk=to_user_id)
+        form = MessageCreateForm(initial={'to': to_user.username})
+        return render(request, 'user/send_message.html', {
+            'form': form
+        })
 
 
 def get_message_by_id(request, message_id):
