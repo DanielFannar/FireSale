@@ -1,0 +1,15 @@
+{%  extends 'base.html' %}
+
+{% block content %}
+    <a href="{% url 'add-listing' %}" class="block btn btn-primary float-end">Add listing</a>
+    <h1 class="red">Purchases</h1>
+    <div class="listings">
+
+
+    {% for purchase in page_obj %}
+        {%  include 'checkout/single_purchase.html' with purchase=purchase%}
+    {% endfor %}
+
+    </div>
+    {% include 'pagination.html' %}
+{% endblock %}

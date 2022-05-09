@@ -1,4 +1,6 @@
 {% extends 'base.html' %}
 {%  block content %}
-    {%  include 'offer/offer_list.html' with offers=offers%}
+    {% for offer in page_obj %}
+        {% include 'offer/single_offer.html' with offer=offer %}
+    {% endfor%}
 {% endblock %}

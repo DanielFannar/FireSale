@@ -1,6 +1,7 @@
 from django.contrib.auth.views import LoginView, LogoutView
 from django.urls import path
 import listing.views
+import checkout.views
 import offer.views
 from . import views
 
@@ -19,6 +20,7 @@ urlpatterns = [
     path('<int:to_user_id>/send_message', views.send_message, name='send-message'),
     path('send_message', views.send_message, name='send-message'),
     path('<int:user_id>/messages', views.get_message_chain, name='message-chain'),
-    # TODO: Is this needed? path('messages',views.get_user_message_chains, name='messages'),
-    path('<int:message_id>/message', views.get_message_by_id, name='single-message')
+    path('messages',views.get_user_message_chains, name='messages'),  # TODO: Is this needed?
+    path('message/<int:message_id>', views.get_message_by_id, name='single-message'),
+    path('<int:user_id>/purchases', checkout.views.get_user_purchases, name='user-purchases')
 ]

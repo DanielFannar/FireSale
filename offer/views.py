@@ -46,18 +46,18 @@ def get_offers_by_listing(request, listing_id):
     page_obj = paginator.get_page(page_number)
     return render(request, 'offer/offer_list.html', {'page_obj': page_obj})
 
-# TODO: get_offers_by_buyer is not used atm, is it needed?
+
 def get_offers_by_buyer(request, buyer_id):
 
     """
     This function takes as it's input a user_id.
     It returns a page with a list of offers made by the user.
     """
-    offers = Offer.objects.all().filter(buyer_id=buyer_id).order_by('-amount')
+    offers = Offer.objects.all().filter(buyer_id=buyer_id)
     paginator = Paginator(offers, 10)
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
-    return render(request, 'offer/offer_list.html', {'page_obj': page_obj})
+    return render(request, 'offer/user_offers.html', {'page_obj': page_obj})
 
 
 def cancel_offer(request, offer_id):
