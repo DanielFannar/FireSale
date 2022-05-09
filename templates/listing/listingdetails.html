@@ -1,9 +1,9 @@
 {% extends 'base.html' %}
 {%  block content %}
     <div class="offers">
-        <h1>{{  listing.name }}</h1>
         <div class="main-container">
-        <div class="singlelisting">
+        <h1>{{  listing.name }}</h1>
+        <div id="singlelisting">
         {% for listing_image in listing.listingimage_set.all %}
             <img src="{{ listing_image.image }}" class="listing-img" height="200px" width="200px"/>
         {% endfor %}
@@ -13,10 +13,10 @@
             <p>Listing: {{ listing.listed }}</p>
             <p></p>
             {% if user.id == listing.seller.id%}
-                <a href="{% url 'remove-listing' listing.id %}" class="block btn btn-primary">Remove listing</a>
-                <a href="{% url 'update-listing' listing.id %}" class="block btn btn-primary">Update listing</a>
+                <a href="{% url 'remove-listing' listing.id %}" class="block btn btn-danger">Remove listing</a>
+                <a href="{% url 'update-listing' listing.id %}" class="block btn btn-info">Update listing</a>
             {% else %}
-                <a href="{% url 'make-offer' listing.id %}" class="block btn btn-primary">Make Offer</a>
+                <a href="{% url 'make-offer' listing.id %}" class="block btn btn-success">Make Offer</a>
             {% endif %}
         </div>
         </div>

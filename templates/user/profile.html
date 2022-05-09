@@ -1,20 +1,24 @@
 {% extends 'base.html' %}
 {%  block content %}
-<h1>{{ user.username }}</h1>
-<img src="{{ user_profile.image }}" class="profile-img" height="200px" width="200px"/>
-<p>BIO: {{ user_profile.bio }}</p>
-<a href="{% url 'user-ratings' user.id %}">
-    <p>Rating: {{ rating }}</p>
-</a>
-<p></p>
-{% if current_user.id == user.id%}
-    <a href="{% url 'edit-profile' %}" class="block btn btn-primary">Edit profile</a>
-    <a href="{% url 'messages' %}" class="block btn btn-primary">Your messages</a>
-{% else %}
-    <a href="{% url 'send-message' user.id %}" class="block btn btn-primary">Message user</a>
-{% endif %}
-<p></p>
-<a href="{% url 'user-listings' user.id %}" class="block btn btn-primary">{{ displayed_name }} listings</a>
-<a href="{% url 'offers-made' user.id %}" class="block btn btn-primary">{{ displayed_name }} offers</a>
-<a href="{% url 'user-purchases' user.id %}" class="block btn btn-primary">{{ displayed_name }} purchases</a>
+    <div class="main-container">
+        <h1>{{ user.username }}</h1>
+        <div class="profile-container">
+            <a href="{% url 'edit-profile' %}" class="block btn btn-info float-end">Edit profile</a>
+            <img src="{{ user_profile.image }}" class="profile-img" height="200px" width="200px"/>
+            <h4>Bio:</h4>
+                    <p class="border border-warning p-1 rounded">{{ user_profile.bio }}</p>
+                    <a href="{% url 'user-ratings' user.id %}">
+                        <h4>Rating:</h4>
+                    </a>
+                        <p class="border border-warning p-1 rounded">{{ rating }}</p>
+            {% if current_user.id == user.id%}
+                <a href="{% url 'messages' %}" class="block btn btn-primary">Your messages</a>
+                <br>
+            {% else %}
+                <a href="{% url 'send-message' user.id %}" class="block btn btn-primary">Message user</a>
+            {% endif %}
+            <a href="{% url 'user-listings' user.id %}" class="block btn btn-primary">{{ displayed_name }} listings</a>
+            <a href="{% url 'offers-made' user.id %}" class="block btn btn-primary">{{ displayed_name }} offers</a>
+            <a href="{% url 'user-purchases' user.id %}" class="block btn btn-primary">{{ displayed_name }} purchases</a>
+        </div>
 {% endblock %}

@@ -1,6 +1,6 @@
 {% extends 'base.html' %}
 {%  block content %}
-    <h2>{{ page_obj.1.buyer.username }}'s offers:</h2>
+    <h1>{{ page_obj.1.buyer.username }}'s offers:</h1>
     {% for offer in page_obj %}
         {% include 'offer/single_detailed_offer.html' with offer=offer %}
     {% endfor%}

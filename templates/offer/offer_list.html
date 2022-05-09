@@ -3,7 +3,7 @@
 
 {#<div class="d-flex flex-row">#}
     {% for offer in page_obj %}
-        <div class="offer">
+        <div class="singlelisting">
             {%  include 'offer/single_offer.html' with offer=offer user=user%}
         </div>
     {% endfor %}
