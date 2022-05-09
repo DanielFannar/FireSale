@@ -3,7 +3,7 @@ from django.forms import ModelForm, widgets
 from user.models import Message
 
 
-class CreateMessageForm(ModelForm):
+class MessageCreateForm(ModelForm):
     class Meta:
         model = Message
         exclude = ['id', 'sender', 'seen', 'sent']

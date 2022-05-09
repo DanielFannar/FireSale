@@ -6,9 +6,9 @@ from django.db.models import Q
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.forms import UserCreationForm
 
-from user.forms.message_form import CreateMessageForm
-from user.forms.profile_form import CreateProfileForm, UpdateProfileForm
-from user.forms.rating_form import CreateRatingForm
+from user.forms.message_form import MessageCreateForm
+from user.forms.profile_form import ProfileCreateForm, ProfileUpdateForm
+from user.forms.rating_form import RatingCreateForm
 from user.models import UserProfile, Rating, Message
 from user import helper_functions
 
@@ -19,7 +19,7 @@ from user import helper_functions
 def register(request):
     if request.method == 'POST':
         user_form = UserCreationForm(request.POST)
-        profile_form = CreateProfileForm(request.POST)
+        profile_form = ProfileCreateForm(request.POST)
         if user_form.is_valid() and profile_form.is_valid():
             user = user_form.save()
             profile = profile_form.save(commit=False)
@@ -29,7 +29,7 @@ def register(request):
     else:
         return render(request, 'user/register.html', {
             'user_form': UserCreationForm(),
-            'profile_form': CreateProfileForm()
+            'profile_form': ProfileCreateForm()
         })
 
 
@@ -49,12 +49,12 @@ def edit_profile(request):
     user = get_object_or_404(User, pk=request.user.id)
     user_profile = get_object_or_404(UserProfile.objects.select_related(), user_id=user.id)
     if request.method == 'POST':
-        form = UpdateProfileForm(data=request.POST, instance=user_profile)
+        form = ProfileUpdateForm(data=request.POST, instance=user_profile)
         if form.is_valid():
             form.save()
             return redirect('my-profile')
     else:
-        form = UpdateProfileForm(instance=user_profile)
+        form = ProfileUpdateForm(instance=user_profile)
         return render(request, 'user/edit_profile.html', {
             'form': form
         })
@@ -76,7 +76,7 @@ def get_user_ratings(request, user_id):
 
 def send_message(request, to_user_id=''):
     if request.method == 'POST':
-        form = CreateMessageForm(data=request.POST)
+        form = MessageCreateForm(data=request.POST)
         if form.is_valid():
             message = form.save(commit=False)
             message.sender = get_object_or_404(User, pk=request.user.id)
@@ -85,7 +85,7 @@ def send_message(request, to_user_id=''):
             message.save()
             return get_message_chain(request, message.recipient.id)
     else:
-        form = CreateMessageForm(initial={'recipient': get_object_or_404(User, pk=to_user_id)})
+        form = MessageCreateForm(initial={'recipient': get_object_or_404(User, pk=to_user_id)})
     return render(request, 'user/send_message.html', {
         'form': form
     })

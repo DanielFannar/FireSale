@@ -3,7 +3,7 @@ from django.forms import ModelForm, widgets
 from user.models import UserProfile
 
 
-class CreateProfileForm(ModelForm):
+class ProfileCreateForm(ModelForm):
     class Meta:
         model = UserProfile
         exclude = ['id', 'user', 'settings']
@@ -13,7 +13,7 @@ class CreateProfileForm(ModelForm):
         }
 
 
-class UpdateProfileForm(ModelForm):
+class ProfileUpdateForm(ModelForm):
     class Meta:
         model = UserProfile
         exclude = ['id', 'user', 'settings']

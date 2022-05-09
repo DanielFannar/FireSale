@@ -3,7 +3,7 @@ from django.forms import ModelForm, widgets
 from user.models import Rating
 
 
-class CreateRatingForm(ModelForm):
+class RatingCreateForm(ModelForm):
     class Meta:
         model = Rating
         exclude = ['id', 'rater', 'ratee', 'purchase']
@@ -13,7 +13,7 @@ class CreateRatingForm(ModelForm):
         }
 
 
-class UpdateRatingForm(ModelForm):
+class RatingUpdateForm(ModelForm):
     class Meta:
         model = Rating
         exclude = ['id', 'rater', 'ratee', 'purchase']

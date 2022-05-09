@@ -90,3 +90,8 @@ def update_listing(request, id):
             'form': form,
             'id': id
         })
+
+def decline_all_other_offers(offer_id):
+    offer = get_object_or_404(Offer, offer_id)
+    listing = get_object_or_404(Listing, pk=offer.id)
+    offers_to_decline = Offer.objects.all().filter('listing')
