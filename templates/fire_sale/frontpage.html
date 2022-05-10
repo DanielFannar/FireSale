@@ -1,9 +1,10 @@
 {% extends 'base.html' %}
 {% block content %}
-    <div class=""></div>
+    <div class="frontpage-logo">
     <video autoplay loop muted>
     <source src="../../static/images/firesale%20logo.mp4" type="video/mp4">
         </video>
+    </div>
     {% if user.is_authenticated %}
         <div class="frontpage-buttons">
         <a href="{% url 'listings'%}" class="block btn btn-primary">Browse Listings</a>
