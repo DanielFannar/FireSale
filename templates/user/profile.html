@@ -4,7 +4,7 @@
 <img src="{{ user_profile.image }}" class="profile-img" height="200px" width="200px"/>
 <p>BIO: {{ user_profile.bio }}</p>
 <a href="{% url 'user-ratings' user.id %}">
-    <p>Rating: {{ rating }}</p>
+    <p>Rating: {{ rating }}/5</p>
 </a>
 <p></p>
 {% if current_user.id == user.id%}

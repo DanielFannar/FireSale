@@ -1,3 +1,4 @@
+from django.contrib.auth.models import User
 from django.core.paginator import Paginator
 from django.shortcuts import render, get_object_or_404, redirect
 
@@ -6,9 +7,6 @@ from checkout.forms.payment_info_form import PaymentInfoCreateForm
 from checkout.models import Purchase
 from user.forms.rating_form import RatingCreateForm
 
-
-
-# TODO: Hugsa það hvernig checkout process virkar, ekki viss um að við viljum hafa rate_purchase view.
 
 def rate_purchase(request, purchase_id):
     user = request.user
@@ -20,13 +18,14 @@ def rate_purchase(request, purchase_id):
             rating = form.save(commit=False)
             rating.rater = user
             rating.ratee = purchase.offer.listing.seller
+            rating.purchase = purchase
             rating.save()
             return redirect('user-ratings', user_id=rating.ratee.id)
     else:
         form = RatingCreateForm()
     return render(request, 'checkout/rate_purchase.html', {
         'form': form,
-        'purchase_id': purchase_id
+        'purchase': purchase
     })
 
 
@@ -38,6 +37,7 @@ def checkout(request, offer_id):
         contact_info_form = ContactInfoCreateForm(request.POST)
         payment_info_form = PaymentInfoCreateForm(request.POST)
         if contact_info_form.is_valid() and payment_info_form.is_valid():
+            # request.session['country'] = contact_info_form.cleaned_data['country']
             contact_info = contact_info_form.save(commit=False)
             payment_info = payment_info_form.save(commit=False)
             contact_info.user = user
@@ -67,4 +67,6 @@ def get_user_purchases(request, user_id):
     paginator = Paginator(purchases, 10)
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
-    return render(request, 'checkout/purchases.html', {'page_obj': page_obj})
+    return render(request, 'checkout/purchases.html', {
+        'page_obj': page_obj,
+        'current_user': get_object_or_404(User, pk=request.user.id)})

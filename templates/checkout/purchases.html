@@ -7,7 +7,7 @@
 
 
     {% for purchase in page_obj %}
-        {%  include 'checkout/single_purchase.html' with purchase=purchase%}
+        {%  include 'checkout/single_purchase.html' with purchase=purchase current_user=current_user%}
     {% endfor %}
 
     </div>

@@ -1,6 +1,8 @@
 <div class="rate-purchase">
-    <form class="form form-horizontal" action="{% url 'rate-purchase' purchase_id %}" method="post">
+    {% include 'checkout/purchase_details.html' with purchase=purchase %}
+    <form class="form form-horizontal" action="{% url 'rate-purchase' purchase.id %}" method="post">
         {% csrf_token %}
         {{ form }}
+        <input type="submit" value="Rate purchase" class="btn btn-primary pull-right" style="clear:both; margin: 10px 0" />
     </form>
 </div>

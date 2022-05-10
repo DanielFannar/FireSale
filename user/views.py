@@ -109,7 +109,7 @@ def get_message_by_id(request, message_id):
 def get_message_chain(request, user_id):
     messages = Message.objects.all().filter(
         Q(sender_id=request.user.id, recipient_id=user_id) |
-        Q(recipient_id=request.user.id,sender_id=user_id)
+        Q(recipient_id=request.user.id, sender_id=user_id)
     ).order_by('-sent')
     paginator = Paginator(messages, 10)
     page_number = request.GET.get('page')
@@ -121,8 +121,9 @@ def get_message_chain(request, user_id):
 
 def get_user_message_chains(request):
 
-    messages = Message.objects.all().filter(sender_id=request.user.id)
-    messages.union(Message.objects.all().filter(recipient_id=request.user.id))
+    sent_messages = Message.objects.all().filter(sender_id=request.user.id)
+    received_messages = Message.objects.all().filter(recipient_id=request.user.id)
+    messages = sent_messages.union(received_messages)
     message_chain_partners = []
 
     for message in messages:
@@ -137,7 +138,7 @@ def get_user_message_chains(request):
     for chain in message_chain_partners:
         chain_message = Message.objects.all().filter(
             Q(sender_id=request.user.id, recipient_id=chain.id) |
-            Q(recipient_id=request.user.id,sender_id=chain.id)
+            Q(recipient_id=request.user.id, sender_id=chain.id)
             ).order_by('-sent').first()
         message_chains.append([chain, chain_message])
 
