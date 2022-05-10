@@ -4,7 +4,9 @@ from django.shortcuts import render, get_object_or_404, redirect
 
 from checkout.forms.contact_info_form import ContactInfoCreateForm
 from checkout.forms.payment_info_form import PaymentInfoCreateForm
-from checkout.models import Purchase
+from checkout.models import Purchase, PaymentInfo, ContactInfo, Country
+from listing.models import Listing
+from offer.models import Offer
 from user.forms.rating_form import RatingCreateForm
 
 
@@ -29,6 +31,92 @@ def rate_purchase(request, purchase_id):
     })
 
 
+def checkout_contact_info(request, offer_id):
+    fields = ['full_name', 'country', 'city', 'street_name', 'house_number', 'postal_code']
+
+    if request.method == 'POST':
+        contact_info_form = ContactInfoCreateForm(request.POST)
+        if contact_info_form.is_valid():
+            for field in fields:
+                request.session[field] = contact_info_form.cleaned_data[field]
+            request.session['country'] = request.session['country'].id
+            request.session['full_name'] = contact_info_form.cleaned_data['full_name']
+            return redirect('checkout-payment-info', offer_id=offer_id)
+
+    else:
+        initial = {}
+        for field in fields:
+            initial[field] = request.session.get(field)
+        contact_info_form = ContactInfoCreateForm(initial=initial)
+        return render(request, 'checkout/checkout_contact_info.html', {
+            'offer_id': offer_id,
+            'contact_info_form': contact_info_form
+        })
+
+
+def checkout_payment_info(request, offer_id):
+    fields = ['name', 'card_number', 'expiration_date', 'cvc']
+    if request.method == 'POST':
+        payment_info_form = PaymentInfoCreateForm(request.POST)
+        if payment_info_form.is_valid():
+
+            for field in fields:
+                request.session[field] = payment_info_form.cleaned_data[field]
+            return redirect('checkout-confirm', offer_id=offer_id)
+
+    else:
+        initial = {}
+        for field in fields:
+            initial[field] = request.session.get(field)
+        payment_info_form = PaymentInfoCreateForm(initial=initial)
+        return render(request, 'checkout/checkout_payment_info.html', {
+            'offer_id': offer_id,
+            'payment_info_form': payment_info_form
+        })
+
+
+def checkout_confirm(request, offer_id):
+    offer = get_object_or_404(Offer, pk=offer_id)
+    listing = get_object_or_404(Listing, pk=offer.listing.id)
+
+    if request.method == 'POST':
+        payment_info = PaymentInfo(user=request.user,
+                                   name=request.session.get('name'),
+                                   card_number=request.session.get('card_number'),
+                                   expiration_date=request.session.get('expiration_date'),
+                                   cvc=request.session.get('cvc'))
+        contact_info = ContactInfo(user=request.user,
+                                   full_name=request.session.get('full_name'),
+                                   country=get_object_or_404(Country, pk=request.session.get('country')),
+                                   city=request.session.get('city'),
+                                   street_name=request.session.get('street_name'),
+                                   house_number=request.session.get('house_number'),
+                                   postal_code=request.session.get('postal_code'))
+        payment_info.save()
+        contact_info.save()
+        purchase = Purchase(payment_info=payment_info, contact_info=contact_info, offer=offer)
+        purchase.save()
+        return redirect('purchase-details', purchase_id=purchase.id)
+    else:
+        contact_info_fields = ['full_name', 'country', 'city', 'street_name', 'house_number', 'postal_code']
+        payment_info_fields = ['name', 'card_number', 'expiration_date', 'cvc']
+        contact_info_initial = {}
+        payment_info_initial = {}
+        for field in contact_info_fields:
+            contact_info_initial[field] = request.session.get(field)
+        for field in payment_info_fields:
+            payment_info_initial[field] = request.session.get(field)
+        contact_info_form = ContactInfoCreateForm(initial=contact_info_initial)
+        payment_info_form = PaymentInfoCreateForm(initial=payment_info_initial)
+        return render(request, 'checkout/checkout_confirm.html', {
+            'contact_info_form': contact_info_form,
+            'payment_info_form': payment_info_form,
+            'listing': listing,
+            'offer_id': offer_id
+        })
+
+
+
 def checkout(request, offer_id):
     user = request.user
 
@@ -37,7 +125,7 @@ def checkout(request, offer_id):
         contact_info_form = ContactInfoCreateForm(request.POST)
         payment_info_form = PaymentInfoCreateForm(request.POST)
         if contact_info_form.is_valid() and payment_info_form.is_valid():
-            # request.session['country'] = contact_info_form.cleaned_data['country']
+
             contact_info = contact_info_form.save(commit=False)
             payment_info = payment_info_form.save(commit=False)
             contact_info.user = user
@@ -69,4 +157,5 @@ def get_user_purchases(request, user_id):
     page_obj = paginator.get_page(page_number)
     return render(request, 'checkout/purchases.html', {
         'page_obj': page_obj,
-        'current_user': get_object_or_404(User, pk=request.user.id)})
+        'current_user': get_object_or_404(User, pk=request.user.id),
+        'buyer': get_object_or_404(User, pk=user_id)})

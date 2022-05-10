@@ -25,7 +25,7 @@ def make_offer(request, listing_id):
             offer.placed = datetime.datetime.now()
             offer.accepted = False
             offer.save()
-            return redirect('listing-details', id=listing_id)
+            return redirect('listing-details', listing_id=listing_id)
     else:
         form = OfferCreateForm()
     return render(request, 'offer/make_offer.html', {

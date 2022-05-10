@@ -81,7 +81,7 @@ WSGI_APPLICATION = 'FireSale.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.0/ref/settings/#databases
 
-
+SESSION_ENGINE = 'django.contrib.sessions.backends.file'
 
 
 # Password validation

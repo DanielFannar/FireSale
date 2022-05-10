@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+{% block content %}
+    <form type="form form-horizontal" method="post">
+        {% csrf_token %}
+        {% include 'listing/single_listing.html' with listing=listing offer=offer%}
+        <fieldset disabled="disabled">
+        {{ contact_info_form }}
+        {{ payment_info_form }}
+        </fieldset>
+        <a href="{% url 'checkout-payment-info' offer_id %}" class="block btn btn-info">Prev</a>
+        <input type="submit" value="Confirm" class="btn btn-primary pull-right" style="clear:both; margin: 10px 0" />
+        </form>
+{% endblock %}

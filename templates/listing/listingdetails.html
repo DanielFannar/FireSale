@@ -18,6 +18,10 @@
                         <a href="{% url 'make-offer' listing.id %}" class="block btn btn-success">Make Offer</a>
                     {% endif %}
         </div>
+            <h2>Related products</h2>
+            {% for listing in mrp%}
+                {% include 'listing/single_tiny_listing.html' with listing=listing offer=1%}
+            {% endfor %}
             {%  include 'offer/offer_list.html' with page_obj=page_obj user=user%}
     </div>
 {% endblock %}

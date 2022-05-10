@@ -5,18 +5,24 @@ from offer.models import Offer
 from listing.models import Listing, ListingImage
 from listing.forms.listing_form import ListingCreateForm, ListingUpdateForm
 import datetime
+from listing.helper_functions import *
 
 # Create your views here.
 
 
 def get_listing_by_id(request, listing_id):
     user = get_object_or_404(User, pk=request.user.id)
+    listing = get_object_or_404(Listing, pk=listing_id)
     offers = Offer.objects.all().filter(listing_id=listing_id).order_by('-amount')
     paginator = Paginator(offers, 10)
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
+    list_of_listings = Listing.objects.all().filter(available=True)
+    mrp = most_related_products(listing, list_of_listings, 5)
+    mrp = Listing.objects.filter(id__in=mrp)
     return render(request, 'listing/listingdetails.html', {
-        'listing': get_object_or_404(Listing, pk=listing_id),
+        'listing': listing,
+        'mrp': mrp,
         'page_obj': page_obj,
         'user': user
     })
@@ -98,3 +104,13 @@ def decline_all_other_offers(offer_id):
     offer = get_object_or_404(Offer, offer_id)
     listing = get_object_or_404(Listing, pk=offer.id)
     offers_to_decline = Offer.objects.all().filter('listing')
+
+
+def related_products(request, listing_id):
+    listing = get_object_or_404(Listing, pk=listing_id)
+    list_of_listings = Listing.objects.all().filter(available=True)
+    mrp = most_related_products(listing, list_of_listings)
+    listings = Listing.objects.filter(id__in=mrp)
+    return render(request, 'listing/update_listing.html', {
+            'listings': listings,
+        })
