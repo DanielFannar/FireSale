@@ -57,7 +57,9 @@ def get_offers_by_buyer(request, buyer_id):
     paginator = Paginator(offers, 10)
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
-    return render(request, 'offer/user_offers.html', {'page_obj': page_obj})
+    return render(request, 'offer/user_offers.html', {
+        'page_obj': page_obj,
+        'buyer': get_object_or_404(User, pk=buyer_id)})
 
 
 def cancel_offer(request, offer_id):
