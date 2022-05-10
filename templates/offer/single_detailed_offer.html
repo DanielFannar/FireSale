@@ -1,6 +1,6 @@
 <div class="offer">
     <a href="{% url 'listing-details' offer.listing.id %}">
-        <img class="img-float" src="{{ offer.listing.listingimage_set.first.image }}" height="200px" width="200px"/>
+        <img class="listing-img" src="{{ offer.listing.listingimage_set.first.image }}" height="200px" width="200px"/>
             <b><h4>{{ offer.listing.name }}</h4></b>
             <p>{{ offer.listing.description }}</p>
         <b><h5>Offer:</h5></b>

@@ -1,6 +1,6 @@
 <a href="/listing/{{ listing.id }}/details">
     <div class="d-flex flex-row" id="singlelisting">
-        <img class="img-float" src="{{ listing.listingimage_set.first.image }}" height="200px" width="200px"/>
+        <img class="listing-img" src="{{ listing.listingimage_set.first.image }}" height="200px" width="200px"/>
         <div class="listing-details">
             <h3>{{  listing.name }}</h3>
             {% comment %}<h4>Top offer: {{ offer.amount }} kr</h4>{% endcomment %}
