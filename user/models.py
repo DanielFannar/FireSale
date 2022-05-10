@@ -17,7 +17,7 @@ class UserProfile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     bio = models.CharField(max_length=6969)
     settings = models.ForeignKey(UserSettings, on_delete=models.SET_NULL, null=True)
-    image = models.CharField(max_length=9999, null=True)
+    image = models.CharField(max_length=9999, null=True, default='/static/images/no.jpg')
 
     def __str__(self):
         return self.user.username
