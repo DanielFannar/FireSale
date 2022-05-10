@@ -1,24 +1,22 @@
 {% extends 'base.html' %}
 {%  block content %}
     <div class="offers">
-        <h1>{{  listing.name }}</h1>
-        <div class="main-container">
-        <div class="singlelisting">
-        {% for listing_image in listing.listingimage_set.all %}
-            <img src="{{ listing_image.image }}" class="listing-img" height="200px" width="200px"/>
-        {% endfor %}
-            <p>{{ listing.description }}</p>
-            <p>Seller: {{ listing.seller }}</p>
-            <p>Condition: {{ listing.condition }}</p> {# TODO: Show text instead of INT. Maybe add model for condition? #}
-            <p>Listing: {{ listing.listed }}</p>
-            <p></p>
-            {% if user.id == listing.seller.id%}
-                <a href="{% url 'remove-listing' listing.id %}" class="block btn btn-primary">Remove listing</a>
-                <a href="{% url 'update-listing' listing.id %}" class="block btn btn-primary">Update listing</a>
-            {% else %}
-                <a href="{% url 'make-offer' listing.id %}" class="block btn btn-primary">Make Offer</a>
-            {% endif %}
-        </div>
+            <h1>{{  listing.name }}</h1>
+            <div id="singlelisting">
+                {% for listing_image in listing.listingimage_set.all %}
+                    <img src="{{ listing_image.image }}" class="listing-img" height="200px" width="200px"/>
+                {% endfor %}
+                    <p>{{ listing.description }}</p>
+                    <p>Seller: {{ listing.seller }}</p>
+                    <p>Condition: {{ listing.condition }}</p> {# TODO: Show text instead of INT. Maybe add model for condition? #}
+                    <p>Listing: {{ listing.listed }}</p>
+                    <p></p>
+                    {% if user.id == listing.seller.id%}
+                        <a href="{% url 'remove-listing' listing.id %}" class="block btn btn-danger">Remove listing</a>
+                        <a href="{% url 'update-listing' listing.id %}" class="block btn btn-info">Update listing</a>
+                    {% else %}
+                        <a href="{% url 'make-offer' listing.id %}" class="block btn btn-success">Make Offer</a>
+                    {% endif %}
         </div>
             {%  include 'offer/offer_list.html' with page_obj=page_obj user=user%}
     </div>

@@ -4,12 +4,9 @@
     <a href="{% url 'add-listing' %}" class="block btn btn-primary float-end">Add listing</a>
     <h1 class="red">Listings</h1>
     <div class="listings">
-
-
-    {% for listing_and_offer in page_obj %}
-        {%  include 'listing/single_listing.html' with listing=listing_and_offer.0 offer=listing_and_offer.1%}
-    {% endfor %}
-
+        {% for listing_and_offer in page_obj %}
+            {%  include 'listing/single_listing.html' with listing=listing_and_offer.0 offer=listing_and_offer.1%}
+        {% endfor %}
     </div>
     {% include 'pagination.html' %}
 {% endblock %}

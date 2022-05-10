@@ -9,11 +9,16 @@
 .main-container{
     padding: 1em;
     border-radius: 15px;
-    /*background: linear-gradient(-45deg, #ff9f69, #f8c7ab);*/
 
 }
+
+.user-profile-container{
+    padding: 1em;
+    margin: 1em;
+    border: 2px solid #dedede;
+}
 #singlelisting{
-    background: #dedede;
+    background: #f6f6f6;
     padding: 1em;
     margin: 1em;
     /*border: 2px solid #fff3e5;*/
@@ -26,6 +31,7 @@
     background-color: #ffcc9c;
     box-shadow: 5px 5px 10px #8a8989;
 }
+
 .listing-photo{
     display: inline-block;
     width:200px;
@@ -44,7 +50,7 @@
 }
 
 .offer{
-    background: linear-gradient(-45deg, #cffcb5, #f3ffec);
+    background: linear-gradient(-45deg, #b7ffa6, #cfffb4);
     margin: 0.5em;
     padding: 1em;
     border-radius: 10px;
