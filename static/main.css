@@ -1,3 +1,12 @@
+.frontpage-logo{
+    display: flex;
+}
+
+.frontpage-buttons{
+    display: flex;
+    justify-content: space-around;
+}
+
 .container{
     /*background: #ffffff;*/
     border-radius: 10px;
@@ -9,7 +18,6 @@
 .main-container{
     padding: 1em;
     border-radius: 15px;
-
 }
 
 .user-profile-container{
@@ -118,3 +126,6 @@ h1{
     font-weight: bold;
 }
 
+footer{
+    background-color: #1c1c1c;
+}
