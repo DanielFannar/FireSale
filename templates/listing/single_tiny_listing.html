@@ -1,8 +1,8 @@
 <a href="{% url 'listing-details' listing.id%}">
-    <div class="d-flex flex-row" id="singlelisting">
+    <div class="tiny-listing">
         <img class="img-float" src="{{ listing.listingimage_set.first.image }}"/>
         <div class="listing-details">
-            <h3>{{  listing.name }}</h3>
+            <h4>{{  listing.name }}</h4>
         </div>
-    </div>
+</div>
 </a>

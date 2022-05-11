@@ -7,6 +7,8 @@ from offer.forms.offer_form import OfferCreateForm, OfferUpdateForm
 import datetime
 
 # TODO: Add function to calculate relatedness, and/or find most related listings to specific listing.
+from user.helper_functions import send_notification
+
 
 def make_offer(request, listing_id):
 
@@ -87,7 +89,9 @@ def accept_offer(request, offer_id):
         listing = get_object_or_404(Listing, pk=offer.listing_id)
         offer.accepted = True
         listing.available = False
-        # TODO: Send user a notification
+        notification_message = \
+            'Congratulations! Your offer on ' + listing.name + ' has been accepted, please go to http://127.0.0.1:8000/checkout/' + offer_id + '/checkout to complete your purchase.'
+        send_notification(offer.buyer.id, notification_message)
         # TODO: Success message: "You have accepted the offer"
         return redirect('listing-details', id=listing.id)
     else:

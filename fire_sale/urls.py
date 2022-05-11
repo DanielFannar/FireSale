@@ -3,5 +3,6 @@ from . import views
 
 urlpatterns = [
     # http://localhost:8000/candies
-    path('', views.index, name="/")
+    path('', views.index, name="/"),
+    path('statistics', views.statistics, name="statistics")
 ]

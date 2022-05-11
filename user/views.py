@@ -11,7 +11,7 @@ from django.core.mail import send_mail
 from user.forms.message_form import MessageCreateForm
 from user.forms.profile_form import ProfileCreateForm, ProfileUpdateForm
 from user.forms.rating_form import RatingCreateForm
-from user.models import UserProfile, Rating, Message
+from user.models import UserProfile, Rating, Message, Notification
 from user import helper_functions
 
 # Create your views here.
@@ -150,6 +150,18 @@ def get_user_message_chains(request):
     return render(request, 'user/messages.html', {
         'page_obj': page_obj,
         'user': request.user})
+
+
+def get_user_notifications(request):
+    notifications = Notification.objects.all().filter(recipient_id=request.user.id).order_by('-sent')
+    paginator = Paginator(notifications, 10)
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+    return render(request, 'user/user_notifications.html', {
+        'page_obj': page_obj,
+        'user': get_object_or_404(User, pk=request.user.id)})
+
+
 
 # # TODO KLÁRA EMAIL VIRKNI
 # def send_notification_mail(user_id, message_id):
