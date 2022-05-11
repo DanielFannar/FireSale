@@ -8,6 +8,7 @@ from checkout.models import Purchase, PaymentInfo, ContactInfo, Country
 from listing.models import Listing
 from offer.models import Offer
 from user.forms.rating_form import RatingCreateForm
+from user.helper_functions import send_notification
 
 
 def rate_purchase(request, purchase_id):
@@ -96,6 +97,9 @@ def checkout_confirm(request, offer_id):
         contact_info.save()
         purchase = Purchase(payment_info=payment_info, contact_info=contact_info, offer=offer)
         purchase.save()
+        notification_message = 'Purchase for ' + purchase.offer.listing.name + ' has been completed! The money will magically appear in your back pocket in 3-5 business days.'
+        send_notification(purchase.offer.listing.seller, notification_message)
+
         return redirect('purchase-details', purchase_id=purchase.id)
     else:
         contact_info_fields = ['full_name', 'country', 'city', 'street_name', 'house_number', 'postal_code']

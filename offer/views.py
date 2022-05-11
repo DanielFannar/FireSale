@@ -5,8 +5,6 @@ from offer.models import Offer
 from listing.models import Listing
 from offer.forms.offer_form import OfferCreateForm, OfferUpdateForm
 import datetime
-
-# TODO: Add function to calculate relatedness, and/or find most related listings to specific listing.
 from user.helper_functions import send_notification
 
 
@@ -17,7 +15,7 @@ def make_offer(request, listing_id):
     It sends the user to a page where they can make an offer on that listing.
     It then creates the offer in the database and redirects the user to the listing.
     """
-
+    # TODO: Make_offer should update a user's offer if they have already made an offer on the listing
     if request.method == 'POST':
         form = OfferCreateForm(data=request.POST)
         if form.is_valid():
@@ -27,6 +25,8 @@ def make_offer(request, listing_id):
             offer.placed = datetime.datetime.now()
             offer.accepted = False
             offer.save()
+            notification_message = 'You have received an offer for your listing: ' + offer.listing.name
+            send_notification(offer.listing.seller.id, notification_message)
             return redirect('listing-details', listing_id=listing_id)
     else:
         form = OfferCreateForm()
@@ -73,6 +73,9 @@ def cancel_offer(request, offer_id):
     # TODO: Hvað ef offer er accepted, á að vera hægt að cancela því?
     offer = get_object_or_404(Offer, pk=offer_id)
     listing_id = offer.listing.id
+    if offer.accepted:
+        notification_message = offer.buyer.username + ' has cancelled the offer you accepted on ' + offer.listing.name
+        send_notification(offer.listing.seller, notification_message)
     offer.delete()
     return redirect('listing-details', id=listing_id)
 
@@ -90,13 +93,13 @@ def accept_offer(request, offer_id):
         offer.accepted = True
         listing.available = False
         notification_message = \
-            'Congratulations! Your offer on ' + listing.name + ' has been accepted, please go to http://127.0.0.1:8000/checkout/' + offer_id + '/checkout to complete your purchase.'
+            'Congratulations! Your offer on ' + listing.name + ' has been accepted, please go to http://127.0.0.1:8000/checkout/' + str(offer_id) + '/checkout to complete your purchase.'
         send_notification(offer.buyer.id, notification_message)
         # TODO: Success message: "You have accepted the offer"
-        return redirect('listing-details', id=listing.id)
+        return redirect('listing-details', listing_id=listing.id)
     else:
         # TODO: Error message: "Offer is already accepted"
-        return redirect('listing-details', id=get_object_or_404(Listing, pk=offer.listing_id).id)
+        return redirect('listing-details', listing_id=offer.listing_id)
 
 
 def update_offer(request, offer_id):

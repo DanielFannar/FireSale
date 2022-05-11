@@ -1,7 +1,9 @@
 from django.contrib.auth.models import User
 from django.db.models import Avg
 from django.shortcuts import get_object_or_404
+from django.utils import timezone
 
+from offer.models import Offer
 from user.models import Rating, Message, UserProfile, Notification
 
 
@@ -11,13 +13,13 @@ def get_user_rating(user_id):
         rating['rating__avg'] = 'N/A'
     return rating['rating__avg']
 
+    
 
 def send_notification(user_id, notification_message):
-    firesale = get_object_or_404(User, pk=1337)
     user = get_object_or_404(User, pk=user_id)
     # user_profile = get_object_or_404(UserProfile, user=user)
-    message = Message(recipient=user, content=notification_message, sender=firesale)
-    message.save()
+    notification = Notification(recipient=user, content=notification_message, seen=False, sent=timezone.now())
+    notification.save()
     # if user_profile.settings.email_notification == True:
     #     send_notification_mail(message.id)
 
