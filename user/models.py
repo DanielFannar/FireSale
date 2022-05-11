@@ -2,15 +2,10 @@ from django.db import models
 from django.contrib.auth.models import User
 from checkout.models import Purchase
 from django.core.validators import MaxValueValidator, MinValueValidator
-# Create your models here.
 
 
 class UserSettings(models.Model):
-    offer_received = models.BinaryField()
-    offer_accepted = models.BinaryField()
-    offer_declined = models.BinaryField()
     email_notification = models.BinaryField()
-    push_notification = models.BinaryField()
 
 
 class UserProfile(models.Model):

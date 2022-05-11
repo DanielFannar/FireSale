@@ -15,7 +15,8 @@ class Listing(models.Model):
     seller = models.ForeignKey(User, on_delete=models.CASCADE)
     condition = models.ForeignKey(Condition, on_delete=models.SET_DEFAULT, default=1)
     listed = models.DateTimeField()
-    available = models.BooleanField()
+    available = models.BooleanField(default=True)
+    purchased = models.BooleanField(default=False)
 
 
 class ListingImage(models.Model):
