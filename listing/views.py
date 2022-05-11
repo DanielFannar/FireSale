@@ -1,6 +1,7 @@
 from django.core.paginator import Paginator
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.models import User
+from django.http import JsonResponse
 from offer.models import Offer
 from listing.models import Listing, ListingImage
 from listing.forms.listing_form import ListingCreateForm, ListingUpdateForm
@@ -114,3 +115,16 @@ def related_products(request, listing_id):
     return render(request, 'listing/update_listing.html', {
             'listings': listings,
         })
+
+def search_listing(request):
+    if 'search_filter' in request.GET:
+        search_filter = request.GET['search_filter']
+        listings = [{
+            'id': x.id,
+            'name': x.name,
+            'description': x.description,
+            'firstImage': x.listingimage_set.first().image
+        } for x in Listing.objects.filter(name__icontains=search_filter).values()]
+        return JsonResponse({'data': listings})
+    context = {'listings': Listing.objects.all().order_by('name')}
+    return render(request, 'listing/search_listing.html', context)
