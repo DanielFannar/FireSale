@@ -1,10 +1,9 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
-
-</body>
-</html>
+<div class="single_notification">
+    {% if notification.seen == False %}
+        {# Eitthvað sem sýnir að message sé unread, annar litur, annar klasi á divið rsom rsom #}
+    {% else %}
+        {# else eitthvað basic #}
+    {% endif %}
+    <p>{{ notification.content }}</p>
+    <p>{{ notification.sent }}</p>
+</div>

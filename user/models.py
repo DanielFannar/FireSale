@@ -25,7 +25,7 @@ class UserProfile(models.Model):
 
 class Message(models.Model):
     sender = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, related_name="sender")
-    recipient = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, related_name="receiver")
+    recipient = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, related_name="message_recipient")
     content = models.CharField(max_length=9999)
     seen = models.BooleanField()
     sent = models.DateTimeField()
@@ -40,7 +40,7 @@ class Rating(models.Model):
 
 
 class Notification(models.Model):
-    recipient = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, related_name="receiver")
+    recipient = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, related_name="notification_recipient")
     content = models.CharField(max_length=9999)
     seen = models.BooleanField()
     sent = models.DateTimeField()

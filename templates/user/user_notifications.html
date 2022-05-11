@@ -1,10 +1,16 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+{%  extends 'base.html' %}
 
-</body>
-</html>
+{% block content %}
+
+    <h1 class="red">Notifications</h1>
+    <div class="Messages">
+
+
+    {% for notification in page_obj %}
+        {%  include 'user/single_notification.html' with message=message%}
+    {% endfor %}
+
+    </div>
+    {% include 'pagination.html' %}
+
+{% endblock %}
