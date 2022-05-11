@@ -6,6 +6,7 @@ from django.core.paginator import Paginator
 from django.db.models import Q
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.forms import UserCreationForm
+from django.core.mail import send_mail
 
 from user.forms.message_form import MessageCreateForm
 from user.forms.profile_form import ProfileCreateForm, ProfileUpdateForm
@@ -13,9 +14,8 @@ from user.forms.rating_form import RatingCreateForm
 from user.models import UserProfile, Rating, Message
 from user import helper_functions
 
-
 # Create your views here.
-
+FIRESALE_EMAIL = 'firesale@firesale.com'
 
 def register(request):
     if request.method == 'POST':
@@ -151,4 +151,13 @@ def get_user_message_chains(request):
         'page_obj': page_obj,
         'user': request.user})
 
-
+# # TODO KLÁRA EMAIL VIRKNI
+# def send_notification_mail(user_id, message_id):
+#     message = get_object_or_404(Message, pk=message_id)
+#     send_mail(
+#         'Subject here',
+#         message,
+#         FIRESALE_EMAIL,
+#         [message.recipient.email],
+#         fail_silently=False,
+#     )

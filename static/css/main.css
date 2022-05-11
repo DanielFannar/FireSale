@@ -24,8 +24,20 @@
 .user-profile-container{
     padding: 1em;
     margin: 1em;
-    border: 2px solid #dedede;
+    border: 2px solid #ffd895;
+    border-radius: 10px;
 }
+
+.profile-image{
+    width: 200px;
+    height: 200px;
+}
+
+.profile-userinfo-box{
+    border-radius: 5px;
+    border: 1px solid #d75a00;
+}
+
 #singlelisting{
     background: #f6f6f6;
     padding: 1em;
