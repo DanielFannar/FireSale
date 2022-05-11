@@ -19,9 +19,10 @@
                     {% endif %}
         </div>
             <h2>Related products</h2>
+        <div class="tiny_listing_list">
             {% for listing in mrp%}
                 {% include 'listing/single_tiny_listing.html' with listing=listing offer=1%}
             {% endfor %}
-            {%  include 'offer/offer_list.html' with page_obj=page_obj user=user%}
+            {%  include 'offer/offer_list.html' with page_obj=page_obj user=user%}</div>
     </div>
 {% endblock %}

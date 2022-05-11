@@ -38,3 +38,10 @@ class Rating(models.Model):
     comment = models.CharField(max_length=999)
     purchase = models.ForeignKey(Purchase, on_delete=models.CASCADE)
 
+
+class Notification(models.Model):
+    recipient = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, related_name="receiver")
+    content = models.CharField(max_length=9999)
+    seen = models.BooleanField()
+    sent = models.DateTimeField()
+
