@@ -2,6 +2,6 @@
 {% block content %} <form class="form form-horizontal" action="{% url 'edit-profile' %}" method="post">
         {% csrf_token %}
         {{ form }}
-        <input type="submit" value="Edit Profile" class="btn btn-primary pull-right" style="clear:both; margin: 10px 0" />
+        <input type="submit" value="Confirm Changes" class="btn btn-success pull-right" style="clear:both; margin: 10px 0" />
     </form>
 {% endblock %}

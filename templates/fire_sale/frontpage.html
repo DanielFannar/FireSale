@@ -5,11 +5,14 @@
         <video src="../../static/images/firesale%20logo.mp4" autoplay loop muted></video>
     </div>
         {% if user.is_authenticated %}
+            {# If the user is logged in #}
+            {# To make sure that the right options are available in relation to whether the user is logged in or not #}
         <div class="frontpage-buttons">
         <a href="{% url 'listings'%}" class="block btn btn-primary">Browse Listings</a>
         <a href="{% url 'offers-made' current_user.id %}" class="block btn btn-primary">See your offers</a>
     </div>
     {% else %}
+    {# If the user is not logged in #}
         <div class="frontpage-buttons">
         <a href="{% url 'login' %}" class="block btn btn-primary">Login</a>
         <a href="{% url 'register' %}" class="block btn btn-primary">Register</a>

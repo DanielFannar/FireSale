@@ -140,6 +140,13 @@
 li {
     list-style-type: none;
 }
+
+.navbar-logo{
+    width: 85px;
+    height: 23px;
+    padding-top: -0.135rem;
+}
+
 .nav-profile-image{
     width: 40px;
     height: 40px;
@@ -168,7 +175,6 @@ li {
     border-radius: 10px;
     transition: 0.5s;
     text-decoration-color: #1c1c1c;
-    display: inline-block;
 }
 
 .recent-message:hover{
@@ -240,6 +246,7 @@ h1{
 
 .search{
     width: 100%;
-    margin-right: 8%;
-    margin-left: 8%;
+    padding-left: 10%;
+    padding-right: 10%;
+    margin: auto;
 }
