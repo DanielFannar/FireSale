@@ -13,7 +13,8 @@ from django.utils import timezone
 import datetime
 from random import Random, choice
 
-''' This file has some code to add dummy data to the database for testing purposes.'''
+''' This file has some code to add dummy data to the database for testing purposes.
+    TODO: Add dummy data generation for messages, purchases'''
 
 
 def populate_listing(n):

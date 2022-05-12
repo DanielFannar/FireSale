@@ -48,7 +48,6 @@ def get_profile(request, user_id=None):
         'current_user': current_user,
         'user': user,
         'user_profile': get_object_or_404(UserProfile.objects.select_related(), user_id=user_id),
-        'rating': helper_functions.get_user_rating(user_id),
         'displayed_name': displayed_name
     })
 
