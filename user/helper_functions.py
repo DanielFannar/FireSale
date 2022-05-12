@@ -1,5 +1,6 @@
 from django.contrib.auth.models import User
 from django.db.models import Avg
+from django.http import request
 from django.shortcuts import get_object_or_404
 from django.utils import timezone
 
@@ -24,15 +25,8 @@ def send_notification(user_id, notification_message):
     #     send_notification_mail(message.id)
 
 
-def user_has_unread_notification(user_id):
-    if Notification.objects.all().filter(recipient_id=user_id, seen=False).count == 0:
-        return False
-    else:
-        return True
+def unread_notification_count():
+    return 1
 
-
-def user_has_unread_message(user_id):
-    if Message.objects.all().filter(recipient_id=user_id, seen=False).count == 0:
-        return False
-    else:
-        return True
+def user_has_unread_message():
+    return Message.objects.all().filter(recipient_id=request.user.id, seen=False).count()

@@ -1,3 +1,5 @@
+{% load tags %}
+
 <nav class="navbar navbar-expand-lg sticky-top navbar-dark bg-dark" >
   <div class="container-fluid">
     <a class="navbar-brand" href="/">FireSale</a>
@@ -5,6 +7,7 @@
       <span class="navbar-toggler-icon"></span>
     </button>
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
+
       <ul class="navbar-nav me-auto mb-2 mb-lg-0">
         <li class="nav-item"><a class="nav-link" href="{% url 'listings' %}">Listings</a></li>
             {% if user.is_authenticated %}
@@ -22,13 +25,17 @@
         <input class="form-control me-2" type="search" name="search_filter" placeholder="Search" aria-label="Search">
         <button class="btn btn-outline-info" type="submit">Search</button>
       </form>
-            {% if user.is_authenticated %}
-                <li class="nav-item dropdown"><a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false"><img src="{{ user.userprofile.image }}" class="nav-profile-image" alt=""></a>
+            {% if request.user.is_authenticated %}
+                <li class="nav-item">
+                <span class="badge badge-pill badge-warning" style="float:right;margin-bottom:-15px;margin-right:-18px;font-size:10px">{% number_of_unread_messages request %}</span>
+                <a class="nav-link" href="{% url 'messages' %}"><img src="/static/images/testmessageicon.PNG" length="20px" width="20px"></a>
+            </li>
+                <li class="nav-item dropdown"><a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false"><img src="{{ request.user.userprofile.image }}" class="nav-profile-image" alt=""></a>
                   <ul class="dropdown-menu dropdown-menu-dark dropdown-menu-end " aria-labelledby="navbarDropdown">
                     <li><a class="dropdown-item" href="{% url 'my-profile' %}">Profile</a></li>
                     <li><a class="dropdown-item" href={% url 'messages' %}>Messages</a></li>
-                    <li><a class="dropdown-item" href="{% url 'user-listings' user.id %}">Listings</a></li>
-                    <li><a class="dropdown-item" href="{% url 'offers-made' user.id %}">Offers</a></li>
+                    <li><a class="dropdown-item" href="{% url 'user-listings' request.user.id %}">Listings</a></li>
+                    <li><a class="dropdown-item" href="{% url 'offers-made' request.user.id %}">Offers</a></li>
                     <li><hr class="dropdown-divider"></li>
                     <li><a class="dropdown-item" href="{% url 'logout' %}">Logout</a></li>
                   </ul>
