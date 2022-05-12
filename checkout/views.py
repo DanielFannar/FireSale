@@ -1,3 +1,4 @@
+from django.contrib import messages
 from django.contrib.auth.models import User
 from django.core.paginator import Paginator
 from django.shortcuts import render, get_object_or_404, redirect
@@ -24,7 +25,10 @@ def rate_purchase(request, purchase_id):
             rating.ratee = purchase.offer.listing.seller
             rating.purchase = purchase
             rating.save()
+            notification_message = purchase.offer.buyer.username + ' has given you a rating for ' + purchase.offer.listing.name + '.'
+            send_notification(purchase.offer.listing.seller.id, notification_message)
             return redirect('user-ratings', user_id=rating.ratee.id)
+
     else:
         form = RatingCreateForm()
     return render(request, 'checkout/rate_purchase.html', {
@@ -80,7 +84,8 @@ def checkout_payment_info(request, offer_id):
 def checkout_confirm(request, offer_id):
     offer = get_object_or_404(Offer, pk=offer_id)
     listing = get_object_or_404(Listing, pk=offer.listing.id)
-
+    contact_info_fields = ['full_name', 'country', 'city', 'street_name', 'house_number', 'postal_code']
+    payment_info_fields = ['name', 'card_number', 'expiration_date', 'cvc']
     if request.method == 'POST':
         payment_info = PaymentInfo(user=request.user,
                                    name=request.session.get('name'),
@@ -103,10 +108,14 @@ def checkout_confirm(request, offer_id):
         offers = Offer.objects.all().filter(listing=listing).exclude(pk=offer.id)
         for o in offers:
             decline_offer(o.id)
+            messages.success(request, 'Purchase completed!')
+        for field in contact_info_fields:
+            request.session[field] = ''
+        for field in payment_info_fields:
+            request.session[field] = ''
         return redirect('purchase-details', purchase_id=purchase.id)
     else:
-        contact_info_fields = ['full_name', 'country', 'city', 'street_name', 'house_number', 'postal_code']
-        payment_info_fields = ['name', 'card_number', 'expiration_date', 'cvc']
+
         contact_info_initial = {}
         payment_info_initial = {}
         for field in contact_info_fields:
@@ -123,32 +132,32 @@ def checkout_confirm(request, offer_id):
         })
 
 
-
-def checkout(request, offer_id):
-    user = request.user
-
-    if request.method == 'POST':
-
-        contact_info_form = ContactInfoCreateForm(request.POST)
-        payment_info_form = PaymentInfoCreateForm(request.POST)
-        if contact_info_form.is_valid() and payment_info_form.is_valid():
-
-            contact_info = contact_info_form.save(commit=False)
-            payment_info = payment_info_form.save(commit=False)
-            contact_info.user = user
-            payment_info.user = user
-            contact_info_form.save()
-            payment_info_form.save()
-            purchase = Purchase(offer_id=offer_id, contact_info=contact_info, payment_info=payment_info)
-            purchase.save()
-            return redirect('purchase-details', purchase_id=purchase.id)
-    else:
-        contact_info_form = ContactInfoCreateForm()
-        payment_info_form = PaymentInfoCreateForm()
-        return render(request, 'checkout/checkout.html', {
-            'contact_info_form': contact_info_form,
-            'payment_info_form': payment_info_form
-    })
+# This is the old checkout procedure.
+# def checkout(request, offer_id):
+#     user = request.user
+#
+#     if request.method == 'POST':
+#
+#         contact_info_form = ContactInfoCreateForm(request.POST)
+#         payment_info_form = PaymentInfoCreateForm(request.POST)
+#         if contact_info_form.is_valid() and payment_info_form.is_valid():
+#
+#             contact_info = contact_info_form.save(commit=False)
+#             payment_info = payment_info_form.save(commit=False)
+#             contact_info.user = user
+#             payment_info.user = user
+#             contact_info_form.save()
+#             payment_info_form.save()
+#             purchase = Purchase(offer_id=offer_id, contact_info=contact_info, payment_info=payment_info)
+#             purchase.save()
+#             return redirect('purchase-details', purchase_id=purchase.id)
+#     else:
+#         contact_info_form = ContactInfoCreateForm()
+#         payment_info_form = PaymentInfoCreateForm()
+#         return render(request, 'checkout/checkout.html', {
+#             'contact_info_form': contact_info_form,
+#             'payment_info_form': payment_info_form
+#     })
 
 
 def get_purchase_by_id(request, purchase_id):

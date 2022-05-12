@@ -1,3 +1,4 @@
+from django.contrib import messages
 from django.core.paginator import Paginator
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.models import User
@@ -93,9 +94,9 @@ def accept_offer(request, offer_id):
         offer.accepted = True
         listing.available = False
         notification_message = \
-            'Congratulations! Your offer on ' + listing.name + ' has been accepted, please go to http://127.0.0.1:8000/checkout/' + str(offer_id) + '/checkout to complete your purchase.'
+            'Congratulations! Your offer on ' + listing.name + ' has been accepted, please go to http://127.0.0.1:8000/checkout_contact_info/' + str(offer_id) + '/checkout to complete your purchase.'
         send_notification(offer.buyer.id, notification_message)
-        # TODO: Success message: "You have accepted the offer"
+        messages.success(request, 'Offer accepted!')
         return redirect('listing-details', listing_id=listing.id)
     else:
         # TODO: Error message: "Offer is already accepted"

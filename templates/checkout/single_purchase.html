@@ -6,9 +6,6 @@
             <p>{{  purchase.offer.listing.description }}</p>
             <h5>Seller: {{ purchase.offer.listing.seller}} </h5>
             <h5>Buyer: {{ purchase.offer.buyer }}</h5>
-            {% if current_user == purchase.offer.buyer %}
-            {% endif %}
-            <a href="{% url 'rate-purchase' purchase.id %}" class="block btn btn-primary">Rate purchase</a>
         </div>
     </div>
 </a>

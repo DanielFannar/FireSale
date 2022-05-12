@@ -15,13 +15,16 @@
                 <p>{{ listing.listed }}</p>
                 <h5>Top offer</h5>
                 <p>{% with offers=listing.offer_set.all|dictsortreversed:"amount" %} {{ offers.0.amount }} kr{% endwith %}</p>
-                {% if user.id == listing.seller.id%}
+                {% if request.user.id == listing.seller.id%}
                     <a href="{% url 'remove-listing' listing.id %}" class="block btn btn-danger">Remove listing</a>
                     <a href="{% url 'update-listing' listing.id %}" class="block btn btn-info">Update listing</a>
                 {% else %}
                     <a href="{% url 'make-offer' listing.id %}" class="block btn btn-success">Make Offer</a>
                 {% endif %}
         </div>
+    {% if messages %}
+    {% include 'message.html' %}
+    {% endif %}
             <h2>Related products</h2>
         <div class="tiny_listing_list">
             {% for listing in mrp%}

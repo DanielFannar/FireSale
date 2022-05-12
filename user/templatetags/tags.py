@@ -35,3 +35,5 @@ def user_star_rating(user_id):
         star_rating += ' (' + str(rating_number) + ')'
     return star_rating
 
+# @register .simple_tag
+# def

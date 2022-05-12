@@ -1,6 +1,15 @@
 {%  extends 'base.html' %}
 
 {% block content %}
+<form action="{% url 'listings' %}">
+    <span>Sort by:</span>
+    <select name="sort">
+      <option value="name">Name</option>
+      <option value="price">Lowest price</option>
+        <option value="datetime">Newest</option>
+      <input type="submit" value="Sort">
+    </select>
+  </form>
     <h1 class="red">Listings
         {% if request.GET.search_filter is not None %}
             results for {{ request.GET.search_filter }}
