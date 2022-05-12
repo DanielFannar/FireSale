@@ -4,6 +4,20 @@
     {% else %}
         {# else eitthvað basic #}
     {% endif %}
-    <p>{{ notification.content }}</p>
-    <p>{{ notification.sent }}</p>
+    {% if 'accepted' in notification.content %}
+        <p style="text-align: center">{{ notification.sent }}</p>
+        <div class="accepted-notification">
+            <p><b>{{ notification.content }}</b></p>
+        </div>
+    {% elif 'declined' in notification.content %}
+            <p style="text-align: center">{{ notification.sent }}</p>
+            <div class="declined-notification">
+                <p><b>{{ notification.content }}</b></p>
+            </div>
+        {% else %}
+            <p style="text-align: center">{{ notification.sent }}</p>
+        <div class="single_message">
+            <p><b>{{ notification.content }}</b></p>
+        </div>
+    {% endif %}
 </div>

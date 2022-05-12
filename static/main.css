@@ -168,6 +168,7 @@ li {
     border-radius: 10px;
     transition: 0.5s;
     text-decoration-color: #1c1c1c;
+    display: inline-block;
 }
 
 .recent-message:hover{
@@ -188,10 +189,32 @@ li {
     transition: 0.5s;
 }
 
-
-.message-history{
-
+.accepted-notification{
+    margin-bottom: 2em;
+    margin-top: 2em;
+    padding: 1em;
+    background: linear-gradient(-45deg, #c4ffb3, #dcffca);
+    border-radius: 15px;
 }
+
+.accepted-notification:hover{
+    background: linear-gradient(-45deg, #c4ffb3, #bafd97);
+    transition: 0.7s;
+}
+
+.declined-notification{
+    margin-bottom: 2em;
+    margin-top: 2em;
+    padding: 1em;
+    background: linear-gradient(-45deg, #ffd4d4, #ffe2e2);
+    border-radius: 15px;
+}
+
+.declined-notification:hover{
+    background: linear-gradient(-45deg, #ffc0c0, #ffd5d5);
+    transition: 0.7s;
+}
+
 a {
     text-decoration: none;
     color: black;

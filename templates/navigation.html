@@ -28,11 +28,11 @@
       </form></div>
             {% if request.user.is_authenticated %}
                 <li class="nav-item">
-                <span class="badge badge-pill badge-warning" style="float:right;margin-bottom:-15px;font-size:10px">{% number_of_unread_messages request %}</span>
+                <span class="badge badge-pill badge-warning" style="float:right;margin-bottom:-15px;font-size:10px; color: #ffc780">{% number_of_unread_messages request %}</span>
                 <a class="nav-link" href="{% url 'messages' %}"><img src="/static/images/email.PNG" length="20px" width="20px"></a>
                 </li>
                 <li class="nav-item">
-                <span class="badge badge-pill badge-warning" style="float:right;margin-bottom:-15px;font-size:10px">{% number_of_unread_notifications request %}</span>
+                <span class="badge badge-pill badge-warning" style="float:right;margin-bottom:-15px;font-size:10px; color: #ffc780">{% number_of_unread_notifications request %}</span>
                 <a class="nav-link" href="{% url 'user-notifications' %}"><img src="/static/images/notification.png" length="20px" width="20px"></a>
                 </li>
                 <li class="nav-item dropdown"><a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false"><img src="{{ request.user.userprofile.image }}" class="nav-profile-image" alt=""></a>
