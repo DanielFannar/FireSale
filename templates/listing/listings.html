@@ -8,7 +8,7 @@
     <div class="listings">
         {% for listing in page_obj %}
             {% with offers=listing.offer_set.all|dictsortreversed:"amount" %}
-            {%  include 'listing/single_listing.html' with listing=listing offer=offers.0 %}
+            {% include 'listing/single_listing.html' with listing=listing offer=offers.0 %}
             {% endwith %}
         {% endfor %}
     </div>

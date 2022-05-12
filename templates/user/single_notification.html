@@ -4,18 +4,23 @@
     {% else %}
         {# else eitthvað basic #}
     {% endif %}
-    {% if 'accepted' in notification.content %}
-        <p style="text-align: center">{{ notification.sent }}</p>
-        <div class="accepted-notification">
-            <p><b>{{ notification.content }}</b></p>
+{#    {% if 'accepted' in notification.content %}#}
+{#        <p style="text-align: center">{{ notification.sent }}</p>#}
+{#        <div class="accepted-notification">#}
+{#            <p><b>{{ notification.content }}</b></p>#}
+{#        </div>#}
+{#    {% elif 'declined' in notification.content %}#}
+{#            <p style="text-align: center">{{ notification.sent }}</p>#}
+{#            <div class="declined-notification">#}
+{#                <p><b>{{ notification.content }}</b></p>#}
+{#            </div>#}
+{#        {% else %}#}
+            <p style="text-align: center">{{ notification.sent }}</p>
+    {% if notification.seen %}
+        <div class="single_message">
+            <p>{{ notification.content }}</p>
         </div>
-    {% elif 'declined' in notification.content %}
-            <p style="text-align: center">{{ notification.sent }}</p>
-            <div class="declined-notification">
-                <p><b>{{ notification.content }}</b></p>
-            </div>
         {% else %}
-            <p style="text-align: center">{{ notification.sent }}</p>
         <div class="single_message">
             <p><b>{{ notification.content }}</b></p>
         </div>
