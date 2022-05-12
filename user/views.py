@@ -123,7 +123,7 @@ def get_message_chain(request, user_id):
     paginator = Paginator(messages, 10)
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
-    messages.update(seen=True)
+    messages.filter(recipient=request.user).update(seen=True)
     return render(request, 'user/message_chain.html', {
         'page_obj': page_obj,
         'user': get_object_or_404(User, pk=user_id)})

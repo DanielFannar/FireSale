@@ -214,3 +214,9 @@ h1{
     width: 100%;
     margin-top: 1em;
 }
+
+.search{
+    width: 100%;
+    margin-right: 8%;
+    margin-left: 8%;
+}
