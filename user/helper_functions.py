@@ -5,16 +5,7 @@ from django.shortcuts import get_object_or_404
 from django.utils import timezone
 
 from offer.models import Offer
-from user.models import Rating, Message, UserProfile, Notification
-
-
-def get_user_rating(user_id):
-    rating = Rating.objects.all().filter(ratee_id=user_id).aggregate(Avg('rating'))
-    if rating['rating__avg'] is None:
-        rating['rating__avg'] = 'N/A'
-    return rating['rating__avg']
-
-    
+from user.models import Message, UserProfile, Notification
 
 def send_notification(user_id, notification_message):
     user = get_object_or_404(User, pk=user_id)
