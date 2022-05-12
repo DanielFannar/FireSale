@@ -2,12 +2,12 @@
 
 {% block content %}
     <h1 class="red">Messages</h1>
-    <div class="Messages">
-        {% for message_chain in page_obj %}
+    {% for message_chain in page_obj %}
+        <div class="recent-message">
             <a href="{% url 'message-chain' message_chain.0.id%}">
             <h3>{{ message_chain.0 }}</h3>
             {%  include 'user/single_message.html' with message=message_chain.1 %}</a>
-        {% endfor %}
-    </div>
+        </div>
+    {% endfor %}
     {% include 'pagination.html' %}
 {% endblock %}
