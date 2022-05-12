@@ -35,20 +35,13 @@ def get_all_listings(request):
     listings = Listing.objects.all()
 
     if 'search_filter' in request.GET:
-        search_filter=request.GET['search_filter']
+        search_filter = request.GET['search_filter']
         listings = listings.filter(Q(name__icontains=search_filter)|Q(description__icontains=search_filter))
-    listings_and_highest_offer = []
-    for listing in listings:
-        offer = Offer.objects.all().filter(listing_id=listing.id).order_by('-amount').first()
-        if offer is None:
-            offer = {'amount': 'No offers yet!'}
-        listings_and_highest_offer.append([listing, offer])
-    paginator = Paginator(listings_and_highest_offer, 10)
+    paginator = Paginator(listings, 10)
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
     return render(request, 'listing/listings.html', {
         'page_obj': page_obj})
-        # 'search_filter': search_filter})
 
 
 def get_user_listings(request, user_id):

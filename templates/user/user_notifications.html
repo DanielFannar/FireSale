@@ -7,7 +7,7 @@
 
 
     {% for notification in page_obj %}
-        <a href="{% url 'single-notification' notification.id%}">{%  include 'user/single_notification.html' with message=message%}</a>
+        <a href="{% url 'notification-details' notification.id%}">{%  include 'user/single_notification.html' with message=message%}</a>
     {% endfor %}
 
     </div>

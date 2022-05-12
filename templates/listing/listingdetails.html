@@ -6,18 +6,15 @@
                 {% for listing_image in listing.listingimage_set.all %}
                     <img src="{{ listing_image.image }}" class="listing-img" height="200px" width="200px"/>
                 {% endfor %}
-{#                    <p>{{ listing.description }}</p>#}
-{#                    <p>Seller: {{ listing.seller }}</p>#}
-{#                    <p>Condition: {{ listing.condition }}</p> {# TODO: Show text instead of INT. Maybe add model for condition? #}
-{#                    <p>Listing: {{ listing.listed }}</p>#}
-{#                    <p></p>#}
-                <p> {{ listing.desription }}</p>
+                <p> {{ listing.description }}</p>
                 <h5>Seller</h5>
                 <p>{{ listing.seller }}</p>
                 <h5>Condition</h5>
                 <p>{{ listing.condition }}</p>
                 <h5>Listed</h5>
                 <p>{{ listing.listed }}</p>
+                <h5>Top offer</h5>
+                <p>{% with offers=listing.offer_set.all|dictsortreversed:"amount" %} {{ offers.0.amount }} kr{% endwith %}</p>
                 {% if user.id == listing.seller.id%}
                     <a href="{% url 'remove-listing' listing.id %}" class="block btn btn-danger">Remove listing</a>
                     <a href="{% url 'update-listing' listing.id %}" class="block btn btn-info">Update listing</a>
