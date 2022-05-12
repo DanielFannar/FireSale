@@ -6,6 +6,7 @@ from checkout.forms.contact_info_form import ContactInfoCreateForm
 from checkout.forms.payment_info_form import PaymentInfoCreateForm
 from checkout.models import Purchase, PaymentInfo, ContactInfo, Country
 from listing.models import Listing
+from offer.helper_functions import decline_offer
 from offer.models import Offer
 from user.forms.rating_form import RatingCreateForm
 from user.helper_functions import send_notification
@@ -98,8 +99,10 @@ def checkout_confirm(request, offer_id):
         purchase = Purchase(payment_info=payment_info, contact_info=contact_info, offer=offer)
         purchase.save()
         notification_message = 'Purchase for ' + purchase.offer.listing.name + ' has been completed! The money will magically appear in your back pocket in 3-5 business days.'
-        send_notification(purchase.offer.listing.seller, notification_message)
-
+        send_notification(listing.seller.id, notification_message)
+        offers = Offer.objects.all().filter(listing=listing).exclude(pk=offer.id)
+        for o in offers:
+            decline_offer(o.id)
         return redirect('purchase-details', purchase_id=purchase.id)
     else:
         contact_info_fields = ['full_name', 'country', 'city', 'street_name', 'house_number', 'postal_code']

@@ -3,11 +3,11 @@
 {% block content %}
 
     <h1 class="red">Notifications</h1>
-    <div class="Messages">
+    <div class="Notifications">
 
 
     {% for notification in page_obj %}
-        {%  include 'user/single_notification.html' with message=message%}
+        <a href="{% url 'single-notification' notification.id%}">{%  include 'user/single_notification.html' with message=message%}</a>
     {% endfor %}
 
     </div>
