@@ -9,6 +9,5 @@ urlpatterns = [
     path('add', views.add_listing, name="add-listing"),
     path('<int:listing_id>/remove', views.remove_listing, name="remove-listing"),
     path('<int:listing_id>/update', views.update_listing, name="update-listing"),
-    path('<int:listing_id>/make_offer', offer.views.make_offer, name="make-offer"),
-    path('', views.get_all_listings, name="search-results")
+    path('<int:listing_id>/make_offer', offer.views.make_offer, name="make-offer")
 ]
