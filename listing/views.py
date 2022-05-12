@@ -20,7 +20,7 @@ def get_listing_by_id(request, listing_id):
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
     list_of_listings = Listing.objects.all().filter(available=True).exclude(pk=listing_id)
-    mrp = most_related_products(listing, list_of_listings, 5)
+    mrp = most_related_products(listing, list_of_listings)
     mrp = Listing.objects.filter(id__in=mrp)
     return render(request, 'listing/listingdetails.html', {
         'listing': listing,
@@ -102,20 +102,19 @@ def update_listing(request, listing_id):
         })
 
 
-def decline_all_other_offers(offer_id):
-    offer = get_object_or_404(Offer, offer_id)
-    listing = get_object_or_404(Listing, pk=offer.id)
-    offers_to_decline = Offer.objects.all().filter('listing')
 
 
-def related_products(request, listing_id):
-    listing = get_object_or_404(Listing, pk=listing_id)
-    list_of_listings = Listing.objects.all().filter(available=True)
-    mrp = most_related_products(listing, list_of_listings)
-    listings = Listing.objects.filter(id__in=mrp)
-    return render(request, 'listing/update_listing.html', {
-            'listings': listings,
-        })
+
+
+# TODO: Is this used anywhere?
+# def related_products(request, listing_id):
+#     listing = get_object_or_404(Listing, pk=listing_id)
+#     list_of_listings = Listing.objects.all().filter(available=True)
+#     mrp = most_related_products(listing, list_of_listings)
+#     listings = Listing.objects.filter(id__in=mrp)
+#     return render(request, 'listing/update_listing.html', {
+#             'listings': listings,
+#         })
 
 def search_listing(request):
     if 'search_filter' in request.GET:

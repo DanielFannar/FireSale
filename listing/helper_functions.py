@@ -13,7 +13,7 @@ def calculate_listing_relatedness(listing1, listing2):
     return score
 
 
-def most_related_products(listing1, list_of_listings, n):
+def most_related_products(listing1, list_of_listings, n=4):
     scores = []
     for listing in list_of_listings:
         scores.append([listing.id, calculate_listing_relatedness(listing1, listing)])

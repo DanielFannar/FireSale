@@ -3,7 +3,7 @@
 {% block content %}
     <h1 class="red">Listings
         {% if request.GET.search_filter is not None %}
-            results for {{ search_filter }}
+            results for {{ request.GET.search_filter }}
         {% endif %}</h1>
     <div class="listings">
         {% for listing in page_obj %}

@@ -30,7 +30,7 @@ def user_star_rating(user_id):
     if rating_number is None:
         star_rating= 'N/A'
     else:
-        for i in range(floor(rating_number)):
+        for i in range(round(rating_number)):
             star_rating += '⭐'
         star_rating += ' (' + str(rating_number) + ')'
     return star_rating
