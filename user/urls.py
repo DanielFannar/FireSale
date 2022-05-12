@@ -23,5 +23,6 @@ urlpatterns = [
     path('messages', views.get_user_message_chains, name='messages'),  # TODO: Is this needed?
     path('message/<int:message_id>', views.get_message_by_id, name='single-message'),
     path('<int:user_id>/purchases', checkout.views.get_user_purchases, name='user-purchases'),
-    path('notifications', views.get_user_notifications, name='user-notifications')
+    path('notifications', views.get_user_notifications, name='user-notifications'),
+    path('notification/<int:notification_id>', views.get_notification_by_id, name='notification-details')
 ]

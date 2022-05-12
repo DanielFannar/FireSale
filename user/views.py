@@ -17,6 +17,7 @@ from user import helper_functions
 # Create your views here.
 FIRESALE_EMAIL = 'firesale@firesale.com'
 
+
 def register(request):
     if request.method == 'POST':
         user_form = UserCreationForm(request.POST)
@@ -102,8 +103,16 @@ def send_message(request, to_user_id=''):
 
 
 def get_message_by_id(request, message_id):
+    message = get_object_or_404(Message, pk=message_id)
+    message = Message(id=message.id,
+                      content=message.content,
+                      recipient=message.recipient,
+                      sender=message.sender,
+                      sent=message.sent,
+                      seen=True)
+    message.save()
     return render(request, 'user/single_message.html', {
-        'message': get_object_or_404(Message, pk=message_id)})
+        'message': message})
 
 
 def get_message_chain(request, user_id):
@@ -150,6 +159,18 @@ def get_user_message_chains(request):
     return render(request, 'user/messages.html', {
         'page_obj': page_obj,
         'user': request.user})
+
+
+def get_notification_by_id(request, notification_id):
+    notification = get_object_or_404(Notification, pk=notification_id)
+    notification = Notification(id=notification.id,
+                                content=notification.content,
+                                recipient=notification.recipient,
+                                sent=notification.sent,
+                                seen=True)
+    notification.save()
+    return render(request, 'user/notification_details.html', {
+        'notification': notification})
 
 
 def get_user_notifications(request):

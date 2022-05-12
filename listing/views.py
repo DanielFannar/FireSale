@@ -1,4 +1,5 @@
 from django.core.paginator import Paginator
+from django.db.models import Q
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.models import User
 from django.http import JsonResponse
@@ -18,7 +19,7 @@ def get_listing_by_id(request, listing_id):
     paginator = Paginator(offers, 10)
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
-    list_of_listings = Listing.objects.all().filter(available=True)
+    list_of_listings = Listing.objects.all().filter(available=True).exclude(pk=listing_id)
     mrp = most_related_products(listing, list_of_listings, 5)
     mrp = Listing.objects.filter(id__in=mrp)
     return render(request, 'listing/listingdetails.html', {
@@ -30,7 +31,12 @@ def get_listing_by_id(request, listing_id):
 
 
 def get_all_listings(request):
+
     listings = Listing.objects.all()
+
+    if 'search_filter' in request.GET:
+        search_filter=request.GET['search_filter']
+        listings = listings.filter(Q(name__icontains=search_filter)|Q(description__icontains=search_filter))
     listings_and_highest_offer = []
     for listing in listings:
         offer = Offer.objects.all().filter(listing_id=listing.id).order_by('-amount').first()
@@ -40,7 +46,9 @@ def get_all_listings(request):
     paginator = Paginator(listings_and_highest_offer, 10)
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
-    return render(request, 'listing/listings.html', {'page_obj': page_obj})
+    return render(request, 'listing/listings.html', {
+        'page_obj': page_obj,
+        'search_filter': search_filter})
 
 
 def get_user_listings(request, user_id):
@@ -124,7 +132,9 @@ def search_listing(request):
             'name': x.name,
             'description': x.description,
             'firstImage': x.listingimage_set.first().image
-        } for x in Listing.objects.filter(name__icontains=search_filter).values()]
+        } for x in Listing.objects.filter(name__icontains=search_filter)]
         return JsonResponse({'data': listings})
     context = {'listings': Listing.objects.all().order_by('name')}
     return render(request, 'listing/search_listing.html', context)
+
+
