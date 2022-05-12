@@ -6,7 +6,7 @@
 
     {% for message_chain in page_obj %}
         <a href="{% url 'message-chain' message_chain.0.id%}">
-        <h3>{{ message_chain.0 }}</h3>
+        <h3> Test{{ message_chain.0 }}</h3>
         {%  include 'user/single_message.html' with message=message_chain.1 %}</a>
     {% endfor %}
 

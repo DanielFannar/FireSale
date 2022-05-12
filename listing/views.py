@@ -47,8 +47,8 @@ def get_all_listings(request):
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
     return render(request, 'listing/listings.html', {
-        'page_obj': page_obj,
-        'search_filter': search_filter})
+        'page_obj': page_obj})
+        # 'search_filter': search_filter})
 
 
 def get_user_listings(request, user_id):

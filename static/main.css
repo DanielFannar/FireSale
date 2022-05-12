@@ -12,7 +12,7 @@
     /*background: #ffffff;*/
     border-radius: 10px;
     padding: 0.5em;
-    width: 8%;
+    width: 80%;
     margin-top: 1em;
 }
 
@@ -160,6 +160,38 @@ li {
     text-align: center;
 }
 
+.recent-message{
+    background: #f6f6f6;
+    padding: 1em;
+    margin: 1em;
+    /*border: 2px solid #fff3e5;*/
+    border-radius: 10px;
+    transition: 0.5s;
+    text-decoration-color: #1c1c1c;
+}
+
+.recent-message:hover{
+    background-color: #ffcc9c;
+    box-shadow: 5px 5px 10px #8a8989;
+}
+
+.single_message{
+    margin-bottom: 2em;
+    margin-top: 2em;
+    padding: 1em;
+    background: #f8f8f8;
+    border-radius: 15px;
+}
+
+.single_message:hover{
+    background: #f6f6f6;
+    transition: 0.5s;
+}
+
+
+.message-history{
+
+}
 a {
     text-decoration: none;
     color: black;
@@ -169,7 +201,6 @@ a {
 a:hover {
     color: black;
 }
-
 
 label{
     color: black;
@@ -181,4 +212,5 @@ h1{
 
 #footer-fs{
     width: 100%;
+    margin-top: 1em;
 }
