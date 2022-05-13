@@ -52,6 +52,7 @@
     background-color: #ffcc9c;
     box-shadow: 5px 5px 10px #8a8989;
 }
+
 #singlelisting{
     background: #f6f6f6;
     padding: 1em;
@@ -66,7 +67,15 @@
     background-color: #ffcc9c;
     box-shadow: 5px 5px 10px #8a8989;
 }
-
+.sort-by{
+    background-color: darkorange;
+    border: none;
+    border-radius: 5px;
+    padding-top: 6px;
+    padding-bottom: 6px;
+    color: white;
+    margin-right: 0.5em;
+}
 .img-float{
     width: 200px;
     height: 200px;

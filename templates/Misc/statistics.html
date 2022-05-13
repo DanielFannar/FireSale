@@ -1,16 +1,20 @@
 {% extends 'base.html' %}
 {% block content %}
+{#    Displays the statistics of the website#}
         <h1 style="font-size: 80pt; display: flex; justify-content: center; color: darkorange"> STATISTICS</h1>
     <div class="statistic-container">
         <div class="statistic-block">
+{#            Total registered users#}
             <h3>Total Users</h3>
             <h1>{{ total_users }}</h1>
         </div>
         <div class="statistic-block">
+{#            Total offers currently in place#}
             <h3>Total Offers</h3>
             <h1>{{ total_offers }}</h1>
         </div>
         <div class="statistic-block">
+{#            Total listings currently in place#}
             <h3>Total Listings</h3>
             <h1>{{ total_listings }}</h1>
         </div>

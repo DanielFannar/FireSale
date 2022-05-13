@@ -1,5 +1,6 @@
 {% extends "base.html" %}
 {% block content %}
+{#    Layout for a user to palce an offer on a listing#}
 {%  include 'listing/single_listing.html' with listing=listing%}
     <form class="form form-horizontal" action="{% url 'make-offer' listing.id %}" method="post">
         {% csrf_token %}

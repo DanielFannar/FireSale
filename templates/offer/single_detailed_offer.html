@@ -1,10 +1,11 @@
+{#Layout for a single listing#}
 <div class="offer">
     <a href="{% url 'listing-details' offer.listing.id %}">
         <img class="listing-img" src="{{ offer.listing.listingimage_set.first.image }}" height="200px" width="200px"/>
             <b><h4>{{ offer.listing.name }}</h4></b>
             <p>{{ offer.listing.description }}</p>
-        <b><h5>Offer:</h5></b>
-        <p><b>{{ offer.amount }}</b> kr.</p></a>
+            <h5><b>Offer:</b></h5>
+            <p><b>{{ offer.amount }}</b> kr.</p></a>
 
     {% if user.id == offer.listing.seller.id %}
         <a href="{% url 'accept-offer' offer.id %}" class="block btn btn-success">Accept Offer</a>

@@ -1,3 +1,5 @@
+{#Layout for a single 'tiny listing' #}
+{#A tiny listing is used to represent related listings#}
 <a href="{% url 'listing-details' listing.id%}">
     <div class="tiny-listing">
         <img class="img-float" src="{{ listing.listingimage_set.first.image }}"/>

@@ -1,9 +1,10 @@
+{#Layout for a single listing#}
 <a href="/listing/{{ listing.id }}/details">
     <div class="d-flex flex-row" id="singlelisting">
         <img class="listing-img" src="{{ listing.listingimage_set.first.image }}" height="200px" width="200px"/>
         <div class="listing-details">
             <h3>{{  listing.name }}</h3>
-            {% if listing.available %}<h4>{% with offers=listing.offer_set.all|dictsortreversed:"amount" %} {% if offers.0 == None %} No offers yet {% else %}Top offer: {{ offers.0.amount }} kr{% endif %}{% endwith %}</h4>{% endif %}
+                {% if listing.available %}<h4>{% with offers=listing.offer_set.all|dictsortreversed:"amount" %} {% if offers.0 == None %} No offers yet {% else %}Top offer: {{ offers.0.amount }} kr{% endif %}{% endwith %}</h4>{% endif %}
             <p>{{ listing.description }}</p>
         </div>
     </div>

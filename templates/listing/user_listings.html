@@ -1,10 +1,13 @@
 {%  extends 'base.html' %}
 
 {% block content %}
+{#    Shows a users' listings#}
     <h1>
         {% if seller == user %}
+{#            If the owner of the listing is the current user#}
             Your
         {% else %}
+{#            If the owner of the listing is not the current user#}
             {{ seller }}'s
         {% endif %}
         listings:</h1>
