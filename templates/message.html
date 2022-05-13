@@ -1,8 +1,14 @@
 <ul class="messages">
     {% for message in messages %}
     <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>
-        {% if message.level == DEFAULT_MESSAGE_LEVELS.ERROR %} <p class="error-message">Important: {{ message }}</p>{% endif %}
-        {% if message.level == DEFAULT_MESSAGE_LEVELS.SUCCESS %}<p class="success-message">{{ message }}</p> {% endif %}
+
+        {% if message.level == DEFAULT_MESSAGE_LEVELS.ERROR %}
+            <h5 class="text-center text-danger">Important: {{ message }}</h5>
+        {% endif %}
+
+        {% if message.level == DEFAULT_MESSAGE_LEVELS.SUCCESS %}
+            <h5 class="text-center text-success"> {{ message }} </h5>
+        {% endif %}
     </li>
     {% endfor %}
 </ul>

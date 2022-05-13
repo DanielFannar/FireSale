@@ -1,4 +1,5 @@
 from django.contrib import messages
+from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator
 from django.db.models import Q, Max
 from django.shortcuts import render, get_object_or_404, redirect
@@ -13,6 +14,7 @@ from listing.helper_functions import *
 # Create your views here.
 
 
+@login_required
 def get_listing_by_id(request, listing_id):
     user = get_object_or_404(User, pk=request.user.id)
     listing = get_object_or_404(Listing, pk=listing_id)
@@ -29,7 +31,6 @@ def get_listing_by_id(request, listing_id):
         'page_obj': page_obj,
         'user': user
     })
-
 
 def get_all_listings(request):
     listings = Listing.objects.all()

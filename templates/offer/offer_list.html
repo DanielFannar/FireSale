@@ -1,12 +1,11 @@
+{#Lists all offers on a current listing#}
 <br>
 <h1 class="red">Offers</h1>
 
-{#<div class="d-flex flex-row">#}
     {% for offer in page_obj %}
         <div class="offer">
             {%  include 'offer/single_offer.html' with offer=offer user=user%}
         </div>
     {% endfor %}
-{#</div>#}
 
 {% include 'pagination.html' %}
