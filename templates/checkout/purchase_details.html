@@ -1,6 +1,6 @@
 {% extends 'base.html' %}
 {%  block content %}
-    <div class="outer">
+    <div class="container">
         <h1>{{  purchase.offer.listing.name }}</h1>
         <div class="main-container">
         <div id="singlelisting">
@@ -8,10 +8,14 @@
             <img src="{{ listing_image.image }}" class="listing-img" height="200px" width="200px"/>
         {% endfor %}
             <p>{{ purchase.offer.listing.description }}</p>
-            <p>Seller: {{ purchase.offer.listing.seller }}</p>
-            <p>Condition: {{ purchase.offer.listing.condition }}</p>
-            <p>Listed: {{ purchase.offer.listing.listed }}</p>
-            <p>Bought for: {{ purchase.offer.amount }}</p>
+            <h6>Bought for:</h6>
+            <p>{{ purchase.offer.amount }}</p>
+            <h6>Seller:</h6>
+            <p>{{ purchase.offer.listing.seller }}</p>
+            <h6>Condition:</h6>
+            <p>{{ purchase.offer.listing.condition }}</p>
+            <h6>Listed:</h6>
+            <p>{{ purchase.offer.listing.listed }}</p>
         {% if request.user.id == purchase.offer.buyer.id%}
         <a href="{% url 'rate-purchase' purchase.id %}" class="block btn btn-primary">Rate purchase</a>
         {% endif %}</div>

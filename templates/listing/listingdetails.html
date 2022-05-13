@@ -17,9 +17,17 @@
                 <h5>Top offer</h5>
                 <p>{% with offers=listing.offer_set.all|dictsortreversed:"amount" %} {{ offers.0.amount }} kr{% endwith %}</p>
                 {% if request.user.id == listing.seller.id%}
+
+{#                    If the current user is the listing seller #}
+{#                    the options to madify or remove the listing are present  #}
+
                     <a href="{% url 'remove-listing' listing.id %}" class="block btn btn-danger">Remove listing</a>
                     <a href="{% url 'update-listing' listing.id %}" class="block btn btn-info">Update listing</a>
                 {% else %}
+
+{#                    If the user is not the listing seller #}
+{#                    the only option on the listing is to make an offer on it#}
+
                     <a href="{% url 'make-offer' listing.id %}" class="block btn btn-success">Make Offer</a>
                 {% endif %}
         </div>
@@ -29,10 +37,10 @@
             <h2>Related products</h2>
         <div class="tiny_listing_list">
             {% for listing in mrp%}
-{#                Displays all related listings#}
+{#           Displays all related listings#}
                 {% include 'listing/single_tiny_listing.html' with listing=listing offer=1%}
             {% endfor %}
-{#           Get's all the listing offers#}
+{#           Gets all the listing offers#}
             {%  include 'offer/offer_list.html' with page_obj=page_obj user=user%}</div>
     </div>
 {% endblock %}

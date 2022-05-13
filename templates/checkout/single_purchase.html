@@ -1,11 +1,11 @@
 <a href="{% url 'purchase-details' purchase.id %}">
-    <div class="d-flex flex-row" id="single_purchase">
-        <img class="img-float" src="{{ purchase.offer.listing.listingimage_set.first.image }}" height="200px" width="200px"/>
-        <div class="purchase_details">
-            <h4>{{  purchase.offer.listing.name }}</h4>
+    <h3>{{  purchase.offer.listing.name }}</h3>
+        <div id="singlelisting">
+            <img class="img-float" src="{{ purchase.offer.listing.listingimage_set.first.image }}" height="200px" width="200px"/>
             <p>{{  purchase.offer.listing.description }}</p>
-            <h5>Seller: {{ purchase.offer.listing.seller}} </h5>
-            <h5>Buyer: {{ purchase.offer.buyer }}</h5>
+            <h4>Seller:</h4>
+            <p>{{ purchase.offer.listing.seller}}</p>
+            <h4>Buyer:</h4>
+            <p>{{ purchase.offer.buyer }}</p>
         </div>
-    </div>
 </a>
