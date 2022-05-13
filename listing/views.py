@@ -1,5 +1,5 @@
 from django.core.paginator import Paginator
-from django.db.models import Q
+from django.db.models import Q, Max
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.models import User
 from django.http import JsonResponse
@@ -31,12 +31,26 @@ def get_listing_by_id(request, listing_id):
 
 
 def get_all_listings(request):
-
     listings = Listing.objects.all()
 
     if 'search_filter' in request.GET:
         search_filter = request.GET['search_filter']
         listings = listings.filter(Q(name__icontains=search_filter)|Q(description__icontains=search_filter))
+    if 'sort' in request.GET:
+        sort = request.GET['sort']
+        if sort == 'name':
+            listings = listings.order_by('name')
+        elif sort == 'price':
+            max_offer_by_listing = Offer.objects.all().values('listing_id').annotate(Max('amount')).order_by('amount__max')
+            listing_ids = []
+            for listing in max_offer_by_listing:
+                listing_ids.append(listing['listing_id'])
+            listings = Listing.objects.filter(id__in=listing_ids)
+            listings = dict([(listing.id, listing) for listing in listings])
+            listings = [listings[id] for id in listing_ids]
+        elif sort == 'datetime':
+            listings = listings.order_by('-listed')
+
     paginator = Paginator(listings, 10)
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)

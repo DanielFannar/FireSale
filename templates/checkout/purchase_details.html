@@ -3,16 +3,21 @@
     <div class="outer">
         <h1>{{  purchase.offer.listing.name }}</h1>
         <div class="main-container">
-        <div class="singlelisting">
+        <div id="singlelisting">
         {% for listing_image in purchase.offer.listing.listingimage_set.all %}
             <img src="{{ listing_image.image }}" class="listing-img" height="200px" width="200px"/>
         {% endfor %}
             <p>{{ purchase.offer.listing.description }}</p>
             <p>Seller: {{ purchase.offer.listing.seller }}</p>
-            <p>Condition: {{ purchase.offer.listing.condition }}</p> {# TODO: Show text instead of INT. Maybe add model for condition? #}
+            <p>Condition: {{ purchase.offer.listing.condition }}</p>
             <p>Listed: {{ purchase.offer.listing.listed }}</p>
             <p>Bought for: {{ purchase.offer.amount }}</p>
-        </div>
+        {% if request.user.id == purchase.offer.buyer.id%}
+        <a href="{% url 'rate-purchase' purchase.id %}" class="block btn btn-primary">Rate purchase</a>
+        {% endif %}</div>
+        {% if messages %}
+            {% include 'message.html' %}
+        {% endif %}
         </div>
     </div>
 {% endblock %}
