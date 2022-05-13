@@ -36,6 +36,7 @@
                     <li><a class="dropdown-item" href="{% url 'my-profile' %}">Profile</a></li>
                     <li><a class="dropdown-item" href={% url 'messages' %}>Messages</a></li>
                     <li><a class="dropdown-item" href="{% url 'user-listings' request.user.id %}">Listings</a></li>
+                    <li><a class="dropdown-item" href="{% url 'add-listing' %}">Add listing</a></li>
                     <li><a class="dropdown-item" href="{% url 'offers-made' request.user.id %}">Offers</a></li>
                     <li><a class="dropdown-item" href="{% url 'user-ratings' request.user.id %}">{% user_star_rating request.user %}</a></li>
                     <li><hr class="dropdown-divider"></li>
