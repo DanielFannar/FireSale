@@ -25,7 +25,7 @@ def register(request):
         if user_form.is_valid() and profile_form.is_valid():
             user = user_form.save(commit=False)
             profile = profile_form.save(commit=False)
-            settings = UserSettings(email_notifications=True)
+            settings = UserSettings(email_notification=True)
             user.email = request.POST['email']
             user.save()
             profile.user = user

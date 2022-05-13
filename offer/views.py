@@ -15,7 +15,7 @@ from user.helper_functions import send_notification
 def make_offer(request, listing_id):
 
     """
-    This function takes as it's input a listing_id.
+    This view takes as it's input a listing_id.
     It sends the user to a page where they can make an offer on that listing.
     It then creates the offer in the database and redirects the user to the listing.
     """
@@ -75,7 +75,8 @@ def get_offers_by_buyer(request, buyer_id):
 def cancel_offer(request, offer_id):
 
     """
-    This function takes as it's input an offer_id. The offer in question is deleted from the database.
+    This view takes as it's input an offer_id. The offer in question is deleted from the database.
+    If the offer has been accepted, the user that accepted it get's a notification.
     """
 
     offer = get_object_or_404(Offer, pk=offer_id)
@@ -93,8 +94,9 @@ def cancel_offer(request, offer_id):
 def accept_offer(request, offer_id):
 
     """
-    This function takes as it's input an offer_id.
+    This view takes as it's input an offer_id.
     The offer in question is marked as accepted. The listing the offer was made on is marked unavailable.
+    The user who made the offer gets a notification.
     """
 
     offer = get_object_or_404(Offer, pk=offer_id)
@@ -118,7 +120,7 @@ def accept_offer(request, offer_id):
 def update_offer(request, offer_id):
 
     """
-    This function takes as it's input an offer_id.
+    This view takes as it's input an offer_id.
     If the offer has not been accepted, it sends the user to a page where they can input a new amount for the offer.
     It then updates the amount on the offer and redirects the user to the listing.
     """
