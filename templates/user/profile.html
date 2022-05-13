@@ -1,14 +1,18 @@
+{#Layout for the profile screen#}
 {% extends 'base.html' %}
 {% load tags %}
 {%  block content %}
     <div class="user-profile-container">
         <div class="d-flex justify-content-between"><h1>{{ user.username }}</h1>
             {% if current_user.id == user.id %}
+{#                Displays the edit profile button if this is the current users profile #}
                 <div> <a href="{% url 'edit-profile' %}" class="block btn btn-info">Edit Profile</a></div>
             {% else %}
+{#                Displays a message user button if this is a user visiting another users' profile#}
                 <div><a href="{% url 'send-message' user.id %}" class="block btn btn-info">Message user</a></div>
             {% endif %}
         </div>
+{#          Displays all the information about the users' profile#}
             <img src="{{ user_profile.image }}" class="profile-image"/>
             <h4>Bio:</h4>
             <p class="profile-userinfo-box">{{ user_profile.bio }}</p>
@@ -17,9 +21,12 @@
             <p class="profile-userinfo-box">{% user_star_rating user.id %}</p>
             </a>
         <div>
+{#            Changes the names on the buttons depending on if this is the current #}
+{#            or if this is user viewing another users' profile#}
             <a href="{% url 'user-listings' user.id %}" class="block btn btn-primary m-1">{{ displayed_name }} listings</a>
             <a href="{% url 'offers-made' user.id %}" class="block btn btn-primary m-1">{{ displayed_name }} offers</a>
             <a href="{% url 'user-purchases' user.id %}" class="block btn btn-primary m-1">{{ displayed_name }} purchases</a>
         </div>
     </div>
 {% endblock %}
+
