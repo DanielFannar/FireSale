@@ -1,4 +1,5 @@
 from django.contrib import messages
+from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.core.paginator import Paginator
 from django.shortcuts import render, get_object_or_404, redirect
@@ -12,7 +13,7 @@ from offer.models import Offer
 from user.forms.rating_form import RatingCreateForm
 from user.helper_functions import send_notification
 
-
+@login_required
 def rate_purchase(request, purchase_id):
     """This view let's a user create a rating for a specific purchase.
     Only one rating can be given for each purchase."""
@@ -43,7 +44,7 @@ def rate_purchase(request, purchase_id):
         'purchase': purchase
     })
 
-
+@login_required
 def checkout_contact_info(request, offer_id):
     """This view takes the user to the first step in the checkout procedure.
     The offer with the given offer_id determines the price and product being checked out.
@@ -73,7 +74,7 @@ def checkout_contact_info(request, offer_id):
         messages.error(request, 'This is not a valid offer for checkout.')
         return redirect('listing-details', listing_id = offer.listing.id)
 
-
+@login_required
 def checkout_payment_info(request, offer_id):
     """This view is the second step of the checkout process.
     The fields from the previous step are saved in the session so the user can
@@ -100,7 +101,7 @@ def checkout_payment_info(request, offer_id):
             'payment_info_form': payment_info_form
         })
 
-
+@login_required
 def checkout_confirm(request, offer_id):
     """The last step in the checkout process.
     Presents the user with the information they have given. And asks them to confirm.
@@ -187,17 +188,19 @@ def checkout_confirm(request, offer_id):
 #             'payment_info_form': payment_info_form
 #     })
 
-
+@login_required()
 def get_purchase_by_id(request, purchase_id):
     """This view presents the user with a single purchase with the given purchase_id."""
     return render(request, 'checkout/purchase_details.html', {
         'purchase': get_object_or_404(Purchase, pk=purchase_id),
     })
 
-
-def get_user_purchases(request, user_id):
+@login_required
+def get_user_purchases(request, user_id=''):
     """This view presents the user with all purchases completed by a user with the given user_id.
     This can be another user or the same user."""
+    if user_id == '': #If the user id is not supplied, we use the current user.
+        user_id = request.user.id
     purchases = Purchase.objects.all().filter(offer__buyer_id=user_id)
     paginator = Paginator(purchases, 10)
     page_number = request.GET.get('page')

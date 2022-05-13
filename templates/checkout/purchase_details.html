@@ -19,9 +19,6 @@
         {% if request.user.id == purchase.offer.buyer.id%}
         <a href="{% url 'rate-purchase' purchase.id %}" class="block btn btn-primary">Rate purchase</a>
         {% endif %}</div>
-        {% if messages %}
-            {% include 'message.html' %}
-        {% endif %}
         </div>
     </div>
 {% endblock %}
