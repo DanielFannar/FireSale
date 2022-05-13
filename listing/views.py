@@ -14,7 +14,6 @@ from listing.helper_functions import *
 
 
 def get_listing_by_id(request, listing_id):
-    user = get_object_or_404(User, pk=request.user.id)
     listing = get_object_or_404(Listing, pk=listing_id)
     offers = Offer.objects.all().filter(listing_id=listing_id).order_by('-amount')
     paginator = Paginator(offers, 10)
@@ -26,8 +25,7 @@ def get_listing_by_id(request, listing_id):
     return render(request, 'listing/listingdetails.html', {
         'listing': listing,
         'mrp': mrp,
-        'page_obj': page_obj,
-        'user': user
+        'page_obj': page_obj
     })
 
 

@@ -42,25 +42,29 @@ def rate_purchase(request, purchase_id):
 
 def checkout_contact_info(request, offer_id):
     fields = ['full_name', 'country', 'city', 'street_name', 'house_number', 'postal_code']
+    offer = get_object_or_404(Offer, pk=offer_id)
+    if offer.accepted and not offer.listing.purchased:
+        if request.method == 'POST':
+            contact_info_form = ContactInfoCreateForm(request.POST)
+            if contact_info_form.is_valid():
+                for field in fields:
+                    request.session[field] = contact_info_form.cleaned_data[field]
+                request.session['country'] = request.session['country'].id
+                request.session['full_name'] = contact_info_form.cleaned_data['full_name']
+                return redirect('checkout-payment-info', offer_id=offer_id)
 
-    if request.method == 'POST':
-        contact_info_form = ContactInfoCreateForm(request.POST)
-        if contact_info_form.is_valid():
+        else:
+            initial = {}
             for field in fields:
-                request.session[field] = contact_info_form.cleaned_data[field]
-            request.session['country'] = request.session['country'].id
-            request.session['full_name'] = contact_info_form.cleaned_data['full_name']
-            return redirect('checkout-payment-info', offer_id=offer_id)
-
+                initial[field] = request.session.get(field)
+            contact_info_form = ContactInfoCreateForm(initial=initial)
+            return render(request, 'checkout/checkout_contact_info.html', {
+                'offer_id': offer_id,
+                'contact_info_form': contact_info_form
+            })
     else:
-        initial = {}
-        for field in fields:
-            initial[field] = request.session.get(field)
-        contact_info_form = ContactInfoCreateForm(initial=initial)
-        return render(request, 'checkout/checkout_contact_info.html', {
-            'offer_id': offer_id,
-            'contact_info_form': contact_info_form
-        })
+        messages.error(request, 'This is not a valid offer for checkout.')
+        return redirect('listing-details', listing_id = offer.listing.id)
 
 
 def checkout_payment_info(request, offer_id):
@@ -108,6 +112,9 @@ def checkout_confirm(request, offer_id):
         purchase.save()
         notification_message = 'Purchase for ' + purchase.offer.listing.name + ' has been completed! The money will magically appear in your back pocket in 3-5 business days.'
         send_notification(listing.seller.id, notification_message)
+        listing.purchased = True
+        listing.available = False
+        listing.save()
         offers = Offer.objects.all().filter(listing=listing).exclude(pk=offer.id)
         for o in offers:
             decline_offer(o.id)

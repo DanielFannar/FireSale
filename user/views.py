@@ -24,8 +24,10 @@ def register(request):
         user_form = UserCreationForm(request.POST)
         profile_form = ProfileCreateForm(request.POST)
         if user_form.is_valid() and profile_form.is_valid():
-            user = user_form.save()
+            user = user_form.save(commit=False)
             profile = profile_form.save(commit=False)
+            user.email = request.POST['email']
+            user.save()
             profile.user = user
             profile.save()
             messages.success(request, 'Successfully registered! Please log in.')
@@ -195,13 +197,14 @@ def get_user_notifications(request):
 
 
 
-# # TODO KLÁRA EMAIL VIRKNI
-# def send_notification_mail(user_id, message_id):
-#     message = get_object_or_404(Message, pk=message_id)
-#     send_mail(
-#         'Subject here',
-#         message,
-#         FIRESALE_EMAIL,
-#         [message.recipient.email],
-#         fail_silently=False,
-#     )
+# TODO KLÁRA EMAIL VIRKNI
+def send_notification_mail(notification_id):
+    notification = get_object_or_404(Notification, pk=notification_id)
+    #if notification.recipient.email == '' or notification.recipient.email is None:
+    send_mail(
+        'You have received a notification from FireSale',
+        notification.content,
+        FIRESALE_EMAIL,
+        [notification.recipient.email],
+        fail_silently=False,
+    )

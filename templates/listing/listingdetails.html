@@ -16,6 +16,7 @@
                 <p>{{ listing.listed }}</p>
                 <h5>Top offer</h5>
                 <p>{% with offers=listing.offer_set.all|dictsortreversed:"amount" %} {{ offers.0.amount }} kr{% endwith %}</p>
+                {% if request.user.is_authenticated %}
                 {% if request.user.id == listing.seller.id%}
 
 {#                    If the current user is the listing seller #}
@@ -30,10 +31,8 @@
 
                     <a href="{% url 'make-offer' listing.id %}" class="block btn btn-success">Make Offer</a>
                 {% endif %}
+                {% endif %}
         </div>
-    {% if messages %}
-    {% include 'message.html' %}
-    {% endif %}
             <h2>Related products</h2>
         <div class="tiny_listing_list">
             {% for listing in mrp%}
@@ -41,6 +40,6 @@
                 {% include 'listing/single_tiny_listing.html' with listing=listing offer=1%}
             {% endfor %}
 {#           Gets all the listing offers#}
-            {%  include 'offer/offer_list.html' with page_obj=page_obj user=user%}</div>
+            {%  include 'offer/offer_list.html' with page_obj=page_obj user=request.user%}</div>
     </div>
 {% endblock %}

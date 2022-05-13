@@ -75,7 +75,6 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'FireSale.wsgi.application'
 
 
 # Database
