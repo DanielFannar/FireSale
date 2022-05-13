@@ -128,7 +128,7 @@ def send_message(request, to_user_id=''):
 def get_message_by_id(request, message_id):
     message = get_object_or_404(Message, pk=message_id)
     if request.user == message.recipient:
-        message.update(seen=True)
+        message.seen = True
         message.save()
     elif request.user != message.sender:
         message.error(request, 'You do not have permission to view that message')
@@ -188,11 +188,7 @@ def get_user_message_chains(request):
 @login_required
 def get_notification_by_id(request, notification_id):
     notification = get_object_or_404(Notification, pk=notification_id)
-    notification = Notification(id=notification.id,
-                                content=notification.content,
-                                recipient=notification.recipient,
-                                sent=notification.sent,
-                                seen=True)
+    notification.seen = True
     notification.save()
     return render(request, 'user/notification_details.html', {
         'notification': notification})

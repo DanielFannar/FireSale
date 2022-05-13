@@ -1,21 +1,6 @@
 <div class="single_notification">
-    {% if notification.seen == False %}
-        {# Eitthvað sem sýnir að message sé unread, annar litur, annar klasi á divið rsom rsom #}
-    {% else %}
-        {# else eitthvað basic #}
-    {% endif %}
-{#    {% if 'accepted' in notification.content %}#}
-{#        <p style="text-align: center">{{ notification.sent }}</p>#}
-{#        <div class="accepted-notification">#}
-{#            <p><b>{{ notification.content }}</b></p>#}
-{#        </div>#}
-{#    {% elif 'declined' in notification.content %}#}
-{#            <p style="text-align: center">{{ notification.sent }}</p>#}
-{#            <div class="declined-notification">#}
-{#                <p><b>{{ notification.content }}</b></p>#}
-{#            </div>#}
-{#        {% else %}#}
-            <p style="text-align: center">{{ notification.sent }}</p>
+
+    <p style="text-align: center">{{ notification.sent }}</p>
     {% if notification.seen %}
         <div class="single_message">
             <p>{{ notification.content }}</p>

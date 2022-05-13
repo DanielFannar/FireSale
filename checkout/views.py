@@ -26,7 +26,8 @@ def rate_purchase(request, purchase_id):
             rating.purchase = purchase
             rating.save()
             notification_message = purchase.offer.buyer.username + ' has given you a rating for ' + purchase.offer.listing.name + '.'
-            send_notification(purchase.offer.listing.seller.id, notification_message)
+            notification_url = redirect('user-ratings', user_id=rating.ratee.id)['Location']
+            send_notification(purchase.offer.listing.seller.id, notification_message, notification_url)
             messages.success(request, 'Rating submitted!')
             return redirect('user-ratings', user_id=rating.ratee.id)
         else:
@@ -111,7 +112,8 @@ def checkout_confirm(request, offer_id):
         purchase = Purchase(payment_info=payment_info, contact_info=contact_info, offer=offer)
         purchase.save()
         notification_message = 'Purchase for ' + purchase.offer.listing.name + ' has been completed! The money will magically appear in your back pocket in 3-5 business days.'
-        send_notification(listing.seller.id, notification_message)
+        notification_url = redirect('purchase-details', purchase_id=purchase.id)['Location']
+        send_notification(listing.seller.id, notification_message, notification_url)
         listing.purchased = True
         listing.available = False
         listing.save()

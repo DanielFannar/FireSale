@@ -30,7 +30,8 @@ def make_offer(request, listing_id):
             offer.accepted = False
             offer.save()
             notification_message = 'You have received an offer for your listing: ' + offer.listing.name
-            send_notification(offer.listing.seller.id, notification_message)
+            notification_url = redirect('listing-details', listing_id=listing_id)['Location']
+            send_notification(offer.listing.seller.id, notification_message, notification_url)
             messages.success(request, 'Offer made!')
             return redirect('listing-details', listing_id=listing_id)
         else:
@@ -81,7 +82,8 @@ def cancel_offer(request, offer_id):
     listing_id = offer.listing.id
     if offer.accepted:
         notification_message = offer.buyer.username + ' has cancelled the offer you accepted on ' + offer.listing.name
-        send_notification(offer.listing.seller, notification_message)
+        notification_url = redirect('listing-details', listing_id=listing_id)['Location']
+        send_notification(offer.listing.seller, notification_message, notification_url)
         offer.listing.available = True
     offer.delete()
     messages.success(request, 'Offer cancelled!')
@@ -103,8 +105,9 @@ def accept_offer(request, offer_id):
         offer.save()
         listing.save()
         notification_message = \
-            'Congratulations! Your offer on ' + listing.name + ' has been accepted, please go to http://127.0.0.1:8000/checkout/' + str(offer_id) + '/checkout_contact_info to complete your purchase.'
-        send_notification(offer.buyer.id, notification_message)
+            'Congratulations! Your offer on ' + listing.name + ' has been accepted!'
+        notification_url = redirect('checkout-contact-info', offer_id=offer.id)['Location']
+        send_notification(offer.buyer.id, notification_message, notification_url)
         messages.success(request, 'Offer accepted!')
         return redirect('listing-details', listing_id=listing.id)
     else:

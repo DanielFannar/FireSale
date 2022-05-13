@@ -1,4 +1,4 @@
 {% extends 'base.html' %}
 {% block content %}
-{% include 'user/single_notification.html' with notification=notification%}
+    <a href="{{ notification.url }}">{% include 'user/single_notification.html' with notification=notification%}</a>
 {% endblock %}
