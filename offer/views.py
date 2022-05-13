@@ -1,4 +1,5 @@
 from django.contrib import messages
+from django.core.mail import message
 from django.core.paginator import Paginator
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.models import User
@@ -146,3 +147,21 @@ def update_offer(request, offer_id):
             'form': form,
             'offer_id': offer_id
         })
+
+
+def decline_offer(request, offer_id):
+    """This function declines the offer with the given offer_id.
+    It sends a notification to the user that made the offer."""
+    offer = get_object_or_404(Offer, pk=offer_id)
+    listing = offer.listing
+    if request.user == listing.seller:
+        notification_message = 'Your offer on ' + offer.listing.name + ' has been declined'
+        notification_url = redirect('listing-details', listing_id=offer.listing.id)['Location']
+        send_notification(offer.buyer.id, notification_message, notification_url)
+        send_notification(offer.buyer.id, notification_message, notification_url)
+        offer.delete()
+        message.success(request, 'Offer declined')
+    else:
+        message.error(request, 'Offer could not be declined')
+
+    return redirect('listing-details', listing_id=listing.id)

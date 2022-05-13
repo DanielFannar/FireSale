@@ -107,7 +107,7 @@ def get_user_ratings(request, user_id):
 
 @login_required
 def send_message(request, to_user_id=''):
-
+    """This view lets a user send a message to another user."""
     if request.method == 'POST':
         form = MessageCreateForm(data=request.POST)
         if form.is_valid():
@@ -131,6 +131,7 @@ def send_message(request, to_user_id=''):
 
 @login_required
 def get_message_by_id(request, message_id):
+    """This view lets a user see a message with the given message_id."""
     message = get_object_or_404(Message, pk=message_id)
     if request.user == message.recipient:
         message.seen = True
@@ -144,6 +145,7 @@ def get_message_by_id(request, message_id):
 
 @login_required
 def get_message_chain(request, user_id):
+    """This view lets a user see all messages between themselves and another user."""
     all_messages_in_chain = Message.objects.all().filter(
         Q(sender_id=request.user.id, recipient_id=user_id) |
         Q(recipient_id=request.user.id, sender_id=user_id)
@@ -159,21 +161,24 @@ def get_message_chain(request, user_id):
 
 @login_required
 def get_user_message_chains(request):
-
+    """This view lets a user see all of their messages, organized by message chain.
+    A message chain is all messages between two users."""
     sent_messages = Message.objects.all().filter(sender_id=request.user.id)
     received_messages = Message.objects.all().filter(recipient_id=request.user.id)
     messages = sent_messages.union(received_messages)
     message_chain_partners = []
 
-    for message in messages:
+    for message in messages: # Getting all messages the current user has sent or recieved.
         if message.sender == request.user:
             message_chain_partners.append(message.recipient)
         else:
             message_chain_partners.append(message.sender)
 
+    # Finding a distinct list of users that have sent or received messages from the current user.:
     message_chain_partners = list(set(message_chain_partners))
     message_chains = []
 
+    #For each message chain, we order the messages by time sent.
     for chain in message_chain_partners:
         chain_message = Message.objects.all().filter(
             Q(sender_id=request.user.id, recipient_id=chain.id) |
@@ -192,6 +197,7 @@ def get_user_message_chains(request):
 
 @login_required
 def get_notification_by_id(request, notification_id):
+    """This view let's the user see details for a specific notification."""
     notification = get_object_or_404(Notification, pk=notification_id)
     notification.seen = True
     notification.save()
@@ -200,6 +206,7 @@ def get_notification_by_id(request, notification_id):
 
 @login_required
 def get_user_notifications(request):
+    """This view lets a user see all of their notifications."""
     notifications = Notification.objects.all().filter(recipient_id=request.user.id).order_by('-sent')
     paginator = Paginator(notifications, 10)
     page_number = request.GET.get('page')

@@ -3,6 +3,8 @@ from offer.models import Offer
 
 
 def listing_relatedness_v2(listing, n=4):
+    """This function calculates a relatedness score for the given listing to all other listings.
+    It then """
     result = Listing.objects.raw("""WITH Tafla as (select t.*, x.cnt_matches
 from (
 SELECT l.name as name1, l2.name as name2, l.id as l1_id, l2.id as l2_id, CASE

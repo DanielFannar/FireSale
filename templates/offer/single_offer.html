@@ -7,6 +7,7 @@
 {#If the current user is the owner of the listing#}
 {% if user.id == offer.listing.seller.id%}
     <a href="{% url 'accept-offer' offer.id %}" class="block btn btn-primary">Accept Offer</a>
+    <a href="{% url 'decline-offer' offer.id %}" class="block btn btn-danger">Decline Offer</a>
 {% endif %}
 
 {#If the current user is not the owner of the listing#}
