@@ -19,4 +19,16 @@
             <h1>{{ total_listings }}</h1>
         </div>
     </div>
+    {% if user.is_authenticated %}
+        <div class="statistic-container" style="margin-top: 0.5em">
+            <div class="statistic-block">
+                <h3>Your Listings</h3>
+                <h1>{{ curr_user_listings }}</h1>
+            </div>
+            <div class="statistic-block">
+                <h3>Your Offers</h3>
+                <h1>{{ curr_user_listings }}</h1>
+            </div>
+        </div>
+    {% endif %}
 {% endblock %}

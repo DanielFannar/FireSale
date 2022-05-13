@@ -13,7 +13,7 @@ class UserSettings(models.Model):
 
 class UserProfile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
-    bio = models.CharField(max_length=6969)
+    bio = models.CharField(max_length=6969, default='This user has no bio yet.')
     settings = models.ForeignKey(UserSettings, on_delete=models.SET_NULL, null=True)
     image = models.CharField(max_length=9999, null=True, default='/static/images/no.jpg')
 
