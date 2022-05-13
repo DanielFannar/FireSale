@@ -39,7 +39,7 @@
                     <li><a class="dropdown-item" href="{% url 'add-listing' %}">Add listing</a></li>
                     <li><a class="dropdown-item" href="{% url 'user-listings' request.user.id %}">My Listings</a></li>
                     <li><a class="dropdown-item" href="{% url 'offers-made' request.user.id %}">My Offers</a></li>
-                    <li><a class="dropdown-item" href="{% url 'purchases' request.user.id %}">My Purchases</a></li>
+                    <li><a class="dropdown-item" href="{% url 'user-purchases' request.user.id %}">My Purchases</a></li>
                     <li><a class="dropdown-item" href="{% url 'user-ratings' request.user.id %}">{% user_star_rating request.user %}</a></li>
                     <li><hr class="dropdown-divider"></li>
                     <li><a class="dropdown-item" href="{% url 'logout' %}">Logout</a></li>

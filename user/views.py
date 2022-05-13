@@ -17,8 +17,8 @@ from user.models import UserProfile, Rating, Message, Notification, UserSettings
 from user import helper_functions
 
 
-
 def register(request):
+    """This view lets a user register a new account."""
     if request.method == 'POST':
         user_form = UserCreationForm(request.POST)
         profile_form = ProfileCreateForm(request.POST)

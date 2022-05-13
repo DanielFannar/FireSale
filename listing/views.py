@@ -109,7 +109,7 @@ def add_listing(request):
 
 
 def remove_listing(request, listing_id):
-    """This view let"""
+    """This view lets the user remove their listing."""
     listing = get_object_or_404(Listing, pk=listing_id)
     listing.delete()
     message.success(request, 'Listing removed!')
@@ -117,7 +117,7 @@ def remove_listing(request, listing_id):
 
 
 def update_listing(request, listing_id):
-    """This listing lets a user update a listing they own."""
+    """This listing lets a user update information for a listing they have added."""
     instance = get_object_or_404(Listing, pk=listing_id)
     if request.method == 'POST':
         form = ListingUpdateForm(data=request.POST, instance=instance)
