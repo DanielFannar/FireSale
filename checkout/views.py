@@ -178,12 +178,12 @@ def get_purchase_by_id(request, purchase_id):
     })
 
 
-def get_user_purchases(request, user_id):
-    purchases = Purchase.objects.all().filter(offer__buyer_id=user_id)
+def get_user_purchases(request):
+    purchases = Purchase.objects.all().filter(offer__buyer_id=request.user.id)
     paginator = Paginator(purchases, 10)
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
     return render(request, 'checkout/purchases.html', {
         'page_obj': page_obj,
         'current_user': get_object_or_404(User, pk=request.user.id),
-        'buyer': get_object_or_404(User, pk=user_id)})
+        'buyer': get_object_or_404(User, pk=request.user.id)})
