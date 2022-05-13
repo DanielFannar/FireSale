@@ -28,11 +28,11 @@ def user_star_rating(user_id):
     rating_number = rating['rating__avg']
     star_rating = ''
     if rating_number is None:
-        star_rating= 'N/A'
+        star_rating= 'No ratings'
     else:
         for i in range(round(rating_number)):
             star_rating += '⭐'
-        star_rating += ' (' + str(rating_number) + ')'
+        star_rating += ' (' + str(round(rating_number, 2)) + ')'
     return star_rating
 
 # @register .simple_tag

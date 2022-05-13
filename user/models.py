@@ -1,23 +1,14 @@
 from django.db import models
 from django.contrib.auth.models import User
-from django.db.models import UniqueConstraint
 
 from checkout.models import Purchase
 from django.core.validators import MaxValueValidator, MinValueValidator
 
 
-class UnreadMessageManager(models.Manager):
-    def get_queryset(self):
-        return super().get_queryset().filter(seen=False)
-
-
-class UnreadNotificationManager(models.Manager):
-    def get_queryset(self):
-        return super().get_queryset().filter(seen=False)
 
 
 class UserSettings(models.Model):
-    email_notification = models.BinaryField()
+    email_notification = models.BooleanField()
 
 
 class UserProfile(models.Model):
@@ -37,8 +28,6 @@ class Message(models.Model):
     seen = models.BooleanField()
     sent = models.DateTimeField()
 
-    objects = models.Manager()
-    unread_objects = UnreadMessageManager()
 
 
 class Rating(models.Model):
@@ -60,6 +49,4 @@ class Notification(models.Model):
     content = models.CharField(max_length=9999)
     seen = models.BooleanField()
     sent = models.DateTimeField()
-
-    objects = models.Manager()
-    unread_objects = UnreadNotificationManager()
+    url = models.CharField(max_length=9999)

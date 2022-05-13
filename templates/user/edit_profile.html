@@ -2,7 +2,7 @@
 {% extends 'base.html' %}
 {% block content %} <form class="form form-horizontal" action="{% url 'edit-profile' %}" method="post">
         {% csrf_token %}
-        {{ form }}
+        {{ form.as_p}}
         <input type="submit" value="Confirm Changes" class="btn btn-success pull-right" style="clear:both; margin: 10px 0" />
     </form>
 {% endblock %}

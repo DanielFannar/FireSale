@@ -13,7 +13,7 @@ from django.core.mail import send_mail
 from user.forms.message_form import MessageCreateForm
 from user.forms.profile_form import ProfileCreateForm, ProfileUpdateForm
 from user.forms.rating_form import RatingCreateForm
-from user.models import UserProfile, Rating, Message, Notification
+from user.models import UserProfile, Rating, Message, Notification, UserSettings
 from user import helper_functions
 
 
@@ -25,10 +25,12 @@ def register(request):
         if user_form.is_valid() and profile_form.is_valid():
             user = user_form.save(commit=False)
             profile = profile_form.save(commit=False)
+            settings = UserSettings(email_notifications=True)
             user.email = request.POST['email']
             user.save()
             profile.user = user
             profile.save()
+            settings.save()
             messages.success(request, 'Successfully registered! Please log in.')
             return redirect('login')
         else:
@@ -61,16 +63,24 @@ def edit_profile(request):
     user = get_object_or_404(User, pk=request.user.id)
     user_profile = get_object_or_404(UserProfile.objects.select_related(), user_id=user.id)
     if request.method == 'POST':
-        form = ProfileUpdateForm(data=request.POST, instance=user_profile)
+        form = ProfileUpdateForm(data=request.POST,
+                                 instance=user_profile)
         if form.is_valid():
-            form.save()
+            profile = form.save(commit=False)
+            settings = profile.settings
+            if 'email_notifications' in request.POST:
+                settings.email_notification = True
+            else:
+                settings.email_notification = False
+            profile.save()
+            settings.save()
             messages.success(request, 'Profile edited!')
             return redirect('my-profile')
         else:
             messages.error(request, 'Profile could not be edited')
             return redirect('my-profile')
     else:
-        form = ProfileUpdateForm(instance=user_profile)
+        form = ProfileUpdateForm(instance=user_profile, initial={'email': user.email, 'settings': user_profile.settings.email_notification})
         return render(request, 'user/edit_profile.html', {
             'form': form
         })

@@ -18,10 +18,10 @@
         {% else %}
             <a href="{% url 'send-message' user.id %}" class="block btn btn-info">Message user</a>
         {% endif %}
-{#        <div>#}
-{#            <a href="{% url 'user-listings' user.id %}" class="block btn btn-primary">{{ displayed_name }} listings</a>#}
-{#            <a href="{% url 'offers-made' user.id %}" class="block btn btn-primary">{{ displayed_name }} offers</a>#}
-{#            <a href="{% url 'user-purchases' user.id %}" class="block btn btn-primary">{{ displayed_name }} purchases</a>#}
-{#        </div>#}
+        <div>
+            <a href="{% url 'user-listings' user.id %}" class="block btn btn-primary">{{ displayed_name }} listings</a>
+            <a href="{% url 'offers-made' user.id %}" class="block btn btn-primary">{{ displayed_name }} offers</a>
+            <a href="{% url 'user-purchases' user.id %}" class="block btn btn-primary">{{ displayed_name }} purchases</a>
+        </div>
     </div>
 {% endblock %}
