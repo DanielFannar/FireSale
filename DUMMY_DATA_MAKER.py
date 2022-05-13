@@ -106,3 +106,36 @@ def rate_purchase(purchase):
     comment = "No comment"
     ratingmodel = Rating(rater=rater, ratee=ratee, rating=rating, comment=comment, purchase=purchase)
     ratingmodel.save()
+
+
+
+'''Here is a more pg friendly list of words to populate the data base'''
+
+'''
+Names:
+“TV”, “Sofa”, “Bed”, “Barrel”, “Lawn mower”, “Car, Laptop”, “Water bottle”, “Keyboard”, “Piano”, “Football”, “Dices”, “Runescape Account”
+
+Adjective:
+“Used”, “Hardly used”, “Brand new”, “A bit broken”, “Well worn”, “Never used”, “Smelly”, “Large”, “Tiny”, “Bright”
+
+Small Text:
+“Beautiful product that is”, “Just moved and had to sell some stuff, would highly recommend this”, “After the devastating divorce I had to sell this”, “My dog wasn’t a huge fan of my”, “Need the cash quickly so selling my,”, “Look no further, you can now finally get this,”
+
+Image link list:
+https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.samsung.com%2Fin%2Ftvs%2Ffull-hd-tv%2Fte50fa-43-inch-full-hd-smart-tv-ua43te50fakxxl%2F&psig=AOvVaw2XL5tXm5lJOq7HsFoWJfdc&ust=1652541987129000&source=images&cd=vfe&ved=0CAwQjRxqFwoTCPDU3OXk3PcCFQAAAAAdAAAAABAT ,
+http://cdn.shopify.com/s/files/1/2660/5106/products/d1rjiawy0pznxn6875ba_b6e0f2d6-0076-4a01-af48-0faf30d8c021_800x.jpg?v=1610981031 ,
+https://cdn.shopify.com/s/files/1/2660/5202/products/xoir1j2ihw9b4bw2apj5_1400x.jpg?v=1633467118 ,
+https://media.istockphoto.com/photos/wine-barrel-over-white-background-picture-id969515288?k=20&m=969515288&s=612x612&w=0&h=4pg8hYh6g_1vuDlgQlKKYiTSssZGpB-GZeqVXQncg8s= ,
+https://www.thespruce.com/thmb/W8gAUV1qubf5UppA3AQJUiFu9VM=/1500x1500/filters:no_upscale()/_hero_SQ_Ryobi-Electric-Riding-Lawn-Mower-1-376b4abaf7534fe88d53f31e6d4778ae.jpg ,
+https://www.motortrend.com/uploads/sites/10/2015/11/2015-fiat-500-pop-3door-hatchback-angular-front.png?fit=around%7C875:492.1875 ,
+https://www.notebookcheck.net/uploads/tx_nbc2/MicrosoftSurfaceLaptop3-15__1__02.JPG ,
+https://media.istockphoto.com/photos/water-bottle-on-white-background-picture-id1126933760?k=20&m=1126933760&s=612x612&w=0&h=XiYk9aT68Iru-OeENe1JXi0-8BU8wXKKj7dfgkbjy9A= ,
+https://resource.logitech.com/content/dam/logitech/en/products/keyboards/k120/gallery/k120-gallery-01-fr.png ,
+https://www.ubuy.is/productimg/?image=aHR0cHM6Ly9tLm1lZGlhLWFtYXpvbi5jb20vaW1hZ2VzL0kvODFhK3FvdVFObUwuX0FDX1NMMTUwMF8uanBn.jpg ,
+https://image.cnbcfm.com/api/v1/image/106991253-1639786378304-GettyImages-1185558312r.jpg?v=1639786403 ,
+https://m.media-amazon.com/images/I/71CevzRBAfL._AC_SX425_.jpg ,
+https://www.account4rs.com/uploads/product/5289c9d9393485ca37fec4fdecbcb790.png ,
+
+'''
+
+
