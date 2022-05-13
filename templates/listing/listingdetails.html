@@ -9,12 +9,11 @@
                 {% endfor %}
                 <p> {{ listing.description }}</p>
                     <h5>Seller</h5>
-                <div class="d-flex"><img class="message-image" width="40px" height="40px" src="{{ listing.seller.userprofile.image }}" alt="">
-                    <p>{{ listing.seller }}</p></div>
+                {% include 'user/tiny_user.html' with user=listing.seller %}
                 <h5>Condition</h5>
                 <p>{{ listing.condition }}</p>
                 <h5>Listed</h5>
-                <p>{{ listing.listed }}</p>1
+                <p>{{ listing.listed }}</p>
                 <h5>Top offer</h5>
                 <p>{% with offers=listing.offer_set.all|dictsortreversed:"amount" %} {{ offers.0.amount }} kr{% endwith %}</p>
                 {% if request.user.is_authenticated %}

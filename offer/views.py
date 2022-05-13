@@ -137,7 +137,7 @@ def update_offer(request, offer_id):
             messages.success(request, 'Your offer has been updated!')
         else:
             messages.error(request, 'Your offer could not be updated.')
-        return redirect('listing-details', id=offer.listing.id)
+        return redirect('listing-details', listing_id=offer.listing.id)
     else:
         form = OfferUpdateForm(instance=instance)
         return render(request, 'offer/update_offer.html', {

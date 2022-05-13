@@ -41,7 +41,7 @@ def register(request):
             'profile_form': ProfileCreateForm()
         })
 
-
+@login_required
 def get_profile(request, user_id=None):
     current_user = request.user
     if user_id is None:
@@ -58,7 +58,7 @@ def get_profile(request, user_id=None):
         'displayed_name': displayed_name
     })
 
-
+@login_required
 def edit_profile(request):
     user = get_object_or_404(User, pk=request.user.id)
     user_profile = get_object_or_404(UserProfile.objects.select_related(), user_id=user.id)
@@ -85,7 +85,7 @@ def edit_profile(request):
             'form': form
         })
 
-
+@login_required
 def get_user_ratings(request, user_id):
 
     user = get_object_or_404(User, pk=user_id)

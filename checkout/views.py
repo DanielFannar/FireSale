@@ -86,6 +86,9 @@ def checkout_payment_info(request, offer_id):
             for field in fields:
                 request.session[field] = payment_info_form.cleaned_data[field]
             return redirect('checkout-confirm', offer_id=offer_id)
+        else:
+            messages.error(request, 'Invalid payment information')
+            return redirect('checkout-payment-info', offer_id=offer_id)
 
     else:
         initial = {}

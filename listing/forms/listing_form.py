@@ -8,7 +8,7 @@ class ListingCreateForm(ModelForm):
 
     class Meta:
         model = Listing
-        exclude = ['id', 'seller', 'listed', 'available']
+        exclude = ['id', 'seller', 'listed', 'available', 'purchased']
         widgets = {
             'name': widgets.TextInput(attrs={'class': 'form-control'}),
             'description': widgets.TextInput(attrs={'class': 'form-control'}),
@@ -19,7 +19,7 @@ class ListingCreateForm(ModelForm):
 class ListingUpdateForm(ModelForm):
     class Meta:
         model = Listing
-        exclude = ['id', 'seller', 'listed', 'available']
+        exclude = ['id', 'seller', 'listed', 'available', 'purchased']
         widgets = {
             'name': widgets.TextInput(attrs={'class': 'form-control'}),
             'description': widgets.TextInput(attrs={'class': 'form-control'}),
