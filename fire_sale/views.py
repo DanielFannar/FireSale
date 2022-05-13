@@ -11,9 +11,9 @@ def index(request):
 
 
 def statistics(request):
-    total_users = len(User.objects.all())
-    total_offers =  len(Offer.objects.all())
-    total_listings =  len(Listing.objects.all())
+    total_users = User.objects.all().count()
+    total_offers = Offer.objects.all().count()
+    total_listings = Listing.objects.all().count()
     return render(request, '../templates/Misc/statistics.html', {
         'total_users': total_users,
         'total_offers': total_offers,

@@ -49,4 +49,4 @@ class Notification(models.Model):
     content = models.CharField(max_length=9999)
     seen = models.BooleanField()
     sent = models.DateTimeField()
-    url = models.CharField(max_length=9999)
+    url = models.CharField(max_length=9999, default='')

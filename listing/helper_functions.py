@@ -1,4 +1,35 @@
+from listing.models import Listing
 from offer.models import Offer
+
+
+def listing_relatedness_v2(listing, n=4):
+    result = Listing.objects.raw("""WITH Tafla as (select t.*, x.cnt_matches
+from (
+SELECT l.name as name1, l2.name as name2, l.id as l1_id, l2.id as l2_id, CASE
+    WHEN l.seller_id=l2.seller_id THEN 1
+    ELSE 0
+  END
+  AS same_seller,
+ABS(5-ABS((l.condition_id-l2.condition_id))) as condition_likeness
+from listing_listing as l
+CROSS JOIN listing_listing l2
+WHERE l.id =%s and l.id != l2.id) t
+
+
+
+cross join lateral (
+    select count(*) cnt_matches
+    from regexp_split_to_table(lower(%s), ' ') w1(word)
+    inner join regexp_split_to_table(lower(t.name2), ' ') w2(word)
+        on w1.word = w2.word
+) x)
+
+
+SELECT l2_id as id FROM Tafla ORDER BY (cnt_matches*cnt_matches)+same_seller+condition_likeness/5 DESC LIMIT %s """, [listing.id, listing.name, n])
+    for r in result:
+        print(r)
+    return result
+
 
 
 def calculate_listing_relatedness(listing1, listing2):

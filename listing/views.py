@@ -22,8 +22,9 @@ def get_listing_by_id(request, listing_id):
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
     list_of_listings = Listing.objects.all().filter(available=True).exclude(pk=listing_id)
-    mrp = most_related_products(listing, list_of_listings)
-    mrp = Listing.objects.filter(id__in=mrp)
+    #mrp = most_related_products(listing, list_of_listings)
+    #mrp = Listing.objects.filter(id__in=mrp)
+    mrp = listing_relatedness_v2(listing)
     return render(request, 'listing/listingdetails.html', {
         'listing': listing,
         'mrp': mrp,
