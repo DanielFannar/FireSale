@@ -1,5 +1,6 @@
 {% extends "base.html" %}
 {% block content %}
+{#    Template to add a listing #}
     <form class="form form-horizontal" action="{% url 'add-listing' %}" method="post">
         {% csrf_token %}
         {{ form }}
