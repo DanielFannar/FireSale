@@ -14,7 +14,7 @@ from listing.helper_functions import *
 # Create your views here.
 
 
-@login_required
+
 def get_listing_by_id(request, listing_id):
     listing = get_object_or_404(Listing, pk=listing_id)
     offers = Offer.objects.all().filter(listing_id=listing_id).order_by('-amount')

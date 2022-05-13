@@ -14,6 +14,9 @@ from user.helper_functions import send_notification
 
 
 def rate_purchase(request, purchase_id):
+    """This view let's a user create a rating for a specific purchase.
+    Only one rating can be given for each purchase."""
+
     user = request.user
     purchase = get_object_or_404(Purchase, pk=purchase_id)
 
@@ -42,6 +45,9 @@ def rate_purchase(request, purchase_id):
 
 
 def checkout_contact_info(request, offer_id):
+    """This view takes the user to the first step in the checkout procedure.
+    The offer with the given offer_id determines the price and product being checked out.
+    If the offer hasn't been accepted or the listing has already been purchased, checkout is not possible."""
     fields = ['full_name', 'country', 'city', 'street_name', 'house_number', 'postal_code']
     offer = get_object_or_404(Offer, pk=offer_id)
     if offer.accepted and not offer.listing.purchased:
@@ -69,6 +75,9 @@ def checkout_contact_info(request, offer_id):
 
 
 def checkout_payment_info(request, offer_id):
+    """This view is the second step of the checkout process.
+    The fields from the previous step are saved in the session so the user can
+    easily move back and forth between steps."""
     fields = ['name', 'card_number', 'expiration_date', 'cvc']
     if request.method == 'POST':
         payment_info_form = PaymentInfoCreateForm(request.POST)
@@ -90,6 +99,10 @@ def checkout_payment_info(request, offer_id):
 
 
 def checkout_confirm(request, offer_id):
+    """The last step in the checkout process.
+    Presents the user with the information they have given. And asks them to confirm.
+    If the user confirms the purchase is finalized.
+    All other offers on that listing are then declined."""
     offer = get_object_or_404(Offer, pk=offer_id)
     listing = get_object_or_404(Listing, pk=offer.listing.id)
     contact_info_fields = ['full_name', 'country', 'city', 'street_name', 'house_number', 'postal_code']
@@ -119,11 +132,11 @@ def checkout_confirm(request, offer_id):
         listing.save()
         offers = Offer.objects.all().filter(listing=listing).exclude(pk=offer.id)
         for o in offers:
-            decline_offer(o.id)
+            decline_offer(o.id)  # Declining all other offers.
         for field in contact_info_fields:
-            request.session[field] = ''
+            request.session[field] = ''  # Clearing the session.
         for field in payment_info_fields:
-            request.session[field] = ''
+            request.session[field] = ''  # Clearing the session.
         messages.success(request, 'Purchase completed!')
         return redirect('purchase-details', purchase_id=purchase.id)
     else:
@@ -173,17 +186,19 @@ def checkout_confirm(request, offer_id):
 
 
 def get_purchase_by_id(request, purchase_id):
+    """This view presents the user with a single purchase with the given purchase_id."""
     return render(request, 'checkout/purchase_details.html', {
         'purchase': get_object_or_404(Purchase, pk=purchase_id),
     })
 
 
-def get_user_purchases(request):
-    purchases = Purchase.objects.all().filter(offer__buyer_id=request.user.id)
+def get_user_purchases(request, user_id):
+    """This view presents the user with all purchases completed by a user with the given user_id.
+    This can be another user or the same user."""
+    purchases = Purchase.objects.all().filter(offer__buyer_id=user_id)
     paginator = Paginator(purchases, 10)
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
     return render(request, 'checkout/purchases.html', {
         'page_obj': page_obj,
-        'current_user': get_object_or_404(User, pk=request.user.id),
-        'buyer': get_object_or_404(User, pk=request.user.id)})
+        'buyer': get_object_or_404(User, pk=user_id)})
