@@ -1,5 +1,6 @@
 import datetime
 
+from django.contrib import messages
 from django.contrib.auth import get_user
 from django.contrib.auth.models import User
 from django.core.paginator import Paginator
@@ -27,7 +28,10 @@ def register(request):
             profile = profile_form.save(commit=False)
             profile.user = user
             profile.save()
+            messages.success(request, 'Successfully registered! Please log in.')
             return redirect('login')
+        else:
+            messages.error(request, 'Error in registration.')
     else:
         return render(request, 'user/register.html', {
             'user_form': UserCreationForm(),
@@ -59,6 +63,10 @@ def edit_profile(request):
         form = ProfileUpdateForm(data=request.POST, instance=user_profile)
         if form.is_valid():
             form.save()
+            messages.success(request, 'Profile edited!')
+            return redirect('my-profile')
+        else:
+            messages.error(request, 'Profile could not be edited')
             return redirect('my-profile')
     else:
         form = ProfileUpdateForm(instance=user_profile)
@@ -92,7 +100,10 @@ def send_message(request, to_user_id=''):
             message.recipient = get_object_or_404(User, username=request.POST['to'])
             message.sent = datetime.datetime.now()
             message.save()
+            messages.success(request, 'Message sent!')
             return get_message_chain(request, message.recipient.id)
+        else:
+            messages.error(request, 'Message could not be sent')
     else:
         to_user = get_object_or_404(User, pk=to_user_id)
         form = MessageCreateForm(initial={'to': to_user.username})
@@ -115,14 +126,14 @@ def get_message_by_id(request, message_id):
 
 
 def get_message_chain(request, user_id):
-    messages = Message.objects.all().filter(
+    all_messages_in_chain = Message.objects.all().filter(
         Q(sender_id=request.user.id, recipient_id=user_id) |
         Q(recipient_id=request.user.id, sender_id=user_id)
     ).order_by('-sent')
-    paginator = Paginator(messages, 10)
+    paginator = Paginator(all_messages_in_chain, 10)
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
-    messages.filter(recipient=request.user).update(seen=True)
+    all_messages_in_chain.filter(recipient=request.user).update(seen=True)
     return render(request, 'user/message_chain.html', {
         'page_obj': page_obj,
         'user': get_object_or_404(User, pk=user_id)})
