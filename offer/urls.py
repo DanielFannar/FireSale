@@ -5,5 +5,6 @@ urlpatterns = [
     # http://localhost:8000/offer
     path('<int:offer_id>/accept', views.accept_offer, name="accept-offer"),
     path('<int:offer_id>/cancel', views.cancel_offer, name="cancel-offer"),
-    path('<int:offer_id>/update', views.update_offer, name="update-offer")
+    path('<int:offer_id>/update', views.update_offer, name="update-offer"),
+    path('<int:offer_id>/decline', views.decline_offer, name="decline-offer")
 ]
