@@ -1,8 +1,8 @@
 {% if message.seen %}
 <p style="text-align: center">{{ message.sent}}</p>
-<div class="single_message">
-    <h4>{{ message.sender.username }}</h4>
-    <p style="margin-bottom: 0;">{{ message.content }}</p>
+<div class="single_message" {% if request.user == message.sender %} style="text-align: right" {% endif %}>
+    <div ><h4>{{ message.sender.username }}</h4>
+        <p style="margin-bottom: 0;">{{ message.content }}</p></div>
 </div>
     {% else %}
     <p style="text-align: center">{{ message.sent}}</p>

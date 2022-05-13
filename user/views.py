@@ -1,6 +1,8 @@
 import datetime
 
+from django.contrib import messages
 from django.contrib.auth import get_user
+from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.core.paginator import Paginator
 from django.db.models import Q
@@ -14,8 +16,6 @@ from user.forms.rating_form import RatingCreateForm
 from user.models import UserProfile, Rating, Message, Notification
 from user import helper_functions
 
-# Create your views here.
-FIRESALE_EMAIL = 'firesale@firesale.com'
 
 
 def register(request):
@@ -23,11 +23,16 @@ def register(request):
         user_form = UserCreationForm(request.POST)
         profile_form = ProfileCreateForm(request.POST)
         if user_form.is_valid() and profile_form.is_valid():
-            user = user_form.save()
+            user = user_form.save(commit=False)
             profile = profile_form.save(commit=False)
+            user.email = request.POST['email']
+            user.save()
             profile.user = user
             profile.save()
+            messages.success(request, 'Successfully registered! Please log in.')
             return redirect('login')
+        else:
+            messages.error(request, 'Error in registration.')
     else:
         return render(request, 'user/register.html', {
             'user_form': UserCreationForm(),
@@ -59,6 +64,10 @@ def edit_profile(request):
         form = ProfileUpdateForm(data=request.POST, instance=user_profile)
         if form.is_valid():
             form.save()
+            messages.success(request, 'Profile edited!')
+            return redirect('my-profile')
+        else:
+            messages.error(request, 'Profile could not be edited')
             return redirect('my-profile')
     else:
         form = ProfileUpdateForm(instance=user_profile)
@@ -81,6 +90,7 @@ def get_user_ratings(request, user_id):
     })
 
 
+@login_required
 def send_message(request, to_user_id=''):
 
     if request.method == 'POST':
@@ -92,7 +102,10 @@ def send_message(request, to_user_id=''):
             message.recipient = get_object_or_404(User, username=request.POST['to'])
             message.sent = datetime.datetime.now()
             message.save()
+            messages.success(request, 'Message sent!')
             return get_message_chain(request, message.recipient.id)
+        else:
+            messages.error(request, 'Message could not be sent')
     else:
         to_user = get_object_or_404(User, pk=to_user_id)
         form = MessageCreateForm(initial={'to': to_user.username})
@@ -101,33 +114,35 @@ def send_message(request, to_user_id=''):
         })
 
 
+@login_required
 def get_message_by_id(request, message_id):
     message = get_object_or_404(Message, pk=message_id)
-    message = Message(id=message.id,
-                      content=message.content,
-                      recipient=message.recipient,
-                      sender=message.sender,
-                      sent=message.sent,
-                      seen=True)
-    message.save()
+    if request.user == message.recipient:
+        message.update(seen=True)
+        message.save()
+    elif request.user != message.sender:
+        message.error(request, 'You do not have permission to view that message')
+        return redirect('user-profile')
     return render(request, 'user/single_message.html', {
         'message': message})
 
 
+@login_required
 def get_message_chain(request, user_id):
-    messages = Message.objects.all().filter(
+    all_messages_in_chain = Message.objects.all().filter(
         Q(sender_id=request.user.id, recipient_id=user_id) |
         Q(recipient_id=request.user.id, sender_id=user_id)
     ).order_by('-sent')
-    paginator = Paginator(messages, 10)
+    paginator = Paginator(all_messages_in_chain, 10)
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
-    messages.filter(recipient=request.user).update(seen=True)
+    all_messages_in_chain.filter(recipient=request.user).update(seen=True)
     return render(request, 'user/message_chain.html', {
         'page_obj': page_obj,
         'user': get_object_or_404(User, pk=user_id)})
 
 
+@login_required
 def get_user_message_chains(request):
 
     sent_messages = Message.objects.all().filter(sender_id=request.user.id)
@@ -160,7 +175,7 @@ def get_user_message_chains(request):
         'page_obj': page_obj,
         'user': request.user})
 
-
+@login_required
 def get_notification_by_id(request, notification_id):
     notification = get_object_or_404(Notification, pk=notification_id)
     notification = Notification(id=notification.id,
@@ -172,7 +187,7 @@ def get_notification_by_id(request, notification_id):
     return render(request, 'user/notification_details.html', {
         'notification': notification})
 
-
+@login_required
 def get_user_notifications(request):
     notifications = Notification.objects.all().filter(recipient_id=request.user.id).order_by('-sent')
     paginator = Paginator(notifications, 10)
@@ -182,15 +197,3 @@ def get_user_notifications(request):
         'page_obj': page_obj,
         'user': get_object_or_404(User, pk=request.user.id)})
 
-
-
-# # TODO KLÁRA EMAIL VIRKNI
-# def send_notification_mail(user_id, message_id):
-#     message = get_object_or_404(Message, pk=message_id)
-#     send_mail(
-#         'Subject here',
-#         message,
-#         FIRESALE_EMAIL,
-#         [message.recipient.email],
-#         fail_silently=False,
-#     )

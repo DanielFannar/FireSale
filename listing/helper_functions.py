@@ -35,4 +35,4 @@ def most_related_products(listing1, list_of_listings, n=4):
     return [item[0] for item in scores[:n]]
 
 def listing_has_accepted_offer(listing):
-    return Offer.objects.all().filter(listing=listing, accepted=True).count != 0
+    return Offer.objects.all().filter(listing=listing, accepted=True).count() != 0

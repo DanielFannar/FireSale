@@ -2,6 +2,7 @@ from django.contrib import messages
 from django.core.paginator import Paginator
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.models import User
+from django.utils import timezone
 
 from listing.helper_functions import listing_has_accepted_offer
 from offer.models import Offer
@@ -25,7 +26,7 @@ def make_offer(request, listing_id):
             offer = form.save(commit=False)
             offer.listing = get_object_or_404(Listing, pk=listing_id)
             offer.buyer = get_object_or_404(User, pk=request.user.id)
-            offer.placed = datetime.datetime.now()
+            offer.placed = timezone.now()
             offer.accepted = False
             offer.save()
             notification_message = 'You have received an offer for your listing: ' + offer.listing.name
@@ -99,6 +100,8 @@ def accept_offer(request, offer_id):
         listing = get_object_or_404(Listing, pk=offer.listing_id)
         offer.accepted = True
         listing.available = False
+        offer.save()
+        listing.save()
         notification_message = \
             'Congratulations! Your offer on ' + listing.name + ' has been accepted, please go to http://127.0.0.1:8000/checkout/' + str(offer_id) + '/checkout_contact_info to complete your purchase.'
         send_notification(offer.buyer.id, notification_message)

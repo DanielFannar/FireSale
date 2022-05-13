@@ -11,6 +11,7 @@
 <body>
     {% include 'navigation.html' %}
     <div class="container">
+        {% if messages %} {% include 'message.html' %} {% endif %}
         {% block content %}
         {% endblock %}
     </div>
