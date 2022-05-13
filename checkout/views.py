@@ -8,7 +8,7 @@ from checkout.forms.contact_info_form import ContactInfoCreateForm
 from checkout.forms.payment_info_form import PaymentInfoCreateForm
 from checkout.models import Purchase, PaymentInfo, ContactInfo, Country
 from listing.models import Listing
-from offer.helper_functions import decline_offer
+from offer.views import decline_offer
 from offer.models import Offer
 from user.forms.rating_form import RatingCreateForm
 from user.helper_functions import send_notification

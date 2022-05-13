@@ -160,8 +160,8 @@ def decline_offer(request, offer_id):
         send_notification(offer.buyer.id, notification_message, notification_url)
         send_notification(offer.buyer.id, notification_message, notification_url)
         offer.delete()
-        message.success(request, 'Offer declined')
+        messages.success(request, 'Offer declined')
     else:
-        message.error(request, 'Offer could not be declined')
+        messages.error(request, 'Offer could not be declined')
 
     return redirect('listing-details', listing_id=listing.id)

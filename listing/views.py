@@ -112,7 +112,7 @@ def remove_listing(request, listing_id):
     """This view lets the user remove their listing."""
     listing = get_object_or_404(Listing, pk=listing_id)
     listing.delete()
-    message.success(request, 'Listing removed!')
+    messages.success(request, 'Listing removed!')
     return redirect('listings')
 
 
