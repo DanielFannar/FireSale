@@ -4,7 +4,9 @@ from offer.models import Offer
 
 def listing_relatedness_v2(listing, n=4):
     """This function calculates a relatedness score for the given listing to all other listings.
-    It then """
+    It then sorts the listings by the score and returns the n most related listings.
+    The relatedness is primarily based on the number of matched words, but also takes into account
+    the identity of the seller and the condition of the item."""
     result = Listing.objects.raw("""WITH Tafla as (select t.*, x.cnt_matches
 from (
 SELECT l.name as name1, l2.name as name2, l.id as l1_id, l2.id as l2_id, CASE
@@ -68,4 +70,5 @@ SELECT l2_id as id FROM Tafla ORDER BY (cnt_matches*cnt_matches)+same_seller+con
 #     return [item[0] for item in scores[:n]]
 
 def listing_has_accepted_offer(listing):
+    """This function returns true if the listing has an offer that has been accepted."""
     return Offer.objects.all().filter(listing=listing, accepted=True).count() != 0

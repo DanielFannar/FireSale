@@ -17,7 +17,8 @@ from random import Random, choice
     In the next iteration of FireSale dummy data generation for 
     messages, purchases, users, contact_info and payment_info should be added.
     The dummy data generation for the existing models should also be improved to be consistent.
-    For example offers generated should have a timestamp later than the listing they are placed on, etc."""
+    For example offers generated should have a timestamp later than the listing they are placed on, etc.
+    The data should also be given a slightly nicer feel and some ideas are added in a comment at the bottom."""
 
 
 def populate_listing(n):

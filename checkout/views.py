@@ -8,14 +8,14 @@ from checkout.forms.contact_info_form import ContactInfoCreateForm
 from checkout.forms.payment_info_form import PaymentInfoCreateForm
 from checkout.models import Purchase, PaymentInfo, ContactInfo, Country
 from listing.models import Listing
-from offer.helper_functions import decline_offer
+from offer.views import decline_offer
 from offer.models import Offer
 from user.forms.rating_form import RatingCreateForm
 from user.helper_functions import send_notification
 
 @login_required
 def rate_purchase(request, purchase_id):
-    """This view let's a user create a rating for a specific purchase.
+    """This view lets a user create a rating for a specific purchase.
     Only one rating can be given for each purchase."""
 
     user = request.user

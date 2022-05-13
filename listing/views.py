@@ -39,7 +39,7 @@ def get_listing_by_id(request, listing_id):
 def get_all_listings(request):
     """This view lets a user see all listings optionally filtered by a search string
     or sorted by name, price or listed date."""
-    listings = Listing.objects.all()
+    listings = Listing.objects.all().filter(available=True, purchased=False)
 
     if 'search_filter' in request.GET:
         search_filter = request.GET['search_filter']
@@ -112,7 +112,7 @@ def remove_listing(request, listing_id):
     """This view lets the user remove their listing."""
     listing = get_object_or_404(Listing, pk=listing_id)
     listing.delete()
-    message.success(request, 'Listing removed!')
+    messages.success(request, 'Listing removed!')
     return redirect('listings')
 
 
