@@ -207,6 +207,12 @@ li {
     background: linear-gradient(-45deg, #c4ffb3, #bafd97);
     transition: 0.7s;
 }
+.success-message{
+    color:green;
+}
+.error-message{
+    color:red;
+}
 
 .declined-notification{
     margin-bottom: 2em;

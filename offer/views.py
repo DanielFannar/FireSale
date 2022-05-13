@@ -2,6 +2,8 @@ from django.contrib import messages
 from django.core.paginator import Paginator
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.models import User
+
+from listing.helper_functions import listing_has_accepted_offer
 from offer.models import Offer
 from listing.models import Listing
 from offer.forms.offer_form import OfferCreateForm, OfferUpdateForm
@@ -28,7 +30,10 @@ def make_offer(request, listing_id):
             offer.save()
             notification_message = 'You have received an offer for your listing: ' + offer.listing.name
             send_notification(offer.listing.seller.id, notification_message)
+            messages.success(request, 'Offer made!')
             return redirect('listing-details', listing_id=listing_id)
+        else:
+            messages.error(request, 'Error in submitting the offer.')
     else:
         form = OfferCreateForm()
     return render(request, 'offer/make_offer.html', {
@@ -36,18 +41,18 @@ def make_offer(request, listing_id):
         'listing': get_object_or_404(Listing, pk=listing_id)
     })
 
-# TODO: get_offers_by_listing is not used atm, is it needed?
-def get_offers_by_listing(request, listing_id):
-
-    """
-    This function takes as it's input a listing_id.
-    It returns a page with a list of offers made on that listing.
-    """
-    offers = Offer.objects.all().filter(listing_id=listing_id).order_by('-amount')
-    paginator = Paginator(offers, 10)
-    page_number = request.GET.get('page')
-    page_obj = paginator.get_page(page_number)
-    return render(request, 'offer/offer_list.html', {'page_obj': page_obj})
+# # TODO: get_offers_by_listing is not used atm, is it needed?
+# def get_offers_by_listing(request, listing_id):
+#
+#     """
+#     This function takes as it's input a listing_id.
+#     It returns a page with a list of offers made on that listing.
+#     """
+#     offers = Offer.objects.all().filter(listing_id=listing_id).order_by('-amount')
+#     paginator = Paginator(offers, 10)
+#     page_number = request.GET.get('page')
+#     page_obj = paginator.get_page(page_number)
+#     return render(request, 'offer/offer_list.html', {'page_obj': page_obj})
 
 
 def get_offers_by_buyer(request, buyer_id):
@@ -71,14 +76,15 @@ def cancel_offer(request, offer_id):
     This function takes as it's input an offer_id. The offer in question is deleted from the database.
     """
 
-    # TODO: Hvað ef offer er accepted, á að vera hægt að cancela því?
     offer = get_object_or_404(Offer, pk=offer_id)
     listing_id = offer.listing.id
     if offer.accepted:
         notification_message = offer.buyer.username + ' has cancelled the offer you accepted on ' + offer.listing.name
         send_notification(offer.listing.seller, notification_message)
+        offer.listing.available = True
     offer.delete()
-    return redirect('listing-details', id=listing_id)
+    messages.success(request, 'Offer cancelled!')
+    return redirect('listing-details', listing_id=listing_id)
 
 
 def accept_offer(request, offer_id):
@@ -89,17 +95,17 @@ def accept_offer(request, offer_id):
     """
 
     offer = get_object_or_404(Offer, pk=offer_id)
-    if offer.accepted is False:
+    if listing_has_accepted_offer(offer.listing) == False:
         listing = get_object_or_404(Listing, pk=offer.listing_id)
         offer.accepted = True
         listing.available = False
         notification_message = \
-            'Congratulations! Your offer on ' + listing.name + ' has been accepted, please go to http://127.0.0.1:8000/checkout_contact_info/' + str(offer_id) + '/checkout to complete your purchase.'
+            'Congratulations! Your offer on ' + listing.name + ' has been accepted, please go to http://127.0.0.1:8000/checkout/' + str(offer_id) + '/checkout_contact_info to complete your purchase.'
         send_notification(offer.buyer.id, notification_message)
         messages.success(request, 'Offer accepted!')
         return redirect('listing-details', listing_id=listing.id)
     else:
-        # TODO: Error message: "Offer is already accepted"
+        messages.error(request, 'This listing already has an accepted offer.')
         return redirect('listing-details', listing_id=offer.listing_id)
 
 
@@ -121,7 +127,10 @@ def update_offer(request, offer_id):
             offer.buyer = get_object_or_404(User, pk=request.user.id)
             offer.placed = datetime.datetime.now()
             offer.accepted = False
-            offer.save() # TODO: Give success and error messages
+            offer.save()
+            messages.success(request, 'Your offer has been updated!')
+        else:
+            messages.error(request, 'Your offer could not be updated.')
         return redirect('listing-details', id=offer.listing.id)
     else:
         form = OfferUpdateForm(instance=instance)

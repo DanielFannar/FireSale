@@ -1,3 +1,4 @@
+from django.contrib import messages
 from django.core.paginator import Paginator
 from django.db.models import Q, Max
 from django.shortcuts import render, get_object_or_404, redirect
@@ -83,7 +84,11 @@ def add_listing(request):
             listing.save()
             listing_image = ListingImage(image=request.POST['image'], listing=listing)
             listing_image.save()
+            messages.success(request, 'Listing added!')
             return redirect('listing-details', listing_id=listing.id)
+        else:
+            messages.error(request, 'Listing could not be added')
+            return redirect('add-listing')
     else:
         form = ListingCreateForm()
     return render(request, 'listing/add_listing.html', {
@@ -107,7 +112,11 @@ def update_listing(request, listing_id):
             listing.listed = datetime.datetime.now()
             listing.available = True
             listing.save()
+            messages.success(request, 'Listing updated!')
             return redirect('listing-details', listing.id)
+        else:
+            messages.error(request, 'Listing could not be updated')
+            return redirect('listing-details', listing_id)
     else:
         form = ListingUpdateForm(instance=instance)
         return render(request, 'listing/update_listing.html', {
@@ -129,18 +138,4 @@ def update_listing(request, listing_id):
 #     return render(request, 'listing/update_listing.html', {
 #             'listings': listings,
 #         })
-
-def search_listing(request):
-    if 'search_filter' in request.GET:
-        search_filter = request.GET['search_filter']
-        listings = [{
-            'id': x.id,
-            'name': x.name,
-            'description': x.description,
-            'firstImage': x.listingimage_set.first().image
-        } for x in Listing.objects.filter(name__icontains=search_filter)]
-        return JsonResponse({'data': listings})
-    context = {'listings': Listing.objects.all().order_by('name')}
-    return render(request, 'listing/search_listing.html', context)
-
 

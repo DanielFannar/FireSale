@@ -27,8 +27,11 @@ def rate_purchase(request, purchase_id):
             rating.save()
             notification_message = purchase.offer.buyer.username + ' has given you a rating for ' + purchase.offer.listing.name + '.'
             send_notification(purchase.offer.listing.seller.id, notification_message)
+            messages.success(request, 'Rating submitted!')
             return redirect('user-ratings', user_id=rating.ratee.id)
-
+        else:
+            messages.error(request, 'There was an error with submitting the rating.')
+            return redirect('rate-purchase', purchase_id=purchase_id)
     else:
         form = RatingCreateForm()
     return render(request, 'checkout/rate_purchase.html', {
@@ -108,11 +111,11 @@ def checkout_confirm(request, offer_id):
         offers = Offer.objects.all().filter(listing=listing).exclude(pk=offer.id)
         for o in offers:
             decline_offer(o.id)
-            messages.success(request, 'Purchase completed!')
         for field in contact_info_fields:
             request.session[field] = ''
         for field in payment_info_fields:
             request.session[field] = ''
+        messages.success(request, 'Purchase completed!')
         return redirect('purchase-details', purchase_id=purchase.id)
     else:
 

@@ -14,10 +14,14 @@ import datetime
 from random import Random, choice
 
 ''' This file has some code to add dummy data to the database for testing purposes.
-    TODO: Add dummy data generation for messages, purchases'''
+    In the next iteration of FireSale dummy data generation for 
+    messages, purchases, users, contact_info and payment_info should be added.
+    The dummy data generation for the existing models should also be improved to be consistent.
+    For example offers generated should have a timestamp later than the listing they are placed on, etc.'''
 
 
 def populate_listing(n):
+    '''This function generates n listings for each user.'''
     rand = Random()
     users = User.objects.all()
     listings = []
@@ -55,6 +59,7 @@ def populate_listing(n):
 
 
 def populate_offer(n):
+    '''This function generates n offers.'''
     rand = Random()
     user_pks = list(User.objects.values_list('pk', flat=True))
     listing_pks = list(Listing.objects.values_list('pk', flat=True))
@@ -71,7 +76,12 @@ def populate_offer(n):
         offer = Offer(listing=listing, buyer=buyer, amount=amount, placed=placed, accepted=accepted)
         offer.save()
 
-def populate_purchases(n):
+def populate_purchases(n, r):
+    '''This function accepts an offer on n listings.
+    If there are less than n listings available, it accepts an offer for every listing.
+    It also leaves a review with r% chance.
+    In the next iteration of FireSale, this function should be improved to work better with a database that
+    includes listings with 0 offers.'''
     rand = Random()
     listings = Listing.objects.all().filter(available=True)[:n]
     payment_info_pks = PaymentInfo.objects.values_list('pk', flat=True)
@@ -82,25 +92,17 @@ def populate_purchases(n):
         payment_info = PaymentInfo.objects.get(pk=choice(payment_info_pks))# TODO: add user to payment info, select payment info from DB if offer.buyer has payment info in DB. Otherwise create new with random data.
         purchase = Purchase(offer=offer, contact_info=contact_info, payment_info=payment_info)
         purchase.save()
-        if rand.randint(0, 100) > 10:
+        if rand.randint(0, 100) < r:
             rate_purchase(purchase)
 
 
 def rate_purchase(purchase):
+    '''This function generates a rating on a specific purchase.'''
     rand = Random()
-    rating = rand.randint(1,5)
+    rating = rand.randint(1, 5)
     purchase = purchase
     rater = purchase.offer.buyer
     ratee = purchase.offer.listing.seller
     comment = "No comment"
     ratingmodel = Rating(rater=rater, ratee=ratee, rating=rating, comment=comment, purchase=purchase)
     ratingmodel.save()
-''' def create_new_contact_info(user):
-        pass
-    def create_new_payment_info(user):
-        pass
-'''
-
-
-if __name__ == "__main__":
-    pass
