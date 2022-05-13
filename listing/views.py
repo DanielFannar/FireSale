@@ -1,5 +1,6 @@
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
+from django.core.mail import message
 from django.core.paginator import Paginator
 from django.db.models import Q, Max
 from django.shortcuts import render, get_object_or_404, redirect
@@ -11,11 +12,15 @@ from listing.forms.listing_form import ListingCreateForm, ListingUpdateForm
 import datetime
 from listing.helper_functions import *
 
-# Create your views here.
-
-
-
 def get_listing_by_id(request, listing_id):
+    """This view gives a detailed look at a specific listing.
+    From this view a user can:
+    see all info a seller has provided about a listing,
+    see related products,
+    see all offers made on the listing and make an offer themselves.
+    If viewing their own listing a user can access options to edit or remove the listing
+    and accept or decline offers.
+"""
     listing = get_object_or_404(Listing, pk=listing_id)
     offers = Offer.objects.all().filter(listing_id=listing_id).order_by('-amount')
     paginator = Paginator(offers, 10)
@@ -32,6 +37,8 @@ def get_listing_by_id(request, listing_id):
     })
 
 def get_all_listings(request):
+    """This view lets a user see all listings optionally filtered by a search string
+    or sorted by name, price or listed date."""
     listings = Listing.objects.all()
 
     if 'search_filter' in request.GET:
@@ -60,6 +67,10 @@ def get_all_listings(request):
 
 
 def get_user_listings(request, user_id):
+    """This view lets the user see all listings posted by a specific user.
+    In the next iteration of FireSale, this view should be updated to function similarly to
+    get_all_listings.
+    Another option would be to provide the user_id as an optional attribute to filter get_all_listings by"""
     listings = Listing.objects.all().filter(seller_id=user_id)
     listings_and_highest_offer = []
     for listing in listings:
@@ -74,6 +85,7 @@ def get_user_listings(request, user_id):
 
 
 def add_listing(request):
+    """This view lets a user add a listing"""
     if request.method == 'POST':
         form = ListingCreateForm(data=request.POST)
         if form.is_valid():
@@ -97,16 +109,19 @@ def add_listing(request):
 
 
 def remove_listing(request, listing_id):
+    """This view let"""
     listing = get_object_or_404(Listing, pk=listing_id)
     listing.delete()
+    message.success(request, 'Listing removed!')
     return redirect('listings')
 
 
 def update_listing(request, listing_id):
+    """This listing lets a user update a listing they own."""
     instance = get_object_or_404(Listing, pk=listing_id)
     if request.method == 'POST':
         form = ListingUpdateForm(data=request.POST, instance=instance)
-        if form.is_valid():
+        if form.is_valid() and instance.seller == request.user:
             listing = form.save(commit=False)
             listing.seller = get_object_or_404(User, pk=request.user.id)
             listing.listed = datetime.datetime.now()
@@ -123,19 +138,3 @@ def update_listing(request, listing_id):
             'form': form,
             'listing_id': listing_id
         })
-
-
-
-
-
-
-# TODO: Is this used anywhere?
-# def related_products(request, listing_id):
-#     listing = get_object_or_404(Listing, pk=listing_id)
-#     list_of_listings = Listing.objects.all().filter(available=True)
-#     mrp = most_related_products(listing, list_of_listings)
-#     listings = Listing.objects.filter(id__in=mrp)
-#     return render(request, 'listing/update_listing.html', {
-#             'listings': listings,
-#         })
-
