@@ -17,6 +17,10 @@ class ProfileCreateForm(ModelForm):
 
 
 class ProfileUpdateForm(ModelForm):
+
+    email_notifications = forms.BooleanField(required=False)
+    email = forms.EmailField(max_length=255)
+
     class Meta:
         model = UserProfile
         exclude = ['id', 'user', 'settings']

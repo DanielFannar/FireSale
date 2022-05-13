@@ -13,15 +13,15 @@ from django.utils import timezone
 import datetime
 from random import Random, choice
 
-''' This file has some code to add dummy data to the database for testing purposes.
+""" This file has some code to add dummy data to the database for testing purposes.
     In the next iteration of FireSale dummy data generation for 
     messages, purchases, users, contact_info and payment_info should be added.
     The dummy data generation for the existing models should also be improved to be consistent.
-    For example offers generated should have a timestamp later than the listing they are placed on, etc.'''
+    For example offers generated should have a timestamp later than the listing they are placed on, etc."""
 
 
 def populate_listing(n):
-    '''This function generates n listings for each user.'''
+    """This function generates n listings for each user."""
     rand = Random()
     users = User.objects.all()
     listings = []
@@ -59,7 +59,7 @@ def populate_listing(n):
 
 
 def populate_offer(n):
-    '''This function generates n offers.'''
+    """This function generates n offers."""
     rand = Random()
     user_pks = list(User.objects.values_list('pk', flat=True))
     listing_pks = list(Listing.objects.values_list('pk', flat=True))
@@ -77,11 +77,11 @@ def populate_offer(n):
         offer.save()
 
 def populate_purchases(n, r):
-    '''This function accepts an offer on n listings.
+    """This function accepts an offer on n listings.
     If there are less than n listings available, it accepts an offer for every listing.
     It also leaves a review with r% chance.
     In the next iteration of FireSale, this function should be improved to work better with a database that
-    includes listings with 0 offers.'''
+    includes listings with 0 offers."""
     rand = Random()
     listings = Listing.objects.all().filter(available=True)[:n]
     payment_info_pks = PaymentInfo.objects.values_list('pk', flat=True)
@@ -97,7 +97,7 @@ def populate_purchases(n, r):
 
 
 def rate_purchase(purchase):
-    '''This function generates a rating on a specific purchase.'''
+    """This function generates a rating on a specific purchase."""
     rand = Random()
     rating = rand.randint(1, 5)
     purchase = purchase
