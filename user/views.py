@@ -2,6 +2,7 @@ import datetime
 
 from django.contrib import messages
 from django.contrib.auth import get_user
+from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.core.paginator import Paginator
 from django.db.models import Q
@@ -15,8 +16,6 @@ from user.forms.rating_form import RatingCreateForm
 from user.models import UserProfile, Rating, Message, Notification
 from user import helper_functions
 
-# Create your views here.
-FIRESALE_EMAIL = 'firesale@firesale.com'
 
 
 def register(request):
@@ -91,6 +90,7 @@ def get_user_ratings(request, user_id):
     })
 
 
+@login_required
 def send_message(request, to_user_id=''):
 
     if request.method == 'POST':
@@ -114,19 +114,20 @@ def send_message(request, to_user_id=''):
         })
 
 
+@login_required
 def get_message_by_id(request, message_id):
     message = get_object_or_404(Message, pk=message_id)
-    message = Message(id=message.id,
-                      content=message.content,
-                      recipient=message.recipient,
-                      sender=message.sender,
-                      sent=message.sent,
-                      seen=True)
-    message.save()
+    if request.user == message.recipient:
+        message.update(seen=True)
+        message.save()
+    elif request.user != message.sender:
+        message.error(request, 'You do not have permission to view that message')
+        return redirect('user-profile')
     return render(request, 'user/single_message.html', {
         'message': message})
 
 
+@login_required
 def get_message_chain(request, user_id):
     all_messages_in_chain = Message.objects.all().filter(
         Q(sender_id=request.user.id, recipient_id=user_id) |
@@ -141,6 +142,7 @@ def get_message_chain(request, user_id):
         'user': get_object_or_404(User, pk=user_id)})
 
 
+@login_required
 def get_user_message_chains(request):
 
     sent_messages = Message.objects.all().filter(sender_id=request.user.id)
@@ -173,7 +175,7 @@ def get_user_message_chains(request):
         'page_obj': page_obj,
         'user': request.user})
 
-
+@login_required
 def get_notification_by_id(request, notification_id):
     notification = get_object_or_404(Notification, pk=notification_id)
     notification = Notification(id=notification.id,
@@ -185,7 +187,7 @@ def get_notification_by_id(request, notification_id):
     return render(request, 'user/notification_details.html', {
         'notification': notification})
 
-
+@login_required
 def get_user_notifications(request):
     notifications = Notification.objects.all().filter(recipient_id=request.user.id).order_by('-sent')
     paginator = Paginator(notifications, 10)
@@ -195,16 +197,3 @@ def get_user_notifications(request):
         'page_obj': page_obj,
         'user': get_object_or_404(User, pk=request.user.id)})
 
-
-
-# TODO KLÁRA EMAIL VIRKNI
-def send_notification_mail(notification_id):
-    notification = get_object_or_404(Notification, pk=notification_id)
-    #if notification.recipient.email == '' or notification.recipient.email is None:
-    send_mail(
-        'You have received a notification from FireSale',
-        notification.content,
-        FIRESALE_EMAIL,
-        [notification.recipient.email],
-        fail_silently=False,
-    )
