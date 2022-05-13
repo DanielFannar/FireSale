@@ -28,9 +28,10 @@ def register(request):
             settings = UserSettings(email_notification=True)
             user.email = request.POST['email']
             user.save()
-            profile.user = user
-            profile.save()
             settings.save()
+            profile.user = user
+            profile.settings = settings
+            profile.save()
             messages.success(request, 'Successfully registered! Please log in.')
             return redirect('login')
         else:
@@ -44,6 +45,7 @@ def register(request):
 
 @login_required
 def get_profile(request, user_id=None):
+    """This view lets a user see detailed information about a user."""
     current_user = request.user
     if user_id is None:
         user_id = request.user.id
@@ -61,6 +63,7 @@ def get_profile(request, user_id=None):
 
 @login_required
 def edit_profile(request):
+    """This view lets a user edit their profile information."""
     user = get_object_or_404(User, pk=request.user.id)
     user_profile = get_object_or_404(UserProfile.objects.select_related(), user_id=user.id)
     if request.method == 'POST':
@@ -81,14 +84,15 @@ def edit_profile(request):
             messages.error(request, 'Profile could not be edited')
             return redirect('my-profile')
     else:
-        form = ProfileUpdateForm(instance=user_profile, initial={'email': user.email, 'settings': user_profile.settings.email_notification})
+        form = ProfileUpdateForm(instance=user_profile,
+                                 initial={'email': user.email, 'settings': user_profile.settings.email_notification})
         return render(request, 'user/edit_profile.html', {
             'form': form
         })
 
 @login_required
 def get_user_ratings(request, user_id):
-
+    """This view lets a user see all ratings for a particular user."""
     user = get_object_or_404(User, pk=user_id)
     ratings = Rating.objects.all().filter(ratee=user)
     paginator = Paginator(ratings, 10)
