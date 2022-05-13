@@ -1,10 +1,15 @@
 {% if message.seen %}
-<p style="text-align: center">{{ message.sent}}</p>
-<div class="single_message" {% if request.user == message.sender %} style="text-align: right" {% endif %}>
-    <div ><h4>{{ message.sender.username }}</h4>
-        <p style="margin-bottom: 0;">{{ message.content }}</p></div>
-</div>
+{#    If the message is seen, the text is regular#}
+    <p style="text-align: center">{{ message.sent}}</p>
+    <div class="single_message" {% if request.user == message.sender %} style="text-align: right" {% endif %}>
+{#      If you are receiving a message it aligns to the left, otherwise it aligns to the right#}
+
+        <img class="message-image" width="40px" height="40px" src="{{ message.sender.userprofile.image }}" alt="">
+            <h4>{{ message.sender.username }}</h4>
+            <p style="margin-bottom: 0;">{{ message.content }}</p>
+    </div>
     {% else %}
+{#    If the message is not seen, the text is bold#}
     <p style="text-align: center">{{ message.sent}}</p>
 <div class="single_message">
     <h4>{{ message.sender.username }}</h4>

@@ -10,7 +10,6 @@
 
       <ul class="navbar-nav me-auto mb-2 mb-lg-0">
         <li class="nav-item"><a class="nav-link" href="{% url 'listings' %}">Listings</a></li>
-        <li class="nav-item"><a class="nav-link" href="{% url 'statistics' %}">Statistics</a></li>
             {% if not user.is_authenticated %}
                 <li class="nav-item"><a class="nav-link" href="{% url 'login' %}">Login</a></li>
                 <li class="nav-item"><a class="nav-link" href="{% url 'register' %}">Register</a></li>
@@ -30,14 +29,15 @@
                 <li class="nav-item">
                 <span class="badge badge-pill badge-warning" style="float:right;margin-bottom:-15px;font-size:10px; color: #ffc780">{% number_of_unread_notifications request %}</span>
                 <a class="nav-link" href="{% url 'user-notifications' %}"><img src="/static/images/notification.png" length="20px" width="20px"></a>
+                </li><li class="nav-item">
+                <a class="nav-link" href="{% url 'statistics' %}"><img src="/static/images/stats.png" length="20px" width="20px"></a>
                 </li>
                 <li class="nav-item dropdown"><a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false"><img src="{{ request.user.userprofile.image }}" class="nav-profile-image" alt=""></a>
                   <ul class="dropdown-menu dropdown-menu-dark dropdown-menu-end " aria-labelledby="navbarDropdown">
                     <li><a class="dropdown-item" href="{% url 'my-profile' %}">Profile</a></li>
-                    <li><a class="dropdown-item" href={% url 'messages' %}>Messages</a></li>
-                    <li><a class="dropdown-item" href="{% url 'user-listings' request.user.id %}">Listings</a></li>
                     <li><a class="dropdown-item" href="{% url 'add-listing' %}">Add listing</a></li>
-                    <li><a class="dropdown-item" href="{% url 'offers-made' request.user.id %}">Offers</a></li>
+                    <li><a class="dropdown-item" href="{% url 'user-listings' request.user.id %}">My Listings</a></li>
+                    <li><a class="dropdown-item" href="{% url 'offers-made' request.user.id %}">My Offers</a></li>
                     <li><a class="dropdown-item" href="{% url 'user-ratings' request.user.id %}">{% user_star_rating request.user %}</a></li>
                     <li><hr class="dropdown-divider"></li>
                     <li><a class="dropdown-item" href="{% url 'logout' %}">Logout</a></li>

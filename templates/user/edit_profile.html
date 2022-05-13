@@ -1,3 +1,4 @@
+{#Layout for editing a profile#}
 {% extends 'base.html' %}
 {% block content %} <form class="form form-horizontal" action="{% url 'edit-profile' %}" method="post">
         {% csrf_token %}
